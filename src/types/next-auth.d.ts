@@ -1,0 +1,30 @@
+import type { Plan, UserRole } from "@prisma/client";
+import type { DefaultSession } from "next-auth";
+import "next-auth";
+import "next-auth/jwt";
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      role: UserRole;
+      plan: Plan;
+      twitchLogin?: string | null;
+    } & DefaultSession["user"];
+  }
+
+  interface User {
+    role: UserRole;
+    plan: Plan;
+    twitchLogin?: string | null;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id?: string;
+    role?: UserRole;
+    plan?: Plan;
+    twitchLogin?: string | null;
+  }
+}

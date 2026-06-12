@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "ClipRule"
+ADD COLUMN "clipTitleTemplate" TEXT NOT NULL DEFAULT 'AutoClip',
+ADD COLUMN "appendCounter" BOOLEAN NOT NULL DEFAULT true,
+ADD COLUMN "nextClipNumber" INTEGER NOT NULL DEFAULT 1,
+ADD COLUMN "clipDurationSeconds" INTEGER NOT NULL DEFAULT 30;

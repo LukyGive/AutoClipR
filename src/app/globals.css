@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: #f5f7fb;
+  color: #15151a;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
