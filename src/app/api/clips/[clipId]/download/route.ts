@@ -8,13 +8,15 @@ import {
   getTwitchClip,
   getTwitchClipDownloadUrls
 } from "@/features/twitch/helix";
+import {
+  CliprDownloadError,
+  getCliprDownloadUrl
+} from "@/features/twitch/clipr";
 import { getValidTwitchAccessTokenWithAnyScope } from "@/features/twitch/oauth";
 import { TWITCH_CLIP_DOWNLOAD_SCOPES } from "@/features/twitch/scopes";
 import { TwitchIntegrationError } from "@/features/twitch/errors";
 
 const DOWNLOAD_UNAVAILABLE = "Download unavailable";
-const DOWNLOAD_STILL_PROCESSING =
-  "Download unavailable. Twitch may still be processing this clip or the video file is not public yet.";
 const RECONNECT_TWITCH = "Reconnect Twitch to enable downloads";
 
 export async function GET(
@@ -35,6 +37,7 @@ export async function GET(
       userId: true,
       twitchClipId: true,
       broadcasterId: true,
+      url: true,
       status: true,
       user: {
         select: {
@@ -102,7 +105,8 @@ export async function GET(
       return attemptPublicFallback({
         accessToken,
         clipRecordId: clip.id,
-        twitchClipId: clip.twitchClipId
+        twitchClipId: clip.twitchClipId,
+        twitchUrl: clip.url
       });
     }
 
@@ -113,11 +117,13 @@ export async function GET(
 async function attemptPublicFallback({
   accessToken,
   clipRecordId,
-  twitchClipId
+  twitchClipId,
+  twitchUrl
 }: {
   accessToken: string;
   clipRecordId: string;
   twitchClipId: string;
+  twitchUrl: string | null;
 }) {
   console.info("official_download_forbidden_fallback_attempt", {
     clipId: clipRecordId,
@@ -145,10 +151,7 @@ async function attemptPublicFallback({
         reason: "missing_thumbnail_or_unrecognized_format"
       });
 
-      return NextResponse.json(
-        { error: DOWNLOAD_STILL_PROCESSING },
-        { status: 404 }
-      );
+      return attemptCliprFallback({ clipRecordId, twitchClipId, twitchUrl });
     }
 
     const fallbackUrl = await findFirstAvailableUrl(fallbackUrls);
@@ -161,10 +164,7 @@ async function attemptPublicFallback({
         fallbackUrls
       });
 
-      return NextResponse.json(
-        { error: DOWNLOAD_STILL_PROCESSING },
-        { status: 404 }
-      );
+      return attemptCliprFallback({ clipRecordId, twitchClipId, twitchUrl });
     }
 
     console.info("fallback_download_success", {
@@ -181,10 +181,65 @@ async function attemptPublicFallback({
       reason: error instanceof Error ? error.message : String(error)
     });
 
-    return NextResponse.json(
-      { error: DOWNLOAD_STILL_PROCESSING },
-      { status: 404 }
-    );
+    return attemptCliprFallback({ clipRecordId, twitchClipId, twitchUrl });
+  }
+}
+
+async function attemptCliprFallback({
+  clipRecordId,
+  twitchClipId,
+  twitchUrl
+}: {
+  clipRecordId: string;
+  twitchClipId: string;
+  twitchUrl: string | null;
+}) {
+  console.info("clipr_download_attempt", {
+    clipId: clipRecordId,
+    twitchClipId
+  });
+
+  try {
+    const cliprUrl = await getCliprDownloadUrl(twitchClipId);
+
+    if (!cliprUrl) {
+      console.warn("clipr_download_failed", {
+        clipId: clipRecordId,
+        twitchClipId,
+        reason: "missing_download_url"
+      });
+
+      return openOnTwitch(twitchClipId, twitchUrl);
+    }
+
+    const availableUrl = await findFirstAvailableUrl([cliprUrl]);
+
+    if (!availableUrl) {
+      console.warn("clipr_download_failed", {
+        clipId: clipRecordId,
+        twitchClipId,
+        reason: "download_url_not_available"
+      });
+
+      return openOnTwitch(twitchClipId, twitchUrl);
+    }
+
+    console.info("clipr_download_success", {
+      clipId: clipRecordId,
+      twitchClipId
+    });
+
+    return NextResponse.redirect(availableUrl, 302);
+  } catch (error) {
+    console.warn("clipr_download_failed", {
+      clipId: clipRecordId,
+      twitchClipId,
+      reason: error instanceof Error ? error.message : String(error),
+      status: error instanceof CliprDownloadError ? error.status : undefined,
+      code: error instanceof CliprDownloadError ? error.code : undefined
+    });
+
+    return openOnTwitch(twitchClipId, twitchUrl);
   }
 }
 
@@ -213,6 +268,17 @@ async function findFirstAvailableUrl(urls: string[]) {
   }
 
   return null;
+}
+
+function openOnTwitch(twitchClipId: string, twitchUrl: string | null) {
+  const fallbackUrl = twitchUrl ?? `https://clips.twitch.tv/${twitchClipId}`;
+
+  console.info("open_twitch_fallback", {
+    twitchClipId,
+    fallbackUrl
+  });
+
+  return NextResponse.redirect(fallbackUrl, 302);
 }
 
 function mapDownloadError(error: unknown) {

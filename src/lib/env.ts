@@ -10,6 +10,8 @@ const envSchema = z
     AUTH_TWITCH_ID: z.string().optional(),
     AUTH_TWITCH_SECRET: z.string().optional(),
     INTERNAL_API_KEY: z.string().min(32).optional(),
+    RAPIDAPI_KEY: z.string().optional(),
+    RAPIDAPI_HOST: z.string().optional(),
     STRIPE_SECRET_KEY: z.string().optional(),
     STRIPE_WEBHOOK_SECRET: z.string().optional(),
     STRIPE_PRO_PRICE_ID: z.string().optional(),
