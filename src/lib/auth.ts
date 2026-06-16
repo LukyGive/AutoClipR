@@ -2,7 +2,7 @@ import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Twitch from "next-auth/providers/twitch";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { Plan, UserRole } from "@prisma/client";
+import { Plan, UserRole, type Prisma } from "@prisma/client";
 
 import { env, isDemoMode } from "@/lib/env";
 import { prisma } from "@/lib/prisma";
@@ -77,6 +77,45 @@ export const authConfig = {
           preferred_username?: string;
           name?: string;
         };
+        const twitchAccountWhere = {
+          provider_providerAccountId: {
+            provider: "twitch",
+            providerAccountId: account.providerAccountId
+          }
+        };
+        const twitchAccountUpdate: Prisma.AccountUpdateInput = {};
+
+        if (account.access_token) {
+          twitchAccountUpdate.access_token = account.access_token;
+        }
+
+        if (account.refresh_token) {
+          twitchAccountUpdate.refresh_token = account.refresh_token;
+        }
+
+        if (typeof account.expires_at === "number") {
+          twitchAccountUpdate.expires_at = account.expires_at;
+        }
+
+        if (account.token_type) {
+          twitchAccountUpdate.token_type = account.token_type;
+        }
+
+        if (account.scope) {
+          twitchAccountUpdate.scope = account.scope;
+        }
+
+        const existingTwitchAccount = await prisma.account.findUnique({
+          where: twitchAccountWhere,
+          select: { provider: true }
+        });
+
+        if (existingTwitchAccount && Object.keys(twitchAccountUpdate).length > 0) {
+          await prisma.account.update({
+            where: twitchAccountWhere,
+            data: twitchAccountUpdate
+          });
+        }
 
         await prisma.user.update({
           where: { id: user.id },
