@@ -16,7 +16,7 @@ export const billingPlans: BillingPlan[] = [
   {
     id: Plan.FREE,
     name: "Free",
-    description: "Pour valider le workflow AutoClip.",
+    description: "Pour valider le workflow AutoClipR.",
     monthlyClipLimit: 25,
     monthlySpeechEventLimit: 100,
     priceLabel: "0 €"
@@ -28,7 +28,9 @@ export const billingPlans: BillingPlan[] = [
     monthlyClipLimit: 1000,
     monthlySpeechEventLimit: 10000,
     priceLabel: "19 € / mois",
-    stripePriceId: env.STRIPE_PRO_PRICE_ID || (env.DEMO_MODE === "true" ? "price_demo_pro" : undefined)
+    stripePriceId:
+      env.STRIPE_PRO_PRICE_ID ||
+      (env.DEMO_MODE === "true" ? "price_demo_pro" : undefined)
   },
   {
     id: Plan.BUSINESS,
@@ -52,7 +54,9 @@ export function getPlanByStripePriceId(priceId?: string | null) {
     return Plan.FREE;
   }
 
-  return billingPlans.find((plan) => plan.stripePriceId === priceId)?.id ?? Plan.FREE;
+  return (
+    billingPlans.find((plan) => plan.stripePriceId === priceId)?.id ?? Plan.FREE
+  );
 }
 
 export function getCurrentBillingPeriodStart() {

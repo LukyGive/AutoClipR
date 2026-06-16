@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 html {
@@ -12,11 +12,23 @@ html {
 
 body {
   min-height: 100vh;
-  background: #f5f7fb;
-  color: #15151a;
+  background: #09090b;
+  color: #fafafa;
+  text-rendering: geometricPrecision;
 }
 
 button,
 a {
   -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(124, 58, 237, 0.45);
+  color: #fafafa;
+}
+
+input,
+textarea,
+select {
+  color-scheme: dark;
 }

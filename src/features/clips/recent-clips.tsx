@@ -1,5 +1,9 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, VideoOff } from "lucide-react";
 import type { Clip } from "@prisma/client";
+
+import { Card, CardTitle } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
+import { StatusPill } from "@/components/ui/status-pill";
 
 export function RecentClips({
   clips
@@ -20,77 +24,94 @@ export function RecentClips({
   >[];
 }) {
   return (
-    <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-soft">
-      <h2 className="text-lg font-semibold text-ink">Derniers clips</h2>
+    <Card className="p-6">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <CardTitle>Recent clips</CardTitle>
+          <p className="mt-1 text-sm text-muted">
+            Latest Twitch clip requests and results.
+          </p>
+        </div>
+      </div>
+
       <div className="mt-5 grid gap-3">
         {clips.length === 0 ? (
-          <p className="text-sm text-zinc-600">
-            Aucun clip enregistré pour le moment.
-          </p>
+          <EmptyState
+            icon={VideoOff}
+            title="No clips yet"
+            description="Create a manual clip or trigger one from Twitch chat to see it here."
+          />
         ) : (
-          clips.map((clip) => (
-            <article key={clip.id} className="rounded border border-zinc-200 p-4">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <h3 className="text-sm font-semibold text-ink">
-                    {clip.title ?? "Clip sans titre"}
-                  </h3>
-                  <p className="mt-1 text-xs text-zinc-500">
-                    {clip.broadcasterName ?? clip.broadcasterLogin ?? "Chaine inconnue"} -{" "}
-                    {clip.createdAt.toLocaleString("fr-FR")}
-                  </p>
-                </div>
-                <StatusBadge status={clip.status} />
-              </div>
-
-              {clip.errorMessage ? (
-                <p className="mt-3 rounded bg-red-50 px-3 py-2 text-sm text-red-700">
-                  {clip.errorCode}: {clip.errorMessage}
-                </p>
-              ) : null}
-
-              {clip.url ? (
-                <a
-                  href={clip.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-twitch hover:underline"
-                >
-                  Ouvrir le clip
-                  <ExternalLink className="h-4 w-4" aria-hidden="true" />
-                </a>
-              ) : null}
-
-              {clip.editUrl ? (
-                <a
-                  href={clip.editUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="ml-0 mt-3 inline-flex items-center gap-2 text-sm font-semibold text-zinc-700 hover:underline sm:ml-4"
-                >
-                  Ouvrir l'éditeur Twitch
-                  <ExternalLink className="h-4 w-4" aria-hidden="true" />
-                </a>
-              ) : null}
-            </article>
-          ))
+          clips.map((clip) => <ClipCard key={clip.id} clip={clip} />)
         )}
       </div>
-    </div>
+    </Card>
   );
 }
 
-function StatusBadge({ status }: { status: Clip["status"] }) {
-  const className =
-    status === "READY"
-      ? "bg-green-50 text-green-700"
-      : status === "FAILED"
-        ? "bg-red-50 text-red-700"
-        : "bg-zinc-100 text-zinc-700";
-
+function ClipCard({
+  clip
+}: {
+  clip: Pick<
+    Clip,
+    | "id"
+    | "title"
+    | "url"
+    | "editUrl"
+    | "broadcasterLogin"
+    | "broadcasterName"
+    | "status"
+    | "errorCode"
+    | "errorMessage"
+    | "createdAt"
+  >;
+}) {
   return (
-    <span className={`rounded px-2 py-1 text-xs font-medium ${className}`}>
-      {status}
-    </span>
+    <article className="rounded-lg border border-line bg-black/20 p-4 transition duration-200 hover:scale-[1.01] hover:bg-surface-hover">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h3 className="text-sm font-semibold text-ink">
+            {clip.title ?? "Untitled clip"}
+          </h3>
+          <p className="mt-1 text-xs text-muted">
+            {clip.broadcasterName ?? clip.broadcasterLogin ?? "Unknown channel"}{" "}
+            - {clip.createdAt.toLocaleString("fr-FR")}
+          </p>
+        </div>
+        <StatusPill status={clip.status} />
+      </div>
+
+      {clip.errorMessage ? (
+        <p className="mt-3 rounded-lg border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-red-200">
+          {clip.errorCode}: {clip.errorMessage}
+        </p>
+      ) : null}
+
+      <div className="mt-3 flex flex-wrap gap-4">
+        {clip.url ? (
+          <a
+            href={clip.url}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-violet-300 transition hover:text-violet-200"
+          >
+            Open clip
+            <ExternalLink className="h-4 w-4" aria-hidden="true" />
+          </a>
+        ) : null}
+
+        {clip.editUrl ? (
+          <a
+            href={clip.editUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-muted transition hover:text-ink"
+          >
+            Open Twitch editor
+            <ExternalLink className="h-4 w-4" aria-hidden="true" />
+          </a>
+        ) : null}
+      </div>
+    </article>
   );
 }

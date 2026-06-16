@@ -1,3 +1,5 @@
+import { Card, CardTitle } from "@/components/ui/card";
+
 export function AnalyticsPanel({
   readyClips,
   failedClips,
@@ -18,33 +20,35 @@ export function AnalyticsPanel({
   const successRate = total > 0 ? Math.round((readyClips / total) * 100) : 0;
 
   return (
-    <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-soft">
+    <Card className="p-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-ink">Analytics</h2>
-          <p className="mt-1 text-sm text-zinc-600">Période mensuelle courante.</p>
+          <CardTitle>Analytics</CardTitle>
+          <p className="mt-1 text-sm text-muted">Current monthly period.</p>
         </div>
-        <div className="rounded bg-green-50 px-3 py-2 text-sm font-semibold text-green-700">
-          {successRate}% READY
+        <div className="rounded-full border border-success/30 bg-success/10 px-3 py-1 text-sm font-semibold text-green-300">
+          {successRate}% success
         </div>
       </div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        <Metric label="Clips prêts" value={readyClips} />
-        <Metric label="Clips échoués" value={failedClips} />
-        <Metric label="Commande chat" value={byTrigger.chatCommand} />
-        <Metric label="Speech-to-text" value={byTrigger.speechToText} />
-        <Metric label="Manuels" value={byTrigger.manual} />
-        <Metric label="Mots-clés audio" value={matchedSpeechEvents} />
+        <Metric label="Ready clips" value={readyClips} />
+        <Metric label="Failed clips" value={failedClips} />
+        <Metric label="Chat commands" value={byTrigger.chatCommand} />
+        <Metric label="AI speech" value={byTrigger.speechToText} />
+        <Metric label="Manual" value={byTrigger.manual} />
+        <Metric label="Audio keywords" value={matchedSpeechEvents} />
       </div>
-    </div>
+    </Card>
   );
 }
 
 function Metric({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded border border-zinc-200 p-4">
-      <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">{label}</p>
+    <div className="rounded-lg border border-line bg-black/20 p-4">
+      <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+        {label}
+      </p>
       <p className="mt-2 text-2xl font-semibold text-ink">{value}</p>
     </div>
   );

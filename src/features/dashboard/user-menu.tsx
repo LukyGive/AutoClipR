@@ -20,23 +20,27 @@ export function UserMenu({
           alt=""
           width={40}
           height={40}
-          className="h-10 w-10 rounded object-cover"
+          className="h-10 w-10 rounded-lg border border-line object-cover"
         />
       ) : (
-        <div className="flex h-10 w-10 items-center justify-center rounded bg-zinc-200 text-sm font-semibold text-zinc-700">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-surface text-sm font-semibold text-ink">
           {(name ?? email ?? "A").slice(0, 1).toUpperCase()}
         </div>
       )}
 
       <div className="hidden min-w-0 sm:block">
-        <p className="truncate text-sm font-semibold text-ink">{name ?? "Streamer"}</p>
-        <p className="truncate text-xs text-zinc-500">{email ?? "Compte Twitch"}</p>
+        <p className="truncate text-sm font-semibold text-ink">
+          {name ?? "Streamer"}
+        </p>
+        <p className="truncate text-xs text-muted">
+          {email ?? "Compte Twitch"}
+        </p>
       </div>
 
       <form action={signOutFromApp}>
         <button
           type="submit"
-          className="inline-flex h-10 w-10 items-center justify-center rounded border border-zinc-300 bg-white text-zinc-700 transition hover:bg-zinc-50"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-surface text-muted transition duration-200 hover:bg-surface-hover hover:text-ink"
           aria-label="Se déconnecter"
           title="Se déconnecter"
         >

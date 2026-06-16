@@ -9,8 +9,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "AutoClip",
-  description: "Automated Twitch clips for serious streamers."
+  title: "AutoClipR",
+  description:
+    "Create Twitch clips automatically from chat commands and AI triggers."
 };
 
 export default function RootLayout({
