@@ -3,12 +3,18 @@ import { NextResponse } from "next/server";
 
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { getTwitchClipDownloadUrls } from "@/features/twitch/helix";
+import {
+  getPublicClipMp4FallbackUrl,
+  getTwitchClip,
+  getTwitchClipDownloadUrls
+} from "@/features/twitch/helix";
 import { getValidTwitchAccessTokenWithAnyScope } from "@/features/twitch/oauth";
 import { TWITCH_CLIP_DOWNLOAD_SCOPES } from "@/features/twitch/scopes";
 import { TwitchIntegrationError } from "@/features/twitch/errors";
 
 const DOWNLOAD_UNAVAILABLE = "Download unavailable";
+const DOWNLOAD_STILL_PROCESSING =
+  "Download unavailable. Twitch may still be processing this clip or the video file is not public yet.";
 const RECONNECT_TWITCH = "Reconnect Twitch to enable downloads";
 
 export async function GET(
@@ -59,11 +65,18 @@ export async function GET(
     );
   }
 
+  let accessToken: string;
+
   try {
-    const accessToken = await getValidTwitchAccessTokenWithAnyScope(
+    accessToken = await getValidTwitchAccessTokenWithAnyScope(
       session.user.id,
       TWITCH_CLIP_DOWNLOAD_SCOPES
     );
+  } catch (error) {
+    return mapDownloadError(error);
+  }
+
+  try {
     const downloadUrls = await getTwitchClipDownloadUrls({
       accessToken,
       broadcasterId: clip.broadcasterId,
@@ -78,9 +91,76 @@ export async function GET(
       );
     }
 
+    console.info("official_download_success", {
+      clipId: clip.id,
+      twitchClipId: clip.twitchClipId
+    });
+
     return NextResponse.redirect(downloadUrls.landscapeDownloadUrl, 302);
   } catch (error) {
+    if (isOfficialDownloadForbidden(error)) {
+      return attemptPublicFallback({
+        accessToken,
+        clipRecordId: clip.id,
+        twitchClipId: clip.twitchClipId
+      });
+    }
+
     return mapDownloadError(error);
+  }
+}
+
+async function attemptPublicFallback({
+  accessToken,
+  clipRecordId,
+  twitchClipId
+}: {
+  accessToken: string;
+  clipRecordId: string;
+  twitchClipId: string;
+}) {
+  console.info("official_download_forbidden_fallback_attempt", {
+    clipId: clipRecordId,
+    twitchClipId
+  });
+
+  try {
+    const twitchClip = await getTwitchClip({
+      accessToken,
+      clipId: twitchClipId
+    });
+    const fallbackUrl = getPublicClipMp4FallbackUrl(twitchClip?.thumbnailUrl);
+
+    if (!fallbackUrl) {
+      console.warn("fallback_download_failed", {
+        clipId: clipRecordId,
+        twitchClipId,
+        reason: "missing_thumbnail_or_unrecognized_format"
+      });
+
+      return NextResponse.json(
+        { error: DOWNLOAD_STILL_PROCESSING },
+        { status: 404 }
+      );
+    }
+
+    console.info("fallback_download_success", {
+      clipId: clipRecordId,
+      twitchClipId
+    });
+
+    return NextResponse.redirect(fallbackUrl, 302);
+  } catch (error) {
+    console.warn("fallback_download_failed", {
+      clipId: clipRecordId,
+      twitchClipId,
+      reason: error instanceof Error ? error.message : String(error)
+    });
+
+    return NextResponse.json(
+      { error: DOWNLOAD_STILL_PROCESSING },
+      { status: 404 }
+    );
   }
 }
 
@@ -126,5 +206,12 @@ function mapDownloadError(error: unknown) {
   return NextResponse.json(
     { error: DOWNLOAD_UNAVAILABLE },
     { status: error.status ?? 500 }
+  );
+}
+
+function isOfficialDownloadForbidden(error: unknown) {
+  return (
+    error instanceof TwitchIntegrationError &&
+    error.code === "TWITCH_CLIP_DOWNLOAD_FORBIDDEN"
   );
 }

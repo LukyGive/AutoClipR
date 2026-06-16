@@ -244,6 +244,36 @@ export async function getTwitchClipDownloadUrls({
   };
 }
 
+export function getPublicClipMp4FallbackUrl(thumbnailUrl: string | null | undefined) {
+  if (!thumbnailUrl) {
+    return null;
+  }
+
+  let url: URL;
+
+  try {
+    url = new URL(thumbnailUrl);
+  } catch {
+    return null;
+  }
+
+  if (!url.hostname.endsWith(".twitch.tv")) {
+    return null;
+  }
+
+  const fallbackPath = url.pathname.replace(/-preview-\d+x\d+\.jpg$/i, ".mp4");
+
+  if (fallbackPath === url.pathname) {
+    return null;
+  }
+
+  url.pathname = fallbackPath;
+  url.search = "";
+  url.hash = "";
+
+  return url.toString();
+}
+
 function getClipDownloadErrorCode(status: number) {
   if (status === 401) {
     return "TWITCH_CLIP_DOWNLOAD_UNAUTHORIZED";
