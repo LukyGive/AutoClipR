@@ -174,7 +174,8 @@ export async function getTwitchClip({
     status: response.status,
     requestId: clipId,
     requestUrl: url.toString(),
-    body: payload,
+    dataCount: payload.data?.length ?? 0,
+    message: payload.message ?? null,
     clip: clip
       ? {
           id: clip.id,
@@ -258,8 +259,12 @@ export async function getTwitchClipDownloadUrls({
 }
 
 export function getPublicClipMp4FallbackUrl(thumbnailUrl: string | null | undefined) {
+  return getPublicClipMp4FallbackUrls(thumbnailUrl)[0] ?? null;
+}
+
+export function getPublicClipMp4FallbackUrls(thumbnailUrl: string | null | undefined) {
   if (!thumbnailUrl) {
-    return null;
+    return [];
   }
 
   let url: URL;
@@ -267,24 +272,57 @@ export function getPublicClipMp4FallbackUrl(thumbnailUrl: string | null | undefi
   try {
     url = new URL(thumbnailUrl);
   } catch {
-    return null;
+    return [];
   }
 
   if (!url.hostname.endsWith(".twitch.tv")) {
+    return [];
+  }
+
+  const candidates = [
+    getLegacyPreviewFallbackUrl(url),
+    ...getVapDvrFallbackUrls(url)
+  ].filter((candidate): candidate is string => Boolean(candidate));
+
+  return [...new Set(candidates)];
+}
+
+function getLegacyPreviewFallbackUrl(thumbnailUrl: URL) {
+  const fallbackPath = thumbnailUrl.pathname.replace(
+    /-preview-\d+x\d+\.jpg$/i,
+    ".mp4"
+  );
+
+  if (fallbackPath === thumbnailUrl.pathname) {
     return null;
   }
 
-  const fallbackPath = url.pathname.replace(/-preview-\d+x\d+\.jpg$/i, ".mp4");
+  const fallbackUrl = new URL(thumbnailUrl);
+  fallbackUrl.pathname = fallbackPath;
+  fallbackUrl.search = "";
+  fallbackUrl.hash = "";
 
-  if (fallbackPath === url.pathname) {
-    return null;
+  return fallbackUrl.toString();
+}
+
+function getVapDvrFallbackUrls(thumbnailUrl: URL) {
+  const assetPath = thumbnailUrl.pathname.replace(
+    /\/landscape\/thumb\/thumb-\d+-\d+x\d+\.jpg$/i,
+    ""
+  );
+
+  if (assetPath === thumbnailUrl.pathname) {
+    return [];
   }
 
-  url.pathname = fallbackPath;
-  url.search = "";
-  url.hash = "";
+  return ["720p", "480p", "360p"].map((quality) => {
+    const fallbackUrl = new URL(thumbnailUrl);
+    fallbackUrl.pathname = `${assetPath}/index-dvr-${quality}.mp4`;
+    fallbackUrl.search = "";
+    fallbackUrl.hash = "";
 
-  return url.toString();
+    return fallbackUrl.toString();
+  });
 }
 
 function getClipDownloadErrorCode(status: number) {

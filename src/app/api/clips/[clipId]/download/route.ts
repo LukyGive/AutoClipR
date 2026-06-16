@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import {
-  getPublicClipMp4FallbackUrl,
+  getPublicClipMp4FallbackUrls,
   getTwitchClip,
   getTwitchClipDownloadUrls
 } from "@/features/twitch/helix";
@@ -129,16 +129,16 @@ async function attemptPublicFallback({
       accessToken,
       clipId: twitchClipId
     });
-    const fallbackUrl = getPublicClipMp4FallbackUrl(twitchClip?.thumbnailUrl);
+    const fallbackUrls = getPublicClipMp4FallbackUrls(twitchClip?.thumbnailUrl);
 
-    console.info("fallback_download_url_built", {
+    console.info("fallback_download_candidates_built", {
       clipId: clipRecordId,
       twitchClipId,
       thumbnailUrl: twitchClip?.thumbnailUrl ?? null,
-      fallbackUrl
+      fallbackUrls
     });
 
-    if (!fallbackUrl) {
+    if (fallbackUrls.length === 0) {
       console.warn("fallback_download_failed", {
         clipId: clipRecordId,
         twitchClipId,
@@ -151,9 +151,26 @@ async function attemptPublicFallback({
       );
     }
 
+    const fallbackUrl = await findFirstAvailableUrl(fallbackUrls);
+
+    if (!fallbackUrl) {
+      console.warn("fallback_download_failed", {
+        clipId: clipRecordId,
+        twitchClipId,
+        reason: "fallback_candidates_not_public",
+        fallbackUrls
+      });
+
+      return NextResponse.json(
+        { error: DOWNLOAD_STILL_PROCESSING },
+        { status: 404 }
+      );
+    }
+
     console.info("fallback_download_success", {
       clipId: clipRecordId,
-      twitchClipId
+      twitchClipId,
+      fallbackUrl
     });
 
     return NextResponse.redirect(fallbackUrl, 302);
@@ -169,6 +186,33 @@ async function attemptPublicFallback({
       { status: 404 }
     );
   }
+}
+
+async function findFirstAvailableUrl(urls: string[]) {
+  for (const url of urls) {
+    try {
+      const response = await fetch(url, {
+        method: "HEAD",
+        redirect: "follow"
+      });
+
+      console.info("fallback_download_head_result", {
+        url,
+        status: response.status
+      });
+
+      if (response.status === 200) {
+        return url;
+      }
+    } catch (error) {
+      console.warn("fallback_download_head_failed", {
+        url,
+        reason: error instanceof Error ? error.message : String(error)
+      });
+    }
+  }
+
+  return null;
 }
 
 function mapDownloadError(error: unknown) {
