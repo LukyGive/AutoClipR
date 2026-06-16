@@ -6,6 +6,8 @@ import { getDashboardAnalytics } from "@/features/analytics/queries";
 import { getUsageSummary } from "@/features/usage/usage-service";
 import { ensureUserReady } from "@/features/users/ensure-user-ready";
 import { getUserDashboard } from "@/features/users/queries";
+import { getTwitchAccountScopes } from "@/features/twitch/oauth";
+import { hasAnyScope, TWITCH_CLIP_DOWNLOAD_SCOPES } from "@/features/twitch/scopes";
 
 export async function getDashboardPageData() {
   const session = await auth();
@@ -16,9 +18,10 @@ export async function getDashboardPageData() {
 
   await ensureUserReady(session.user.id);
 
-  const [user, analytics] = await Promise.all([
+  const [user, analytics, twitchScopes] = await Promise.all([
     getUserDashboard(session.user.id),
-    getDashboardAnalytics(session.user.id)
+    getDashboardAnalytics(session.user.id),
+    getTwitchAccountScopes(session.user.id)
   ]);
 
   if (!user) {
@@ -37,6 +40,7 @@ export async function getDashboardPageData() {
     user,
     analytics,
     usage,
-    baseUrl
+    baseUrl,
+    hasClipDownloadScope: hasAnyScope(twitchScopes, TWITCH_CLIP_DOWNLOAD_SCOPES)
   };
 }

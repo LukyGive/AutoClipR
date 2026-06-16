@@ -6,6 +6,7 @@ import { Plan, UserRole } from "@prisma/client";
 
 import { env, isDemoMode } from "@/lib/env";
 import { prisma } from "@/lib/prisma";
+import { TWITCH_BASE_SCOPES } from "@/features/twitch/scopes";
 
 const providers = isDemoMode
   ? [
@@ -28,7 +29,7 @@ const providers = isDemoMode
         clientSecret: env.AUTH_TWITCH_SECRET!,
         authorization: {
           params: {
-            scope: "openid user:read:email clips:edit chat:read"
+            scope: TWITCH_BASE_SCOPES.join(" ")
           }
         }
       })

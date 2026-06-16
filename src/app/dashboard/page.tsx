@@ -20,7 +20,8 @@ import { RuleSettingsForm } from "@/features/rules/rule-settings-form";
 import { TargetSettings } from "@/features/targets/target-settings";
 
 export default async function DashboardPage() {
-  const { user, analytics, usage, baseUrl } = await getDashboardPageData();
+  const { user, analytics, usage, baseUrl, hasClipDownloadScope } =
+    await getDashboardPageData();
   const connectedLabel = user.twitchLogin
     ? `@${user.twitchLogin}`
     : "Twitch pending";
@@ -87,7 +88,10 @@ export default async function DashboardPage() {
       </section>
 
       <section className="mt-8 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <RecentClips clips={user.clips} />
+        <RecentClips
+          clips={user.clips}
+          hasDownloadScope={hasClipDownloadScope}
+        />
         <ActivityFeed user={user} analytics={analytics} />
       </section>
 

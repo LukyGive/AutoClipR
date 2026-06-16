@@ -8,7 +8,7 @@ import { RecentClips } from "@/features/clips/recent-clips";
 import { getDashboardPageData } from "@/features/dashboard/dashboard-page-data";
 
 export default async function ClipsPage() {
-  const { user } = await getDashboardPageData();
+  const { user, hasClipDownloadScope } = await getDashboardPageData();
 
   return (
     <AppShell user={user}>
@@ -25,7 +25,10 @@ export default async function ClipsPage() {
       />
 
       <section className="mt-8 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <RecentClips clips={user.clips} />
+        <RecentClips
+          clips={user.clips}
+          hasDownloadScope={hasClipDownloadScope}
+        />
         <CreateClipForm disabled={!user.twitchUserId} />
       </section>
 

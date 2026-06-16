@@ -31,6 +31,15 @@ type GetClipsResponse = {
   message?: string;
 };
 
+type GetClipDownloadsResponse = {
+  data?: Array<{
+    clip_id: string;
+    landscape_download_url: string | null;
+    portrait_download_url: string | null;
+  }>;
+  message?: string;
+};
+
 type GetUsersResponse = {
   data?: Array<{
     id: string;
@@ -183,4 +192,94 @@ export async function getTwitchClip({
     createdAt: clip.created_at,
     thumbnailUrl: clip.thumbnail_url
   };
+}
+
+export async function getTwitchClipDownloadUrls({
+  accessToken,
+  broadcasterId,
+  editorId,
+  clipId
+}: {
+  accessToken: string;
+  broadcasterId: string;
+  editorId: string;
+  clipId: string;
+}) {
+  const url = new URL("https://api.twitch.tv/helix/clips/downloads");
+  url.searchParams.set("broadcaster_id", broadcasterId);
+  url.searchParams.set("editor_id", editorId);
+  url.searchParams.append("clip_id", clipId);
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Client-Id": env.AUTH_TWITCH_ID!
+    }
+  });
+
+  const payload = (await response.json().catch(() => ({}))) as GetClipDownloadsResponse;
+
+  if (!response.ok) {
+    throw new TwitchIntegrationError(
+      payload.message ?? getClipDownloadErrorMessage(response.status),
+      getClipDownloadErrorCode(response.status),
+      response.status
+    );
+  }
+
+  const download = payload.data?.find((item) => item.clip_id === clipId);
+
+  if (!download) {
+    throw new TwitchIntegrationError(
+      "Twitch n'a pas retourne d'URL de telechargement pour ce clip.",
+      "TWITCH_CLIP_DOWNLOAD_NOT_FOUND",
+      response.status
+    );
+  }
+
+  return {
+    clipId: download.clip_id,
+    landscapeDownloadUrl: download.landscape_download_url,
+    portraitDownloadUrl: download.portrait_download_url
+  };
+}
+
+function getClipDownloadErrorCode(status: number) {
+  if (status === 401) {
+    return "TWITCH_CLIP_DOWNLOAD_UNAUTHORIZED";
+  }
+
+  if (status === 403) {
+    return "TWITCH_CLIP_DOWNLOAD_FORBIDDEN";
+  }
+
+  if (status === 404) {
+    return "TWITCH_CLIP_DOWNLOAD_NOT_FOUND";
+  }
+
+  if (status === 429) {
+    return "TWITCH_CLIP_DOWNLOAD_RATE_LIMITED";
+  }
+
+  return "TWITCH_CLIP_DOWNLOAD_FAILED";
+}
+
+function getClipDownloadErrorMessage(status: number) {
+  if (status === 401) {
+    return "Reconnecte Twitch pour activer le telechargement des clips.";
+  }
+
+  if (status === 403) {
+    return "Ce compte Twitch n'est pas autorise a telecharger ce clip.";
+  }
+
+  if (status === 404) {
+    return "Clip Twitch introuvable.";
+  }
+
+  if (status === 429) {
+    return "Trop de demandes de telechargement Twitch. Reessaie dans quelques instants.";
+  }
+
+  return "Impossible de preparer le telechargement Twitch.";
 }

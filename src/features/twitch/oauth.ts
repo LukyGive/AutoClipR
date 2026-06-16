@@ -3,6 +3,7 @@ import type { Account } from "@prisma/client";
 import { env } from "@/lib/env";
 import { prisma } from "@/lib/prisma";
 import { TwitchIntegrationError } from "@/features/twitch/errors";
+import { hasAnyScope } from "@/features/twitch/scopes";
 
 const TOKEN_REFRESH_SKEW_SECONDS = 60;
 
@@ -18,6 +19,44 @@ export async function getValidTwitchAccessToken(
   userId: string,
   requiredScopes = ["clips:edit"]
 ) {
+  const account = await getTwitchAccount(userId);
+
+  ensureScopes(account, requiredScopes);
+
+  return getUsableAccessToken(account);
+}
+
+export async function getValidTwitchAccessTokenWithAnyScope(
+  userId: string,
+  acceptableScopes: readonly string[]
+) {
+  const account = await getTwitchAccount(userId);
+
+  if (!hasAnyScope(account.scope, acceptableScopes)) {
+    throw new TwitchIntegrationError(
+      `Scopes Twitch manquants: ${acceptableScopes.join(" ou ")}. Reconnecte le compte Twitch.`,
+      "TWITCH_SCOPE_MISSING"
+    );
+  }
+
+  return getUsableAccessToken(account);
+}
+
+export async function getTwitchAccountScopes(userId: string) {
+  const account = await prisma.account.findFirst({
+    where: {
+      userId,
+      provider: "twitch"
+    },
+    select: {
+      scope: true
+    }
+  });
+
+  return account?.scope ?? null;
+}
+
+async function getTwitchAccount(userId: string) {
   const account = await prisma.account.findFirst({
     where: {
       userId,
@@ -32,8 +71,10 @@ export async function getValidTwitchAccessToken(
     );
   }
 
-  ensureScopes(account, requiredScopes);
+  return account;
+}
 
+async function getUsableAccessToken(account: Account) {
   if (!account.access_token) {
     throw new TwitchIntegrationError(
       "Le token Twitch est manquant. Reconnecte le compte Twitch.",
