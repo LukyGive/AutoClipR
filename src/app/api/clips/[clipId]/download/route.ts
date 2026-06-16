@@ -131,6 +131,13 @@ async function attemptPublicFallback({
     });
     const fallbackUrl = getPublicClipMp4FallbackUrl(twitchClip?.thumbnailUrl);
 
+    console.info("fallback_download_url_built", {
+      clipId: clipRecordId,
+      twitchClipId,
+      thumbnailUrl: twitchClip?.thumbnailUrl ?? null,
+      fallbackUrl
+    });
+
     if (!fallbackUrl) {
       console.warn("fallback_download_failed", {
         clipId: clipRecordId,

@@ -168,6 +168,21 @@ export async function getTwitchClip({
   });
 
   const payload = (await response.json().catch(() => ({}))) as GetClipsResponse;
+  const clip = payload.data?.[0];
+
+  console.info("twitch_get_clip_response", {
+    status: response.status,
+    requestId: clipId,
+    requestUrl: url.toString(),
+    body: payload,
+    clip: clip
+      ? {
+          id: clip.id,
+          thumbnailUrl: clip.thumbnail_url,
+          url: clip.url
+        }
+      : null
+  });
 
   if (!response.ok) {
     throw new TwitchIntegrationError(
@@ -176,8 +191,6 @@ export async function getTwitchClip({
       response.status
     );
   }
-
-  const clip = payload.data?.[0];
 
   if (!clip) {
     return null;
