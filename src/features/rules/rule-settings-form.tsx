@@ -5,15 +5,13 @@ import type { ClipRule, ClipRulePermission } from "@prisma/client";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { buttonClassName } from "@/components/ui/button";
 import { updateClipRule } from "@/features/rules/actions";
+import { getI18n } from "@/i18n/server";
 
-const permissionOptions: Array<{
-  value: ClipRulePermission;
-  label: string;
-}> = [
-  { value: "MODERATORS", label: "Moderators" },
-  { value: "STREAMER_ONLY", label: "Streamer only" },
-  { value: "SUBSCRIBERS", label: "Subscribers" },
-  { value: "EVERYONE", label: "Everyone" }
+const permissionOptions: ClipRulePermission[] = [
+  "MODERATORS",
+  "STREAMER_ONLY",
+  "SUBSCRIBERS",
+  "EVERYONE"
 ];
 
 const inputClassName =
@@ -22,7 +20,9 @@ const inputClassName =
 const checkboxClassName =
   "h-4 w-4 rounded border-line bg-black text-primary focus:ring-primary focus:ring-offset-mist";
 
-export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
+export async function RuleSettingsForm({ rule }: { rule: ClipRule }) {
+  const { t } = await getI18n();
+
   return (
     <form action={updateClipRule}>
       <Card className="p-6">
@@ -30,9 +30,9 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
 
         <div className="flex items-start justify-between gap-4">
           <div>
-            <CardTitle>Bot Rules</CardTitle>
+            <CardTitle>{t("rules.botRules")}</CardTitle>
             <CardDescription>
-              Clip naming, command behavior and AI detection.
+              {t("rules.description")}
             </CardDescription>
           </div>
           <label className="inline-flex items-center gap-2 rounded-full border border-line bg-black/20 px-3 py-2 text-sm font-medium text-ink">
@@ -42,12 +42,12 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
               defaultChecked={rule.enabled}
               className={checkboxClassName}
             />
-            Active
+            {t("rules.active")}
           </label>
         </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <Field icon={Type} label="Global clip name">
+          <Field icon={Type} label={t("rules.globalClipName")}>
             <input
               name="clipTitleTemplate"
               type="text"
@@ -59,7 +59,7 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
             />
           </Field>
 
-          <Field icon={Hash} label="Automatic numbering">
+          <Field icon={Hash} label={t("rules.automaticNumbering")}>
             <div className="flex gap-2">
               <label className="flex h-11 flex-1 items-center gap-2 rounded-lg border border-line bg-black/30 px-3 text-sm text-ink">
                 <input
@@ -68,7 +68,7 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
                   defaultChecked={rule.appendCounter}
                   className={checkboxClassName}
                 />
-                Add number
+                {t("rules.addNumber")}
               </label>
               <input
                 name="nextClipNumber"
@@ -77,12 +77,12 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
                 max={999999}
                 defaultValue={rule.nextClipNumber}
                 className="w-24 rounded-lg border border-line bg-black/30 px-3 py-2.5 text-sm text-ink outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/25"
-                aria-label="Next number"
+                aria-label={t("rules.nextNumber")}
               />
             </div>
           </Field>
 
-          <Field icon={Timer} label="Clip duration">
+          <Field icon={Timer} label={t("rules.clipDuration")}>
             <div className="flex items-center gap-2">
               <input
                 name="clipDurationSeconds"
@@ -97,7 +97,7 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
             </div>
           </Field>
 
-          <Field icon={Keyboard} label="Chat command">
+          <Field icon={Keyboard} label={t("rules.chatCommand")}>
             <input
               name="command"
               type="text"
@@ -109,7 +109,7 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
             />
           </Field>
 
-          <Field icon={Timer} label="Cooldown">
+          <Field icon={Timer} label={t("rules.cooldown")}>
             <div className="flex items-center gap-2">
               <input
                 name="cooldownSeconds"
@@ -124,21 +124,21 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
             </div>
           </Field>
 
-          <Field icon={Shield} label="Who can use this command?">
+          <Field icon={Shield} label={t("rules.permission")}>
             <select
               name="permission"
               defaultValue={rule.permission}
               className={inputClassName}
             >
               {permissionOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+                <option key={option} value={option}>
+                  {t(`permissions.${option}`)}
                 </option>
               ))}
             </select>
           </Field>
 
-          <Field icon={Bell} label="Notifications">
+          <Field icon={Bell} label={t("rules.notifications")}>
             <label className="flex h-11 items-center gap-2 rounded-lg border border-line bg-black/30 px-3 text-sm text-ink">
               <input
                 name="notifyOnCreate"
@@ -146,7 +146,7 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
                 defaultChecked={rule.notifyOnCreate}
                 className={checkboxClassName}
               />
-              Notify when a clip is created
+              {t("rules.notifyOnCreate")}
             </label>
           </Field>
         </div>
@@ -155,9 +155,9 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
           htmlFor="speechInstruction"
           className="mt-5 block text-sm font-medium text-ink"
         >
-          AI detection instruction
+          {t("rules.aiDetectionInstruction")}
           <span className="ml-2 rounded-full border border-primary/30 bg-primary/10 px-2 py-0.5 text-xs font-semibold text-violet-200">
-            Coming Soon
+            {t("common.comingSoon")}
           </span>
         </label>
         <textarea
@@ -169,15 +169,14 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
           className={`${inputClassName} mt-2`}
         />
         <p className="mt-2 text-sm leading-6 text-muted">
-          AutoClipR saves this instruction now. Voice detection is not active
-          yet.
+          {t("rules.instructionHint")}
         </p>
 
         <label
           htmlFor="keywords"
           className="mt-5 block text-sm font-medium text-ink"
         >
-          Keywords
+          {t("rules.keywords")}
         </label>
         <textarea
           id="keywords"
@@ -188,15 +187,14 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
           className={`${inputClassName} mt-2`}
         />
         <p className="mt-2 text-sm leading-6 text-muted">
-          These keywords are available for chat rules today and voice detection
-          later.
+          {t("rules.keywordsHint")}
         </p>
 
         <button
           type="submit"
           className={buttonClassName({ className: "mt-5 w-full" })}
         >
-          Save Bot Rule
+          {t("rules.save")}
         </button>
       </Card>
     </form>

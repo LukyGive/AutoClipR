@@ -4,18 +4,23 @@ import { ArrowRight, Clapperboard, ShieldCheck } from "lucide-react";
 import { isDemoMode } from "@/lib/env";
 import { auth } from "@/lib/auth";
 import { signInWithDemo, signInWithTwitch } from "@/features/auth/actions";
+import { LanguageSwitcher } from "@/components/app/language-switcher";
 import { Badge } from "@/components/ui/badge";
 import { buttonClassName } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { getI18n } from "@/i18n/server";
+import { TranslationProvider } from "@/i18n/useTranslation";
 
 export default async function LoginPage() {
   const session = await auth();
+  const { locale, t } = await getI18n();
 
   if (session) {
     redirect("/dashboard");
   }
 
   return (
+    <TranslationProvider initialLocale={locale}>
     <main className="flex min-h-screen items-center justify-center bg-app-bg px-4 py-10 text-ink sm:px-6">
       <div className="grid w-full max-w-5xl gap-6 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="flex flex-col justify-between rounded-lg border border-line bg-black/30 p-6">
@@ -29,19 +34,21 @@ export default async function LoginPage() {
                 <p className="text-xs text-muted">autoclipr.app</p>
               </div>
             </div>
+            <div className="mt-8">
+              <LanguageSwitcher />
+            </div>
             <h1 className="mt-10 text-4xl font-semibold leading-tight tracking-normal text-ink md:text-5xl">
-              Create clips from the moments your chat already sees.
+              {t("login.heroTitle")}
             </h1>
             <p className="mt-5 text-sm leading-7 text-muted">
-              Connect Twitch, configure your streamers and let the chat worker
-              turn commands into official Twitch clips.
+              {t("login.heroBody")}
             </p>
           </div>
           <div className="mt-10 grid gap-3 text-sm text-zinc-300">
             {[
-              "Official OAuth",
-              "clips:edit scope",
-              "Chat command automation"
+              t("login.oauth"),
+              t("login.scope"),
+              t("login.automation")
             ].map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <ShieldCheck
@@ -55,13 +62,12 @@ export default async function LoginPage() {
         </div>
 
         <Card className="p-6 sm:p-8">
-          <Badge>{isDemoMode ? "Demo mode" : "Secure sign in"}</Badge>
+          <Badge>{isDemoMode ? t("login.demoMode") : t("login.secureSignIn")}</Badge>
           <h2 className="mt-5 text-2xl font-semibold tracking-normal text-ink">
-            Continue with Twitch
+            {t("login.continueWithTwitch")}
           </h2>
           <p className="mt-3 text-sm leading-7 text-muted">
-            AutoClipR uses Twitch OAuth to verify your identity, create official
-            clips and authorize the chat worker.
+            {t("login.twitchOauth")}
           </p>
 
           <form
@@ -72,20 +78,22 @@ export default async function LoginPage() {
               type="submit"
               className={buttonClassName({ size: "lg", className: "w-full" })}
             >
-              {isDemoMode ? "Enter demo" : "Connect with Twitch"}
+              {isDemoMode ? t("login.enterDemo") : t("login.connectWithTwitch")}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>
           </form>
 
           <div className="mt-6 rounded-lg border border-line bg-black/20 p-4">
-            <p className="text-sm font-semibold text-ink">What happens next?</p>
+            <p className="text-sm font-semibold text-ink">
+              {t("login.whatHappensNext")}
+            </p>
             <p className="mt-2 text-sm leading-6 text-muted">
-              You will land in your dashboard where you can add streamers,
-              configure Bot Rules and create your first real Twitch clip.
+              {t("login.whatHappensNextBody")}
             </p>
           </div>
         </Card>
       </div>
     </main>
+    </TranslationProvider>
   );
 }

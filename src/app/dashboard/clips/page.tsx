@@ -6,20 +6,22 @@ import { PageHeader } from "@/components/ui/page-header";
 import { CreateClipForm } from "@/features/clips/create-clip-form";
 import { RecentClips } from "@/features/clips/recent-clips";
 import { getDashboardPageData } from "@/features/dashboard/dashboard-page-data";
+import { getI18n } from "@/i18n/server";
 
 export default async function ClipsPage() {
   const { user, hasClipDownloadScope } = await getDashboardPageData();
+  const { t } = await getI18n();
 
   return (
     <AppShell user={user}>
       <PageHeader
-        eyebrow="Clips"
-        title="Clip library"
-        description="Review existing Twitch clips and create a manual clip when something happens outside chat automation."
+        eyebrow={t("nav.clips")}
+        title={t("clips.library")}
+        description={t("clips.createManualDescription")}
         action={
           <a href="#manual-clip" className={buttonClassName()}>
             <Plus className="h-4 w-4" aria-hidden="true" />
-            Create clip
+            {t("common.createClip")}
           </a>
         }
       />
@@ -34,8 +36,7 @@ export default async function ClipsPage() {
 
       <section className="mt-8 rounded-lg border border-line bg-black/20 p-5 text-sm leading-6 text-muted">
         <Video className="mb-3 h-5 w-5 text-primary" aria-hidden="true" />
-        AutoClipR stores Twitch clip status, error messages and edit links so
-        you can understand what happened after every trigger.
+        {t("clips.info")}
       </section>
     </AppShell>
   );

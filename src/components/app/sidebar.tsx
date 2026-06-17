@@ -14,19 +14,21 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/cn";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/clips", label: "Clips", icon: Video },
-  { href: "/dashboard/rules", label: "Bot Rules", icon: Bot },
-  { href: "/dashboard/streamers", label: "Streamers", icon: RadioTower },
-  { href: "/dashboard/ai-triggers", label: "AI Triggers", icon: Brain },
-  { href: "/dashboard/billing", label: "Billing", icon: CreditCard },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings }
+  { href: "/dashboard", labelKey: "nav.dashboard", icon: LayoutDashboard },
+  { href: "/dashboard/clips", labelKey: "nav.clips", icon: Video },
+  { href: "/dashboard/rules", labelKey: "nav.botRules", icon: Bot },
+  { href: "/dashboard/streamers", labelKey: "nav.streamers", icon: RadioTower },
+  { href: "/dashboard/ai-triggers", labelKey: "nav.aiTriggers", icon: Brain },
+  { href: "/dashboard/billing", labelKey: "nav.billing", icon: CreditCard },
+  { href: "/dashboard/settings", labelKey: "nav.settings", icon: Settings }
 ] as const;
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   return (
     <aside className="hidden min-h-screen w-72 shrink-0 border-r border-line bg-black/35 px-4 py-5 backdrop-blur-xl lg:block">
@@ -61,7 +63,7 @@ export function Sidebar() {
               )}
             >
               <Icon className="h-4 w-4" aria-hidden="true" />
-              {item.label}
+              {t(item.labelKey)}
             </Link>
           );
         })}
@@ -69,14 +71,14 @@ export function Sidebar() {
 
       <div className="mt-8 rounded-lg border border-line bg-surface/70 p-4">
         <p className="text-xs font-semibold uppercase tracking-wide text-muted">
-          Bot status
+          {t("appShell.botStatus")}
         </p>
         <div className="mt-3 flex items-center gap-2 text-sm font-semibold text-ink">
-          <span className="h-2 w-2 rounded-full bg-success shadow-[0_0_18px_rgba(34,197,94,0.75)]" />
-          Ready for chat commands
+          <span className="h-2.5 w-2.5 rounded-full bg-success shadow-[0_0_18px_rgba(34,197,94,0.75)] ring-4 ring-success/10" />
+          {t("appShell.readyForChatCommands")}
         </div>
         <p className="mt-2 text-xs leading-5 text-muted">
-          Keep the Railway worker online to listen for Twitch chat triggers.
+          {t("appShell.railwayWorkerHint")}
         </p>
       </div>
     </aside>

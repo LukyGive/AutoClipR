@@ -4,16 +4,18 @@ import { AppShell } from "@/components/app/app-shell";
 import { Card, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
 import { getDashboardPageData } from "@/features/dashboard/dashboard-page-data";
+import { getI18n } from "@/i18n/server";
 
 export default async function SettingsPage() {
   const { user } = await getDashboardPageData();
+  const { locale, t } = await getI18n();
 
   return (
     <AppShell user={user}>
       <PageHeader
-        eyebrow="Settings"
-        title="Account settings"
-        description="Review the Twitch account connected to AutoClipR and your workspace identity."
+        eyebrow={t("nav.settings")}
+        title={t("settings.accountSettings")}
+        description={t("settings.description")}
       />
 
       <section className="mt-8 grid gap-6 xl:grid-cols-[1fr_0.8fr]">
@@ -23,38 +25,43 @@ export default async function SettingsPage() {
               <ShieldCheck className="h-5 w-5" aria-hidden="true" />
             </div>
             <div>
-              <CardTitle>Twitch account</CardTitle>
+              <CardTitle>{t("settings.twitchAccount")}</CardTitle>
               <p className="mt-1 text-sm text-muted">
-                OAuth profile used for clips and chat.
+                {t("settings.twitchAccountHint")}
               </p>
             </div>
           </div>
           <dl className="mt-6 grid gap-4 sm:grid-cols-2">
             <ProfileItem
-              label="Name"
-              value={user.twitchName ?? user.name ?? "Not provided"}
+              label={t("settings.name")}
+              value={user.twitchName ?? user.name ?? t("settings.notProvided")}
             />
             <ProfileItem
-              label="Login"
-              value={user.twitchLogin ?? "Not provided"}
+              label={t("settings.login")}
+              value={user.twitchLogin ?? t("settings.notProvided")}
             />
             <ProfileItem
-              label="Twitch user ID"
-              value={user.twitchUserId ?? "Not provided"}
+              label={t("settings.twitchUserId")}
+              value={user.twitchUserId ?? t("settings.notProvided")}
             />
-            <ProfileItem label="AutoClipR role" value={user.role} />
+            <ProfileItem label={t("settings.autoClipRole")} value={user.role} />
           </dl>
         </Card>
 
         <Card className="p-6">
-          <CardTitle>Workspace</CardTitle>
+          <CardTitle>{t("settings.workspace")}</CardTitle>
           <div className="mt-5 grid gap-4">
-            <ProfileItem label="Plan" value={user.plan} />
+            <ProfileItem label={t("settings.plan")} value={user.plan} />
             <ProfileItem
-              label="Created"
-              value={user.createdAt.toLocaleDateString("fr-FR")}
+              label={t("settings.created")}
+              value={user.createdAt.toLocaleDateString(
+                locale === "fr" ? "fr-FR" : "en-US"
+              )}
             />
-            <ProfileItem label="Email" value={user.email ?? "Twitch account"} />
+            <ProfileItem
+              label={t("settings.email")}
+              value={user.email ?? t("settings.twitchAccountFallback")}
+            />
           </div>
         </Card>
       </section>

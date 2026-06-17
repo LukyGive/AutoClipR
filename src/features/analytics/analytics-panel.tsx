@@ -1,4 +1,7 @@
+"use client";
+
 import { Card, CardTitle } from "@/components/ui/card";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export function AnalyticsPanel({
   readyClips,
@@ -16,6 +19,7 @@ export function AnalyticsPanel({
   };
   matchedSpeechEvents: number;
 }) {
+  const { t } = useTranslation();
   const total = readyClips + failedClips;
   const successRate = total > 0 ? Math.round((readyClips / total) * 100) : 0;
 
@@ -23,21 +27,23 @@ export function AnalyticsPanel({
     <Card className="p-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <CardTitle>Analytics</CardTitle>
-          <p className="mt-1 text-sm text-muted">Current monthly period.</p>
+          <CardTitle>{t("analytics.analytics")}</CardTitle>
+          <p className="mt-1 text-sm text-muted">
+            {t("analytics.currentMonthlyPeriod")}
+          </p>
         </div>
         <div className="rounded-full border border-success/30 bg-success/10 px-3 py-1 text-sm font-semibold text-green-300">
-          {successRate}% success
+          {t("analytics.success", { rate: successRate })}
         </div>
       </div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        <Metric label="Ready clips" value={readyClips} />
-        <Metric label="Failed clips" value={failedClips} />
-        <Metric label="Chat commands" value={byTrigger.chatCommand} />
-        <Metric label="AI voice soon" value={byTrigger.speechToText} />
-        <Metric label="Manual" value={byTrigger.manual} />
-        <Metric label="Audio keywords" value={matchedSpeechEvents} />
+        <Metric label={t("analytics.readyClips")} value={readyClips} />
+        <Metric label={t("analytics.failedClips")} value={failedClips} />
+        <Metric label={t("analytics.chatCommands")} value={byTrigger.chatCommand} />
+        <Metric label={t("analytics.aiVoiceSoon")} value={byTrigger.speechToText} />
+        <Metric label={t("analytics.manual")} value={byTrigger.manual} />
+        <Metric label={t("analytics.audioKeywords")} value={matchedSpeechEvents} />
       </div>
     </Card>
   );

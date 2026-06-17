@@ -11,59 +11,59 @@ import {
 } from "lucide-react";
 
 import { auth } from "@/lib/auth";
+import { LanguageSwitcher } from "@/components/app/language-switcher";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PricingCard } from "@/components/ui/pricing-card";
+import { getI18n } from "@/i18n/server";
+import { TranslationProvider } from "@/i18n/useTranslation";
 
 const features = [
   {
     icon: Command,
-    title: "Chat commands",
-    description:
-      "Let moderators or viewers create clips with a clean command like !clip."
+    titleKey: "landing.featureChatTitle",
+    descriptionKey: "landing.featureChatBody"
   },
   {
     icon: KeyRound,
-    title: "API triggers",
-    description:
-      "Trigger clips from external buttons, tools or overlays with secure URLs."
+    titleKey: "landing.featureApiTitle",
+    descriptionKey: "landing.featureApiBody"
   },
   {
     icon: Download,
-    title: "Clip downloads",
-    description: "Open, edit and download ready clips from your dashboard."
+    titleKey: "landing.featureDownloadsTitle",
+    descriptionKey: "landing.featureDownloadsBody"
   },
   {
     icon: TimerReset,
-    title: "7-day Pro trial",
-    description: "Start with Pro features and validate your workflow before paying."
+    titleKey: "landing.featureTrialTitle",
+    descriptionKey: "landing.featureTrialBody"
   }
 ];
 
 const faqs = [
   {
-    question: "Does AutoClipR create real Twitch clips?",
-    answer:
-      "Yes. In production mode it uses the official Twitch Helix Create Clip API."
+    questionKey: "faq.question1",
+    answerKey: "faq.answer1"
   },
   {
-    question: "Can I clip another streamer?",
-    answer:
-      "Yes, if Twitch allows your connected account to create clips for that channel."
+    questionKey: "faq.question2",
+    answerKey: "faq.answer2"
   },
   {
-    question: "Does the chat worker need to stay online?",
-    answer:
-      "Yes. The Railway worker keeps listening to Twitch chat for commands."
+    questionKey: "faq.question3",
+    answerKey: "faq.answer3"
   }
 ];
 
 export default async function HomePage() {
   const session = await auth();
+  const { locale, t } = await getI18n();
   const primaryHref = session ? "/dashboard" : "/login";
 
   return (
+    <TranslationProvider initialLocale={locale}>
     <main className="min-h-screen bg-app-bg text-ink">
       <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
         <Link href="/" className="flex items-center gap-3">
@@ -75,51 +75,53 @@ export default async function HomePage() {
 
         <div className="hidden items-center gap-6 text-sm font-medium text-muted md:flex">
           <a href="#features" className="transition hover:text-ink">
-            Features
+            {t("nav.features")}
           </a>
           <a href="#pricing" className="transition hover:text-ink">
-            Pricing
+            {t("nav.pricing")}
           </a>
           <a href="#faq" className="transition hover:text-ink">
-            Docs
+            {t("nav.docs")}
           </a>
         </div>
 
-        <Link
-          href={primaryHref}
-          className="inline-flex h-10 items-center justify-center rounded-lg border border-line bg-surface px-4 text-sm font-semibold text-ink transition duration-200 hover:bg-surface-hover"
-        >
-          {session ? "Dashboard" : "Login"}
-        </Link>
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher />
+          <Link
+            href={primaryHref}
+            className="inline-flex h-10 items-center justify-center rounded-lg border border-line bg-surface px-4 text-sm font-semibold text-ink transition duration-200 hover:bg-surface-hover"
+          >
+            {session ? t("common.dashboard") : t("common.login")}
+          </Link>
+        </div>
       </nav>
 
       <section className="mx-auto grid w-full max-w-7xl items-center gap-10 px-4 pb-16 pt-10 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:pb-24 lg:pt-16">
         <div>
           <Badge>
             <Sparkles className="mr-1 h-3.5 w-3.5" aria-hidden="true" />
-            Twitch automation for serious streamers
+            {t("landing.badge")}
           </Badge>
           <h1 className="mt-6 max-w-4xl text-5xl font-semibold leading-tight tracking-normal text-ink md:text-7xl">
-            Create Twitch clips automatically.
+            {t("landing.heroTitle")}
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-muted md:text-lg">
-            AutoClipR turns chat commands and API triggers into Twitch clips
-            instantly. AI voice detection is coming soon.
+            {t("landing.heroSubtitle")}
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href={primaryHref} size="lg">
-              Start free trial
+              {t("landing.ctaPrimary")}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </ButtonLink>
             <ButtonLink href="/login" variant="secondary" size="lg">
-              View demo
+              {t("landing.ctaSecondary")}
             </ButtonLink>
           </div>
           <div className="mt-8 grid gap-3 text-sm text-zinc-300 sm:grid-cols-3">
             {[
-              "Official Twitch API",
-              "Chat worker ready",
-              "Built for scale"
+              t("landing.officialTwitchApi"),
+              t("landing.chatWorkerReady"),
+              t("landing.builtForScale")
             ].map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <Check className="h-4 w-4 text-success" aria-hidden="true" />
@@ -129,28 +131,28 @@ export default async function HomePage() {
           </div>
         </div>
 
-        <DashboardPreview />
+        <DashboardPreview t={t} />
       </section>
 
       <section className="border-y border-line bg-black/20">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-          <Badge>How it works</Badge>
+          <Badge>{t("landing.howItWorks")}</Badge>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {[
               [
                 "01",
-                "Connect Twitch",
-                "Secure OAuth connects your creator account."
+                t("landing.step1Title"),
+                t("landing.step1Body")
               ],
               [
                 "02",
-                "Add your streamers",
-                "Choose the Twitch channels AutoClipR should monitor."
+                t("landing.step2Title"),
+                t("landing.step2Body")
               ],
               [
                 "03",
-                "Create clips automatically",
-                "Chat commands and API triggers create clips and save them."
+                t("landing.step3Title"),
+                t("landing.step3Body")
               ]
             ].map(([step, title, body]) => (
               <Card key={step} className="p-5">
@@ -167,24 +169,24 @@ export default async function HomePage() {
 
       <section id="features" className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
         <div className="max-w-2xl">
-          <Badge>Features</Badge>
+          <Badge>{t("nav.features")}</Badge>
           <h2 className="mt-4 text-3xl font-semibold tracking-normal text-ink md:text-4xl">
-            Built around real streamer workflows.
+            {t("landing.featuresTitle")}
           </h2>
         </div>
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature) => {
             const Icon = feature.icon;
             return (
-              <Card key={feature.title} className="p-5">
+              <Card key={feature.titleKey} className="p-5">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
                   <Icon className="h-5 w-5" aria-hidden="true" />
                 </div>
                 <h3 className="mt-5 text-base font-semibold text-ink">
-                  {feature.title}
+                  {t(feature.titleKey)}
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-muted">
-                  {feature.description}
+                  {t(feature.descriptionKey)}
                 </p>
               </Card>
             );
@@ -195,69 +197,72 @@ export default async function HomePage() {
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
         <div className="grid items-center gap-8 rounded-lg border border-line bg-black/20 p-6 md:grid-cols-[0.8fr_1.2fr] md:p-8">
           <div>
-            <Badge>Dashboard preview</Badge>
+            <Badge>{t("landing.dashboardPreview")}</Badge>
             <h2 className="mt-4 text-3xl font-semibold tracking-normal text-ink">
-              Everything a streamer needs, nothing noisy.
+              {t("landing.dashboardPreviewTitle")}
             </h2>
             <p className="mt-4 text-sm leading-7 text-muted">
-              Monitor clips, streamers, bot status and usage from a quiet
-              command center.
+              {t("landing.dashboardPreviewBody")}
             </p>
           </div>
-          <DashboardPreview compact />
+          <DashboardPreview compact t={t} />
         </div>
       </section>
 
       <section id="pricing" className="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
         <div className="max-w-2xl">
-          <Badge>Pricing</Badge>
+          <Badge>{t("nav.pricing")}</Badge>
           <h2 className="mt-4 text-3xl font-semibold tracking-normal text-ink">
-            Start free. Upgrade when clips become part of your workflow.
+            {t("landing.pricingTitle")}
           </h2>
         </div>
         <div className="mt-10 grid gap-4 lg:grid-cols-3">
           <PricingCard
             name="Free"
             price="0 €"
-            description="For testing the workflow."
+            description={t("pricing.freeDescription")}
             features={[
-              "25 clips per month",
-              "Manual clips",
-              "One streamer target"
+              t("billing.clipsPerMonth", { count: 25 }),
+              t("pricing.manualClips"),
+              t("pricing.oneStreamerTarget")
             ]}
           />
           <PricingCard
             name="Pro"
             price="9.99 €/month"
-            description="For active streamers."
+            description={t("pricing.proDescription")}
             features={[
-              "1,000 clips per month",
-              "Chat commands",
-              "AI trigger preparation"
+              t("billing.clipsPerMonth", { count: "1,000" }),
+              t("landing.featureChatTitle"),
+              `${t("usage.aiVoiceDetection")} - ${t("common.comingSoon")}`
             ]}
             highlighted
-            badge="Popular"
+            badge={t("pricing.popular")}
           />
           <PricingCard
             name="Business"
             price="24.99 €/month"
-            description="For teams and agencies."
+            description={t("pricing.businessDescription")}
             features={[
-              "10,000 clips per month",
-              "Multi-channel support",
-              "Priority capacity"
+              t("billing.clipsPerMonth", { count: "10,000" }),
+              t("pricing.multiChannelSupport"),
+              t("pricing.priorityCapacity")
             ]}
           />
         </div>
       </section>
 
       <section id="faq" className="mx-auto max-w-4xl px-4 pb-20 sm:px-6">
-        <Badge>FAQ</Badge>
+        <Badge>{t("faq.title")}</Badge>
         <div className="mt-6 grid gap-3">
           {faqs.map((faq) => (
-            <Card key={faq.question} className="p-5">
-              <h3 className="text-sm font-semibold text-ink">{faq.question}</h3>
-              <p className="mt-2 text-sm leading-6 text-muted">{faq.answer}</p>
+            <Card key={faq.questionKey} className="p-5">
+              <h3 className="text-sm font-semibold text-ink">
+                {t(faq.questionKey)}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-muted">
+                {t(faq.answerKey)}
+              </p>
             </Card>
           ))}
         </div>
@@ -265,31 +270,40 @@ export default async function HomePage() {
 
       <footer className="border-t border-line px-4 py-8 sm:px-6">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 text-sm text-muted md:flex-row">
-          <p>AutoClipR. Built for Twitch creators.</p>
+          <p>{t("landing.footer")}</p>
           <p>autoclipr.app</p>
         </div>
       </footer>
     </main>
+    </TranslationProvider>
   );
 }
 
-function DashboardPreview({ compact = false }: { compact?: boolean }) {
+function DashboardPreview({
+  compact = false,
+  t
+}: {
+  compact?: boolean;
+  t: Awaited<ReturnType<typeof getI18n>>["t"];
+}) {
   return (
     <div className="rounded-lg border border-line bg-[#0D0D10] p-4 shadow-glow">
       <div className="flex items-center justify-between border-b border-line pb-4">
         <div>
-          <p className="text-xs text-muted">Dashboard</p>
-          <p className="mt-1 text-sm font-semibold text-ink">Welcome back</p>
+          <p className="text-xs text-muted">{t("common.dashboard")}</p>
+          <p className="mt-1 text-sm font-semibold text-ink">
+            {t("landing.dashboardPreviewWelcome")}
+          </p>
         </div>
         <div className="rounded-full border border-success/30 bg-success/10 px-3 py-1 text-xs font-semibold text-green-300">
-          Bot online
+          {t("landing.dashboardPreviewBotOnline")}
         </div>
       </div>
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
         {[
-          ["Total clips", "248"],
-          ["Active streamers", "4"],
-          ["Success rate", "98%"]
+          [t("dashboard.totalClips"), "248"],
+          [t("dashboard.activeStreamers"), "4"],
+          [t("analytics.successRate"), "98%"]
         ].map(([label, value]) => (
           <div
             key={label}
@@ -303,7 +317,7 @@ function DashboardPreview({ compact = false }: { compact?: boolean }) {
       <div className="mt-3 grid gap-3">
         {[
           ["!clip detected", "@jezu_lol", "READY"],
-          ["Manual clip", "@zerator", "PROCESSING"],
+          [t("landing.dashboardPreviewManualClip"), "@zerator", "PROCESSING"],
           ["AI keyword GOAL", "@streamer", "READY"]
         ]
           .slice(0, compact ? 2 : 3)

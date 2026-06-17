@@ -38,22 +38,30 @@ export function PricingCard({
       </div>
       <p className="mt-6 text-3xl font-semibold text-ink">{price}</p>
       <ul className="mt-5 grid gap-3 text-sm text-zinc-300">
-        {features.map((feature) => (
-          <li key={feature} className="flex gap-3">
-            <Check
-              className="mt-0.5 h-4 w-4 shrink-0 text-success"
-              aria-hidden="true"
-            />
-            {feature.includes("Coming Soon") ? (
-              <span className="flex flex-wrap items-center gap-2">
-                AI Voice Detection
-                <Badge>Coming Soon</Badge>
-              </span>
-            ) : (
-              <span>{feature}</span>
-            )}
-          </li>
-        ))}
+        {features.map((feature) => {
+          const comingSoonParts =
+            feature.includes(" - ") &&
+            (feature.includes("Coming Soon") || feature.includes("Bientôt"))
+              ? feature.split(" - ")
+              : null;
+
+          return (
+            <li key={feature} className="flex gap-3">
+              <Check
+                className="mt-0.5 h-4 w-4 shrink-0 text-success"
+                aria-hidden="true"
+              />
+              {comingSoonParts ? (
+                <span className="flex flex-wrap items-center gap-2">
+                  {comingSoonParts[0]}
+                  <Badge>{comingSoonParts[1]}</Badge>
+                </span>
+              ) : (
+                <span>{feature}</span>
+              )}
+            </li>
+          );
+        })}
       </ul>
       {action ? <div className="mt-auto pt-6">{action}</div> : null}
     </Card>

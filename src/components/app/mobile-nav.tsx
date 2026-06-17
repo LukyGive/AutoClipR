@@ -13,19 +13,21 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/cn";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/clips", label: "Clips", icon: Video },
-  { href: "/dashboard/rules", label: "Rules", icon: Bot },
-  { href: "/dashboard/streamers", label: "Streamers", icon: RadioTower },
-  { href: "/dashboard/ai-triggers", label: "AI", icon: Brain },
-  { href: "/dashboard/billing", label: "Billing", icon: CreditCard },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings }
+  { href: "/dashboard", labelKey: "nav.dashboard", icon: LayoutDashboard },
+  { href: "/dashboard/clips", labelKey: "nav.clips", icon: Video },
+  { href: "/dashboard/rules", labelKey: "nav.rules", icon: Bot },
+  { href: "/dashboard/streamers", labelKey: "nav.streamers", icon: RadioTower },
+  { href: "/dashboard/ai-triggers", labelKey: "nav.aiTriggers", icon: Brain },
+  { href: "/dashboard/billing", labelKey: "nav.billing", icon: CreditCard },
+  { href: "/dashboard/settings", labelKey: "nav.settings", icon: Settings }
 ] as const;
 
 export function MobileNav() {
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   return (
     <nav className="border-b border-line bg-mist/75 px-4 py-3 backdrop-blur-xl lg:hidden">
@@ -49,7 +51,7 @@ export function MobileNav() {
               )}
             >
               <Icon className="h-3.5 w-3.5" aria-hidden="true" />
-              {item.label}
+              {t(item.labelKey)}
             </Link>
           );
         })}

@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { Clapperboard, Plus } from "lucide-react";
 
+import { LanguageSwitcher } from "@/components/app/language-switcher";
 import { buttonClassName } from "@/components/ui/button";
 import { UserMenu } from "@/features/dashboard/user-menu";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export function Topbar({
   name,
@@ -13,6 +17,8 @@ export function Topbar({
   email?: string | null;
   image?: string | null;
 }) {
+  const { t } = useTranslation();
+
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-mist/75 backdrop-blur-xl">
       <div className="flex min-h-16 items-center justify-between gap-4 px-4 sm:px-6">
@@ -24,13 +30,16 @@ export function Topbar({
         </Link>
 
         <div className="hidden lg:block">
-          <p className="text-sm font-medium text-muted">Welcome back</p>
+          <p className="text-sm font-medium text-muted">
+            {t("appShell.welcomeBack")}
+          </p>
           <p className="text-xs text-zinc-500">
-            Create, monitor and automate Twitch clips.
+            {t("appShell.createMonitorAutomate")}
           </p>
         </div>
 
         <div className="ml-auto flex items-center gap-3">
+          <LanguageSwitcher />
           <a
             href="/dashboard#manual-clip"
             className={buttonClassName({
@@ -39,7 +48,7 @@ export function Topbar({
             })}
           >
             <Plus className="h-4 w-4" aria-hidden="true" />
-            Create clip
+            {t("common.createClip")}
           </a>
           <UserMenu name={name} email={email} image={image} />
         </div>

@@ -1,7 +1,9 @@
 import type { SubscriptionStatus } from "@prisma/client";
 import { Sparkles } from "lucide-react";
 
-export function TrialBanner({
+import { getI18n } from "@/i18n/server";
+
+export async function TrialBanner({
   status,
   currentPeriodEnd
 }: {
@@ -12,6 +14,7 @@ export function TrialBanner({
     return null;
   }
 
+  const { locale, t } = await getI18n();
   const now = new Date();
   const daysRemaining = Math.max(
     0,
@@ -27,16 +30,22 @@ export function TrialBanner({
           </div>
           <div>
             <p className="text-sm font-semibold text-ink">
-              Pro trial ends in {daysRemaining}{" "}
-              {daysRemaining === 1 ? "day" : "days"}
+              {t("trial.endsIn", {
+                days: daysRemaining,
+                unit: t(daysRemaining === 1 ? "trial.day" : "trial.days")
+              })}
             </p>
             <p className="mt-1 text-sm text-muted">
-              Trial ends on {currentPeriodEnd.toLocaleDateString("fr-FR")}.
+              {t("trial.endsOn", {
+                date: currentPeriodEnd.toLocaleDateString(
+                  locale === "fr" ? "fr-FR" : "en-US"
+                )
+              })}
             </p>
           </div>
         </div>
         <span className="w-fit rounded-full border border-primary/40 bg-black/20 px-3 py-1 text-xs font-semibold text-violet-200">
-          7-day trial
+          {t("trial.badge")}
         </span>
       </div>
     </section>

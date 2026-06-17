@@ -6,8 +6,9 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { StatusPill } from "@/components/ui/status-pill";
 import { DownloadClipButton } from "@/features/clips/download-clip-button";
+import { getI18n } from "@/i18n/server";
 
-export function RecentClips({
+export async function RecentClips({
   clips,
   hasDownloadScope
 }: {
@@ -28,13 +29,15 @@ export function RecentClips({
   >[];
   hasDownloadScope: boolean;
 }) {
+  const { locale, t } = await getI18n();
+
   return (
     <Card className="p-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <CardTitle>Recent clips</CardTitle>
+          <CardTitle>{t("clips.recent")}</CardTitle>
           <p className="mt-1 text-sm text-muted">
-            Latest Twitch clip requests and results.
+            {t("clips.latestRequests")}
           </p>
         </div>
       </div>
@@ -43,8 +46,8 @@ export function RecentClips({
         {clips.length === 0 ? (
           <EmptyState
             icon={VideoOff}
-            title="No clips yet"
-            description="Create a manual clip or trigger one from Twitch chat to see it here."
+            title={t("clips.noClipsTitle")}
+            description={t("clips.noClipsDescription")}
           />
         ) : (
           clips.map((clip) => (
@@ -52,6 +55,8 @@ export function RecentClips({
               key={clip.id}
               clip={clip}
               hasDownloadScope={hasDownloadScope}
+              locale={locale}
+              t={t}
             />
           ))
         )}
@@ -62,7 +67,9 @@ export function RecentClips({
 
 function ClipCard({
   clip,
-  hasDownloadScope
+  hasDownloadScope,
+  locale,
+  t
 }: {
   clip: Pick<
     Clip,
@@ -79,6 +86,8 @@ function ClipCard({
     | "createdAt"
   >;
   hasDownloadScope: boolean;
+  locale: "en" | "fr";
+  t: Awaited<ReturnType<typeof getI18n>>["t"];
 }) {
   const canDownload = clip.status === "READY" && Boolean(clip.twitchClipId);
 
@@ -87,11 +96,13 @@ function ClipCard({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h3 className="text-sm font-semibold text-ink">
-            {clip.title ?? "Untitled clip"}
+            {clip.title ?? t("common.untitledClip")}
           </h3>
           <p className="mt-1 text-xs text-muted">
-            {clip.broadcasterName ?? clip.broadcasterLogin ?? "Unknown channel"}{" "}
-            - {clip.createdAt.toLocaleString("fr-FR")}
+            {clip.broadcasterName ??
+              clip.broadcasterLogin ??
+              t("common.unknownChannel")}{" "}
+            - {clip.createdAt.toLocaleString(locale === "fr" ? "fr-FR" : "en-US")}
           </p>
         </div>
         <StatusPill status={clip.status} />
@@ -111,7 +122,7 @@ function ClipCard({
             rel="noreferrer"
             className={buttonClassName({ variant: "secondary", size: "sm" })}
           >
-            Open
+            {t("common.open")}
             <ExternalLink className="h-4 w-4" aria-hidden="true" />
           </a>
         ) : null}
@@ -123,7 +134,7 @@ function ClipCard({
             rel="noreferrer"
             className={buttonClassName({ variant: "ghost", size: "sm" })}
           >
-            Edit
+            {t("common.edit")}
             <ExternalLink className="h-4 w-4" aria-hidden="true" />
           </a>
         ) : null}

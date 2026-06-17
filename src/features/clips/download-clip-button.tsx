@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { buttonClassName } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export function DownloadClipButton({
   clipId,
@@ -14,6 +15,7 @@ export function DownloadClipButton({
   hasDownloadScope: boolean;
 }) {
   const [message, setMessage] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!message) {
@@ -37,10 +39,10 @@ export function DownloadClipButton({
           })}
         >
           <Download className="h-4 w-4" aria-hidden="true" />
-          Download
+          {t("common.download")}
         </button>
         <p className="text-xs text-violet-200">
-          Reconnect Twitch to enable downloads
+          {t("download.reconnect")}
         </p>
       </div>
     );
@@ -58,10 +60,10 @@ export function DownloadClipButton({
           }),
           "hover:text-white"
         )}
-        onClick={() => setMessage("Preparing download...")}
+        onClick={() => setMessage(t("download.preparing"))}
       >
         <Download className="h-4 w-4" aria-hidden="true" />
-        Download
+        {t("common.download")}
       </a>
       {message ? (
         <p className="text-xs text-muted" role="status">

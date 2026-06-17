@@ -1,39 +1,54 @@
 import { Card, CardTitle } from "@/components/ui/card";
+import { getI18n } from "@/i18n/server";
 
-export function UsagePanel({
+export async function UsagePanel({
   clipsUsed,
   clipsLimit
 }: {
   clipsUsed: number;
   clipsLimit: number;
 }) {
+  const { t } = await getI18n();
+
   return (
     <Card className="p-6">
-      <CardTitle>Usage</CardTitle>
+      <CardTitle>{t("usage.title")}</CardTitle>
       <p className="mt-1 text-sm text-muted">
-        Monthly limits for the current plan.
+        {t("usage.monthlyLimits")}
       </p>
       <div className="mt-5 grid gap-5">
-        <UsageBar label="Clips" used={clipsUsed} limit={clipsLimit} />
-        <ComingSoonUsage />
+        <UsageBar label={t("usage.clips")} used={clipsUsed} limit={clipsLimit} />
+        <ComingSoonUsage
+          title={t("usage.aiVoiceDetection")}
+          badge={t("common.comingSoon")}
+          description={t("usage.voiceComingSoon")}
+        />
       </div>
     </Card>
   );
 }
 
-function ComingSoonUsage() {
+function ComingSoonUsage({
+  title,
+  badge,
+  description
+}: {
+  title: string;
+  badge: string;
+  description: string;
+}) {
   return (
     <div className="rounded-lg border border-line bg-black/20 p-3">
       <div className="flex items-center justify-between gap-3">
         <span className="text-sm font-medium text-ink">
-          AI Voice Detection
+          {title}
         </span>
         <span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-semibold text-violet-200">
-          Coming Soon
+          {badge}
         </span>
       </div>
       <p className="mt-2 text-sm leading-6 text-muted">
-        Voice-triggered clipping is planned and is not available yet.
+        {description}
       </p>
     </div>
   );

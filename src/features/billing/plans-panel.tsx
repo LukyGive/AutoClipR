@@ -4,32 +4,34 @@ import { buttonClassName } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { PricingCard } from "@/components/ui/pricing-card";
 import { billingPlans } from "@/features/billing/plans";
-import { formatPlanLimit } from "@/features/billing/plan-limits";
 import {
   createBillingPortalSession,
   createCheckoutSession
 } from "@/features/billing/actions";
+import { getI18n } from "@/i18n/server";
 
-export function PlansPanel({
+export async function PlansPanel({
   currentPlan,
   hasStripeCustomer
 }: {
   currentPlan: Plan;
   hasStripeCustomer: boolean;
 }) {
+  const { t } = await getI18n();
+
   return (
     <Card className="p-6">
       <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
         <div>
-          <CardTitle>Billing</CardTitle>
+          <CardTitle>{t("billing.billing")}</CardTitle>
           <p className="mt-1 text-sm text-muted">
-            Free, Pro and Business plans.
+            {t("billing.freeProBusiness")}
           </p>
         </div>
         {hasStripeCustomer ? (
           <form action={createBillingPortalSession}>
             <button className={buttonClassName({ variant: "secondary" })}>
-              Manage subscription
+              {t("billing.manageSubscription")}
             </button>
           </form>
         ) : null}
@@ -41,22 +43,24 @@ export function PlansPanel({
             key={plan.id}
             name={plan.name}
             price={plan.priceLabel}
-            description={plan.description}
+            description={getPlanDescription(plan.id, t)}
             highlighted={plan.id === Plan.PRO}
             badge={
               currentPlan === plan.id
-                ? "Current"
+                ? t("billing.current")
                 : plan.id === Plan.PRO
-                  ? "Popular"
+                  ? t("pricing.popular")
                   : undefined
             }
             features={[
-              `${plan.monthlyClipLimit} clips/month`,
-              `${formatPlanLimit(plan.maxStreamers)} streamers`,
-              "AI Voice Detection - Coming Soon",
+              t("billing.clipsPerMonth", { count: plan.monthlyClipLimit }),
+              t("billing.streamersLimit", {
+                count: plan.maxStreamers ?? t("common.unlimited")
+              }),
+              `${t("usage.aiVoiceDetection")} - ${t("common.comingSoon")}`,
               plan.id === Plan.FREE
-                ? "Manual clipping"
-                : "Chat and API triggers"
+                ? t("pricing.manualClips")
+                : `${t("landing.featureChatTitle")} + ${t("landing.featureApiTitle")}`
             ]}
             action={
               plan.id !== Plan.FREE &&
@@ -69,7 +73,7 @@ export function PlansPanel({
                     disabled={!plan.stripePriceId}
                     className={buttonClassName({ className: "w-full" })}
                   >
-                    Upgrade to {plan.name}
+                    {t("billing.upgradeTo", { plan: plan.name })}
                   </button>
                 </form>
               ) : null
@@ -79,4 +83,19 @@ export function PlansPanel({
       </div>
     </Card>
   );
+}
+
+function getPlanDescription(
+  plan: Plan,
+  t: (key: string, variables?: Record<string, string | number>) => string
+) {
+  if (plan === Plan.PRO) {
+    return t("pricing.proDescription");
+  }
+
+  if (plan === Plan.BUSINESS) {
+    return t("pricing.businessDescription");
+  }
+
+  return t("pricing.freeDescription");
 }

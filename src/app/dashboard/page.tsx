@@ -20,10 +20,12 @@ import { getDashboardPageData } from "@/features/dashboard/dashboard-page-data";
 import { StatCard } from "@/features/dashboard/stat-card";
 import { RuleSettingsForm } from "@/features/rules/rule-settings-form";
 import { TargetSettings } from "@/features/targets/target-settings";
+import { getI18n } from "@/i18n/server";
 
 export default async function DashboardPage() {
   const { user, analytics, usage, baseUrl, hasClipDownloadScope } =
     await getDashboardPageData();
+  const { t } = await getI18n();
   const connectedLabel = user.twitchLogin
     ? `@${user.twitchLogin}`
     : "Twitch pending";
@@ -39,8 +41,8 @@ export default async function DashboardPage() {
     <AppShell user={user}>
       <PageHeader
         eyebrow={connectedLabel}
-        title="Welcome back"
-        description="Monitor your Twitch clip automation, active streamers and Bot Rules from one command center."
+        title={t("dashboard.title")}
+        description={t("dashboard.description")}
       />
 
       <TrialBanner
@@ -51,39 +53,48 @@ export default async function DashboardPage() {
       <section className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <StatCard
           icon={Clapperboard}
-          label="Total clips"
+          label={t("dashboard.totalClips")}
           value={String(user._count.clips)}
-          detail="All saved clip requests."
+          detail={t("dashboard.allSavedClipRequests")}
         />
         <StatCard
           icon={Activity}
-          label="Clips this month"
+          label={t("dashboard.clipsThisMonth")}
           value={String(usage.clipsUsed)}
-          detail="Current billing period usage."
+          detail={t("dashboard.currentBillingUsage")}
         />
         <StatCard
           icon={Clock3}
-          label="Hours Saved"
+          label={t("dashboard.hoursSaved")}
           value={estimatedHoursSaved}
-          detail="Estimated at 2 minutes saved per clip."
+          detail={t("dashboard.estimatedTwoMinutes")}
         />
         <StatCard
           icon={RadioTower}
-          label="Active streamers"
+          label={t("dashboard.activeStreamers")}
           value={String(user.clipTargets.length)}
-          detail="Channels monitored by the chat worker."
+          detail={t("dashboard.channelsMonitored")}
         />
         <StatCard
           icon={Bot}
-          label="Bot status"
-          value={primaryRule?.enabled ? "Online" : "Paused"}
-          detail="Worker listens when deployed and rule is active."
+          label={t("dashboard.botStatus")}
+          value={
+            primaryRule?.enabled ? (
+              <span className="inline-flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-success shadow-[0_0_18px_rgba(34,197,94,0.75)] ring-4 ring-success/10" />
+                {t("dashboard.online")}
+              </span>
+            ) : (
+              t("common.paused")
+            )
+          }
+          detail={t("dashboard.workerListens")}
         />
         <StatCard
           icon={BarChart3}
-          label="Success rate"
+          label={t("analytics.successRate")}
           value={`${successRate}%`}
-          detail="Current monthly ready/failed ratio."
+          detail={t("dashboard.currentMonthlyRatio")}
         />
       </section>
 
@@ -114,7 +125,7 @@ export default async function DashboardPage() {
           clips={user.clips}
           hasDownloadScope={hasClipDownloadScope}
         />
-        <ActivityFeed user={user} analytics={analytics} />
+        <ActivityFeed user={user} analytics={analytics} t={t} />
       </section>
 
       <section className="mt-8">
@@ -122,9 +133,9 @@ export default async function DashboardPage() {
           <RuleSettingsForm rule={primaryRule} />
         ) : (
           <Card className="p-6">
-            <CardTitle>Bot Rules</CardTitle>
+            <CardTitle>{t("rules.botRules")}</CardTitle>
             <p className="mt-3 text-sm text-muted">
-              Reconnect your Twitch account to create the default Bot Rule.
+              {t("dashboard.noRuleReconnect")}
             </p>
           </Card>
         )}
@@ -149,25 +160,33 @@ function formatEstimatedHoursSaved(totalClips: number) {
 
 function ActivityFeed({
   user,
-  analytics
+  analytics,
+  t
 }: {
   user: Awaited<ReturnType<typeof getDashboardPageData>>["user"];
   analytics: Awaited<ReturnType<typeof getDashboardPageData>>["analytics"];
+  t: Awaited<ReturnType<typeof getI18n>>["t"];
 }) {
   const items = [
     {
-      title: "Chat command clips",
-      detail: `${analytics.byTrigger.chatCommand} command-triggered clips this month`,
+      title: t("dashboard.chatCommandClips"),
+      detail: t("dashboard.commandTriggeredClipsThisMonth", {
+        count: analytics.byTrigger.chatCommand
+      }),
       status: "ACTIVE" as const
     },
     {
-      title: "Streamer targets",
-      detail: `${user.clipTargets.length} channel(s) configured`,
+      title: t("dashboard.streamerTargets"),
+      detail: t("dashboard.connectedChannels", {
+        count: user.clipTargets.length
+      }),
       status: "ACTIVE" as const
     },
     {
-      title: "AI detection",
-      detail: `${analytics.matchedSpeechEvents} matched audio keyword event(s)`,
+      title: t("dashboard.aiDetection"),
+      detail: t("dashboard.matchedAudioEvents", {
+        count: analytics.matchedSpeechEvents
+      }),
       status: "PROCESSING" as const
     }
   ];
@@ -179,9 +198,9 @@ function ActivityFeed({
           <Activity className="h-5 w-5" aria-hidden="true" />
         </div>
         <div>
-          <CardTitle>Activity feed</CardTitle>
+          <CardTitle>{t("dashboard.activityFeed")}</CardTitle>
           <p className="mt-1 text-sm text-muted">
-            Automation signals from this month.
+            {t("dashboard.activityFeedDescription")}
           </p>
         </div>
       </div>

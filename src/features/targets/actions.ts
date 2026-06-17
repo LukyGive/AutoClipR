@@ -11,6 +11,7 @@ import { createSecretToken } from "@/lib/tokens";
 import { getPlanLimits } from "@/features/billing/plan-limits";
 import { getTwitchUserByLogin } from "@/features/twitch/helix";
 import { getValidTwitchAccessToken } from "@/features/twitch/oauth";
+import { getI18n } from "@/i18n/server";
 
 export type TargetActionState = {
   error?: string;
@@ -31,6 +32,7 @@ export async function addClipTarget(
   formData: FormData
 ): Promise<TargetActionState> {
   const session = await auth();
+  const { t } = await getI18n();
 
   if (!session?.user) {
     redirect("/login");
@@ -41,7 +43,7 @@ export async function addClipTarget(
   });
 
   if (!parsed.success) {
-    return { error: "Enter a valid Twitch login." };
+    return { error: t("actions.enterValidTwitchLogin") };
   }
 
   if (isDemoMode) {
@@ -84,7 +86,7 @@ export async function addClipTarget(
       }
     });
     revalidateTargetPages();
-    return { success: "Streamer added." };
+    return { success: t("actions.streamerAdded") };
   }
 
   const accessToken = await getValidTwitchAccessToken(session.user.id, [
@@ -133,7 +135,7 @@ export async function addClipTarget(
   });
 
   revalidateTargetPages();
-  return { success: "Streamer added." };
+  return { success: t("actions.streamerAdded") };
 }
 
 export async function rotateExternalTriggerToken(formData: FormData) {
@@ -178,6 +180,7 @@ export async function deleteClipTarget(formData: FormData) {
 }
 
 async function getStreamerLimitError(userId: string) {
+  const { t } = await getI18n();
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: {
@@ -197,7 +200,7 @@ async function getStreamerLimitError(userId: string) {
   const limit = getPlanLimits(user.plan).maxStreamers;
 
   if (limit !== null && user._count.clipTargets >= limit) {
-    return "Upgrade your plan to add more streamers.";
+    return t("actions.upgradeForMoreStreamers");
   }
 
   return null;

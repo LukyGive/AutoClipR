@@ -5,17 +5,19 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
 import { getDashboardPageData } from "@/features/dashboard/dashboard-page-data";
 import { RuleSettingsForm } from "@/features/rules/rule-settings-form";
+import { getI18n } from "@/i18n/server";
 
 export default async function AiTriggersPage() {
   const { user, analytics } = await getDashboardPageData();
+  const { t } = await getI18n();
   const primaryRule = user.clipRules[0];
 
   return (
     <AppShell user={user}>
       <PageHeader
-        eyebrow="AI Triggers"
-        title="AI Voice Detection"
-        description="Voice-triggered clipping is coming soon. Keyword settings are saved now so the workflow is ready when speech ingestion launches."
+        eyebrow={t("nav.aiTriggers")}
+        title={t("ai.title")}
+        description={t("ai.description")}
       />
 
       <section className="mt-8 grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
@@ -24,24 +26,23 @@ export default async function AiTriggersPage() {
             <Brain className="h-5 w-5" aria-hidden="true" />
           </div>
           <div className="mt-5 flex items-center justify-between gap-3">
-            <CardTitle>Current signal</CardTitle>
+            <CardTitle>{t("ai.currentSignal")}</CardTitle>
             <span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-semibold text-violet-200">
-              Coming Soon
+              {t("common.comingSoon")}
             </span>
           </div>
           <div className="mt-5 grid gap-3">
             <Metric
-              label="Configured keyword matches"
+              label={t("ai.configuredMatches")}
               value={analytics.matchedSpeechEvents}
             />
             <Metric
-              label="Voice-triggered clips"
+              label={t("ai.voiceTriggeredClips")}
               value={analytics.byTrigger.speechToText}
             />
           </div>
           <p className="mt-5 text-sm leading-7 text-muted">
-            The speech engine is planned as a modular layer for Whisper,
-            Deepgram or another provider. It is not active yet.
+            {t("ai.speechEnginePlanned")}
           </p>
         </Card>
 
@@ -50,9 +51,9 @@ export default async function AiTriggersPage() {
         ) : (
           <Card className="p-6">
             <Sparkles className="h-5 w-5 text-primary" aria-hidden="true" />
-            <CardTitle className="mt-5">No rule yet</CardTitle>
+            <CardTitle className="mt-5">{t("ai.noRule")}</CardTitle>
             <p className="mt-3 text-sm text-muted">
-              Reconnect your Twitch account to create the default Bot Rule.
+              {t("dashboard.noRuleReconnect")}
             </p>
           </Card>
         )}

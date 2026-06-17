@@ -22,6 +22,7 @@ import {
   rotateExternalTriggerToken,
   type TargetActionState
 } from "@/features/targets/actions";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const initialAddState: TargetActionState = {};
 
@@ -37,11 +38,14 @@ export function TargetSettings({
   baseUrl: string;
   currentPlan: Plan;
 }) {
+  const { t } = useTranslation();
   const [addState, addAction, isAdding] = useActionState(
     addClipTarget,
     initialAddState
   );
   const streamerLimit = getPlanLimits(currentPlan).maxStreamers;
+  const formattedStreamerLimit =
+    streamerLimit === null ? t("common.unlimited") : formatPlanLimit(streamerLimit);
 
   return (
     <Card className="p-6">
@@ -51,14 +55,17 @@ export function TargetSettings({
             <RadioTower className="h-5 w-5" aria-hidden="true" />
           </div>
           <div>
-            <CardTitle>Streamers</CardTitle>
+            <CardTitle>{t("nav.streamers")}</CardTitle>
             <CardDescription>
-              The chat worker listens to these Twitch channels.
+              {t("streamers.listensToChannels")}
             </CardDescription>
           </div>
         </div>
         <span className="w-fit rounded-full border border-line bg-black/20 px-3 py-1 text-xs font-semibold text-muted">
-          {targets.length}/{formatPlanLimit(streamerLimit)} streamers
+          {t("streamers.streamersCount", {
+            count: targets.length,
+            limit: formattedStreamerLimit
+          })}
         </span>
       </div>
 
@@ -76,7 +83,7 @@ export function TargetSettings({
           disabled={isAdding}
           className={buttonClassName({ variant: "secondary" })}
         >
-          Add streamer
+          {t("streamers.addStreamer")}
         </button>
       </form>
 
@@ -95,8 +102,8 @@ export function TargetSettings({
         {targets.length === 0 ? (
           <EmptyState
             icon={RadioTower}
-            title="No streamers configured"
-            description="Add a Twitch login to let AutoClipR listen for commands and create clips."
+            title={t("streamers.emptyTitle")}
+            description={t("streamers.emptyDescription")}
           />
         ) : (
           targets.map((target) => (
@@ -118,6 +125,7 @@ function StreamerCard({
   >;
   baseUrl: string;
 }) {
+  const { t } = useTranslation();
   const [isKeyVisible, setIsKeyVisible] = useState(false);
   const [copied, setCopied] = useState(false);
   const triggerUrl = target.externalTriggerToken
@@ -150,7 +158,7 @@ function StreamerCard({
           <form
             action={deleteClipTarget}
             onSubmit={(event) => {
-              if (!window.confirm("Remove this streamer from AutoClipR?")) {
+              if (!window.confirm(t("streamers.confirmRemove"))) {
                 event.preventDefault();
               }
             }}
@@ -164,7 +172,7 @@ function StreamerCard({
               })}
             >
               <Trash2 className="h-4 w-4" aria-hidden="true" />
-              Remove
+              {t("common.remove")}
             </button>
           </form>
         </div>
@@ -175,7 +183,7 @@ function StreamerCard({
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2 text-xs font-semibold uppercase text-muted">
               <KeyRound className="h-3.5 w-3.5" aria-hidden="true" />
-              API trigger key
+              {t("streamers.apiTriggerKey")}
             </div>
             <div className="flex flex-wrap gap-2">
               {isKeyVisible ? (
@@ -185,7 +193,7 @@ function StreamerCard({
                   className={buttonClassName({ variant: "ghost", size: "sm" })}
                 >
                   <EyeOff className="h-4 w-4" aria-hidden="true" />
-                  Hide
+                  {t("common.hide")}
                 </button>
               ) : (
                 <button
@@ -197,7 +205,7 @@ function StreamerCard({
                   })}
                 >
                   <Eye className="h-4 w-4" aria-hidden="true" />
-                  Show
+                  {t("common.show")}
                 </button>
               )}
             </div>
@@ -218,7 +226,7 @@ function StreamerCard({
                   })}
                 >
                   <Copy className="h-4 w-4" aria-hidden="true" />
-                  {copied ? "Copied" : "Copy"}
+                  {copied ? t("common.copied") : t("common.copy")}
                 </button>
                 <form action={rotateExternalTriggerToken}>
                   <input type="hidden" name="targetId" value={target.id} />
@@ -230,7 +238,7 @@ function StreamerCard({
                     })}
                   >
                     <RotateCw className="h-4 w-4" aria-hidden="true" />
-                    Regenerate key
+                    {t("streamers.regenerateKey")}
                   </button>
                 </form>
               </div>

@@ -4,16 +4,18 @@ import { PlansPanel } from "@/features/billing/plans-panel";
 import { TrialBanner } from "@/features/billing/trial-banner";
 import { UsagePanel } from "@/features/billing/usage-panel";
 import { getDashboardPageData } from "@/features/dashboard/dashboard-page-data";
+import { getI18n } from "@/i18n/server";
 
 export default async function BillingPage() {
   const { user, usage } = await getDashboardPageData();
+  const { t } = await getI18n();
 
   return (
     <AppShell user={user}>
       <PageHeader
         eyebrow={user.plan}
-        title="Billing"
-        description="Review usage and choose the plan that matches your Twitch clip volume."
+        title={t("billing.billing")}
+        description={t("billing.choosePlan")}
       />
 
       <TrialBanner

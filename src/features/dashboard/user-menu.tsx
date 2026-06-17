@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import { LogOut } from "lucide-react";
 
 import { signOutFromApp } from "@/features/auth/actions";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export function UserMenu({
   name,
@@ -12,6 +15,8 @@ export function UserMenu({
   image?: string | null;
   email?: string | null;
 }) {
+  const { t } = useTranslation();
+
   return (
     <div className="flex items-center gap-3">
       {image ? (
@@ -30,10 +35,10 @@ export function UserMenu({
 
       <div className="hidden min-w-0 sm:block">
         <p className="truncate text-sm font-semibold text-ink">
-          {name ?? "Streamer"}
+          {name ?? t("common.streamer")}
         </p>
         <p className="truncate text-xs text-muted">
-          {email ?? "Compte Twitch"}
+          {email ?? t("settings.twitchAccountFallback")}
         </p>
       </div>
 
@@ -41,8 +46,8 @@ export function UserMenu({
         <button
           type="submit"
           className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-surface text-muted transition duration-200 hover:bg-surface-hover hover:text-ink"
-          aria-label="Se déconnecter"
-          title="Se déconnecter"
+          aria-label={t("common.signOut")}
+          title={t("common.signOut")}
         >
           <LogOut className="h-4 w-4" aria-hidden="true" />
         </button>

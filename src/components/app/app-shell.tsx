@@ -3,8 +3,10 @@ import type { ReactNode } from "react";
 import { MobileNav } from "@/components/app/mobile-nav";
 import { Sidebar } from "@/components/app/sidebar";
 import { Topbar } from "@/components/app/topbar";
+import { getI18n } from "@/i18n/server";
+import { TranslationProvider } from "@/i18n/useTranslation";
 
-export function AppShell({
+export async function AppShell({
   user,
   children
 }: {
@@ -15,18 +17,22 @@ export function AppShell({
   };
   children: ReactNode;
 }) {
+  const { locale } = await getI18n();
+
   return (
-    <main className="min-h-screen bg-app-bg text-ink">
-      <div className="flex min-h-screen">
-        <Sidebar />
-        <div className="min-w-0 flex-1">
-          <Topbar name={user.name} email={user.email} image={user.image} />
-          <MobileNav />
-          <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:py-8">
-            {children}
+    <TranslationProvider initialLocale={locale}>
+      <main className="min-h-screen bg-app-bg text-ink">
+        <div className="flex min-h-screen">
+          <Sidebar />
+          <div className="min-w-0 flex-1">
+            <Topbar name={user.name} email={user.email} image={user.image} />
+            <MobileNav />
+            <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:py-8">
+              {children}
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </TranslationProvider>
   );
 }
