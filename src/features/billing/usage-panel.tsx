@@ -2,14 +2,10 @@ import { Card, CardTitle } from "@/components/ui/card";
 
 export function UsagePanel({
   clipsUsed,
-  clipsLimit,
-  speechEventsUsed,
-  speechEventsLimit
+  clipsLimit
 }: {
   clipsUsed: number;
   clipsLimit: number;
-  speechEventsUsed: number;
-  speechEventsLimit: number;
 }) {
   return (
     <Card className="p-6">
@@ -19,13 +15,27 @@ export function UsagePanel({
       </p>
       <div className="mt-5 grid gap-5">
         <UsageBar label="Clips" used={clipsUsed} limit={clipsLimit} />
-        <UsageBar
-          label="AI events"
-          used={speechEventsUsed}
-          limit={speechEventsLimit}
-        />
+        <ComingSoonUsage />
       </div>
     </Card>
+  );
+}
+
+function ComingSoonUsage() {
+  return (
+    <div className="rounded-lg border border-line bg-black/20 p-3">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-sm font-medium text-ink">
+          AI Voice Detection
+        </span>
+        <span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-semibold text-violet-200">
+          Coming Soon
+        </span>
+      </div>
+      <p className="mt-2 text-sm leading-6 text-muted">
+        Voice-triggered clipping is planned and is not available yet.
+      </p>
+    </div>
   );
 }
 

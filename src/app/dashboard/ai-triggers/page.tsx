@@ -14,8 +14,8 @@ export default async function AiTriggersPage() {
     <AppShell user={user}>
       <PageHeader
         eyebrow="AI Triggers"
-        title="Detect moments from audio keywords"
-        description="Configure the AI detection instruction and keyword list used by speech-to-text ingestion."
+        title="AI Voice Detection"
+        description="Voice-triggered clipping is coming soon. Keyword settings are saved now so the workflow is ready when speech ingestion launches."
       />
 
       <section className="mt-8 grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
@@ -23,20 +23,25 @@ export default async function AiTriggersPage() {
           <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
             <Brain className="h-5 w-5" aria-hidden="true" />
           </div>
-          <CardTitle className="mt-5">Current signal</CardTitle>
+          <div className="mt-5 flex items-center justify-between gap-3">
+            <CardTitle>Current signal</CardTitle>
+            <span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-semibold text-violet-200">
+              Coming Soon
+            </span>
+          </div>
           <div className="mt-5 grid gap-3">
             <Metric
-              label="Matched audio keywords"
+              label="Configured keyword matches"
               value={analytics.matchedSpeechEvents}
             />
             <Metric
-              label="Speech-to-text clips"
+              label="Voice-triggered clips"
               value={analytics.byTrigger.speechToText}
             />
           </div>
           <p className="mt-5 text-sm leading-7 text-muted">
-            The speech engine is modular, so Whisper, Deepgram or another
-            provider can feed transcripts into the same trigger pipeline.
+            The speech engine is planned as a modular layer for Whisper,
+            Deepgram or another provider. It is not active yet.
           </p>
         </Card>
 

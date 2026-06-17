@@ -156,6 +156,9 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
           className="mt-5 block text-sm font-medium text-ink"
         >
           AI detection instruction
+          <span className="ml-2 rounded-full border border-primary/30 bg-primary/10 px-2 py-0.5 text-xs font-semibold text-violet-200">
+            Coming Soon
+          </span>
         </label>
         <textarea
           id="speechInstruction"
@@ -166,8 +169,8 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
           className={`${inputClassName} mt-2`}
         />
         <p className="mt-2 text-sm leading-6 text-muted">
-          AutoClipR extracts keywords from this instruction and applies them to
-          audio transcripts.
+          AutoClipR saves this instruction now. Voice detection is not active
+          yet.
         </p>
 
         <label
@@ -185,8 +188,8 @@ export function RuleSettingsForm({ rule }: { rule: ClipRule }) {
           className={`${inputClassName} mt-2`}
         />
         <p className="mt-2 text-sm leading-6 text-muted">
-          These keywords are used by the chat worker and the speech-to-text
-          ingestion.
+          These keywords are available for chat rules today and voice detection
+          later.
         </p>
 
         <button

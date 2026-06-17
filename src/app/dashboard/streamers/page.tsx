@@ -18,7 +18,11 @@ export default async function StreamersPage() {
       />
 
       <section className="mt-8 grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <TargetSettings targets={user.clipTargets} baseUrl={baseUrl} />
+        <TargetSettings
+          targets={user.clipTargets}
+          baseUrl={baseUrl}
+          currentPlan={user.plan}
+        />
         <Card className="p-6">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
             <RadioTower className="h-5 w-5" aria-hidden="true" />

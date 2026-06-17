@@ -1,6 +1,7 @@
 import { Plan } from "@prisma/client";
 
 import { env } from "@/lib/env";
+import { getPlanLimits } from "@/features/billing/plan-limits";
 
 export type BillingPlan = {
   id: Plan;
@@ -8,6 +9,8 @@ export type BillingPlan = {
   description: string;
   monthlyClipLimit: number;
   monthlySpeechEventLimit: number;
+  maxStreamers: number | null;
+  maxAiTriggers: number;
   priceLabel: string;
   stripePriceId?: string;
 };
@@ -17,16 +20,20 @@ export const billingPlans: BillingPlan[] = [
     id: Plan.FREE,
     name: "Free",
     description: "Pour valider le workflow AutoClipR.",
-    monthlyClipLimit: 25,
+    monthlyClipLimit: getPlanLimits(Plan.FREE).maxClips,
     monthlySpeechEventLimit: 100,
+    maxStreamers: getPlanLimits(Plan.FREE).maxStreamers,
+    maxAiTriggers: getPlanLimits(Plan.FREE).maxAiTriggers,
     priceLabel: "0 €"
   },
   {
     id: Plan.PRO,
     name: "Pro",
     description: "Pour streamers actifs et petites communautés.",
-    monthlyClipLimit: 1000,
+    monthlyClipLimit: getPlanLimits(Plan.PRO).maxClips,
     monthlySpeechEventLimit: 10000,
+    maxStreamers: getPlanLimits(Plan.PRO).maxStreamers,
+    maxAiTriggers: getPlanLimits(Plan.PRO).maxAiTriggers,
     priceLabel: "19 € / mois",
     stripePriceId:
       env.STRIPE_PRO_PRICE_ID ||
@@ -36,8 +43,10 @@ export const billingPlans: BillingPlan[] = [
     id: Plan.BUSINESS,
     name: "Business",
     description: "Pour équipes, agences et chaînes à fort volume.",
-    monthlyClipLimit: 10000,
+    monthlyClipLimit: getPlanLimits(Plan.BUSINESS).maxClips,
     monthlySpeechEventLimit: 100000,
+    maxStreamers: getPlanLimits(Plan.BUSINESS).maxStreamers,
+    maxAiTriggers: getPlanLimits(Plan.BUSINESS).maxAiTriggers,
     priceLabel: "99 € / mois",
     stripePriceId:
       env.STRIPE_BUSINESS_PRICE_ID ||

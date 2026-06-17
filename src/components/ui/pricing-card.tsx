@@ -44,7 +44,14 @@ export function PricingCard({
               className="mt-0.5 h-4 w-4 shrink-0 text-success"
               aria-hidden="true"
             />
-            <span>{feature}</span>
+            {feature.includes("Coming Soon") ? (
+              <span className="flex flex-wrap items-center gap-2">
+                AI Voice Detection
+                <Badge>Coming Soon</Badge>
+              </span>
+            ) : (
+              <span>{feature}</span>
+            )}
           </li>
         ))}
       </ul>

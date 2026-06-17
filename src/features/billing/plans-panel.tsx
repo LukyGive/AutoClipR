@@ -4,6 +4,7 @@ import { buttonClassName } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { PricingCard } from "@/components/ui/pricing-card";
 import { billingPlans } from "@/features/billing/plans";
+import { formatPlanLimit } from "@/features/billing/plan-limits";
 import {
   createBillingPortalSession,
   createCheckoutSession
@@ -51,7 +52,8 @@ export function PlansPanel({
             }
             features={[
               `${plan.monthlyClipLimit} clips/month`,
-              `${plan.monthlySpeechEventLimit} AI events/month`,
+              `${formatPlanLimit(plan.maxStreamers)} streamers`,
+              "AI Voice Detection - Coming Soon",
               plan.id === Plan.FREE
                 ? "Manual clipping"
                 : "Chat and API triggers"

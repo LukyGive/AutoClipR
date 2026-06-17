@@ -11,6 +11,7 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatusPill } from "@/components/ui/status-pill";
 import { AnalyticsPanel } from "@/features/analytics/analytics-panel";
+import { TrialBanner } from "@/features/billing/trial-banner";
 import { UsagePanel } from "@/features/billing/usage-panel";
 import { CreateClipForm } from "@/features/clips/create-clip-form";
 import { RecentClips } from "@/features/clips/recent-clips";
@@ -38,6 +39,11 @@ export default async function DashboardPage() {
         eyebrow={connectedLabel}
         title="Welcome back"
         description="Monitor your Twitch clip automation, active streamers and Bot Rules from one command center."
+      />
+
+      <TrialBanner
+        status={user.subscription?.status}
+        currentPeriodEnd={user.subscription?.currentPeriodEnd}
       />
 
       <section className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -71,8 +77,6 @@ export default async function DashboardPage() {
         <UsagePanel
           clipsUsed={usage.clipsUsed}
           clipsLimit={usage.clipsLimit}
-          speechEventsUsed={usage.speechEventsUsed}
-          speechEventsLimit={usage.speechEventsLimit}
         />
         <AnalyticsPanel
           readyClips={analytics.readyClips}
@@ -83,7 +87,11 @@ export default async function DashboardPage() {
       </section>
 
       <section className="mt-8 grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-        <TargetSettings targets={user.clipTargets} baseUrl={baseUrl} />
+        <TargetSettings
+          targets={user.clipTargets}
+          baseUrl={baseUrl}
+          currentPlan={user.plan}
+        />
         <CreateClipForm disabled={!user.twitchUserId} />
       </section>
 

@@ -35,7 +35,7 @@ export function AnalyticsPanel({
         <Metric label="Ready clips" value={readyClips} />
         <Metric label="Failed clips" value={failedClips} />
         <Metric label="Chat commands" value={byTrigger.chatCommand} />
-        <Metric label="AI speech" value={byTrigger.speechToText} />
+        <Metric label="AI voice soon" value={byTrigger.speechToText} />
         <Metric label="Manual" value={byTrigger.manual} />
         <Metric label="Audio keywords" value={matchedSpeechEvents} />
       </div>
