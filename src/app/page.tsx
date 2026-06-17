@@ -1,13 +1,13 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  Brain,
   Check,
   Clapperboard,
   Command,
-  LayoutDashboard,
+  Download,
+  KeyRound,
   Sparkles,
-  Users
+  TimerReset
 } from "lucide-react";
 
 import { auth } from "@/lib/auth";
@@ -24,22 +24,20 @@ const features = [
       "Let moderators or viewers create clips with a clean command like !clip."
   },
   {
-    icon: Brain,
-    title: "AI detection",
+    icon: KeyRound,
+    title: "API triggers",
     description:
-      "Prepare speech-to-text triggers for moments like GOAL, insane or clutch."
+      "Trigger clips from external buttons, tools or overlays with secure URLs."
   },
   {
-    icon: LayoutDashboard,
-    title: "Streamer dashboard",
-    description:
-      "Track clips, usage, targets and automation health from one place."
+    icon: Download,
+    title: "Clip downloads",
+    description: "Open, edit and download ready clips from your dashboard."
   },
   {
-    icon: Users,
-    title: "Multi-channel support",
-    description:
-      "Choose the streamers you want to monitor and trigger clips for."
+    icon: TimerReset,
+    title: "7-day Pro trial",
+    description: "Start with Pro features and validate your workflow before paying."
   }
 ];
 
@@ -105,13 +103,12 @@ export default async function HomePage() {
             Create Twitch clips automatically.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-muted md:text-lg">
-            AutoClipR listens to your stream chat and turns your best moments
-            into Twitch clips instantly. Automatically create Twitch clips from
-            chat commands, API triggers and soon AI voice detection.
+            AutoClipR turns chat commands and API triggers into Twitch clips
+            instantly. AI voice detection is coming soon.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href={primaryHref} size="lg">
-              Connect with Twitch
+              Start free trial
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </ButtonLink>
             <ButtonLink href="/login" variant="secondary" size="lg">
@@ -136,30 +133,35 @@ export default async function HomePage() {
       </section>
 
       <section className="border-y border-line bg-black/20">
-        <div className="mx-auto grid max-w-7xl gap-4 px-4 py-12 sm:px-6 md:grid-cols-3">
-          {[
-            [
-              "01",
-              "Connect your Twitch",
-              "Secure OAuth connects your creator account."
-            ],
-            [
-              "02",
-              "Choose your trigger",
-              "Use chat commands, keywords or AI detection rules."
-            ],
-            [
-              "03",
-              "AutoClipR creates the clip",
-              "The clip is created, tracked and saved in your dashboard."
-            ]
-          ].map(([step, title, body]) => (
-            <Card key={step} className="p-5">
-              <p className="text-xs font-semibold text-primary">{step}</p>
-              <h2 className="mt-4 text-base font-semibold text-ink">{title}</h2>
-              <p className="mt-2 text-sm leading-6 text-muted">{body}</p>
-            </Card>
-          ))}
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+          <Badge>How it works</Badge>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {[
+              [
+                "01",
+                "Connect Twitch",
+                "Secure OAuth connects your creator account."
+              ],
+              [
+                "02",
+                "Add your streamers",
+                "Choose the Twitch channels AutoClipR should monitor."
+              ],
+              [
+                "03",
+                "Create clips automatically",
+                "Chat commands and API triggers create clips and save them."
+              ]
+            ].map(([step, title, body]) => (
+              <Card key={step} className="p-5">
+                <p className="text-xs font-semibold text-primary">{step}</p>
+                <h2 className="mt-4 text-base font-semibold text-ink">
+                  {title}
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-muted">{body}</p>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 

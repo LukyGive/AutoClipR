@@ -179,40 +179,14 @@ function StreamerCard({
             </div>
             <div className="flex flex-wrap gap-2">
               {isKeyVisible ? (
-                <>
-                  <button
-                    type="button"
-                    onClick={copyTriggerUrl}
-                    className={buttonClassName({
-                      variant: "secondary",
-                      size: "sm"
-                    })}
-                  >
-                    <Copy className="h-4 w-4" aria-hidden="true" />
-                    {copied ? "Copied" : "Copy"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setIsKeyVisible(false)}
-                    className={buttonClassName({ variant: "ghost", size: "sm" })}
-                  >
-                    <EyeOff className="h-4 w-4" aria-hidden="true" />
-                    Hide
-                  </button>
-                  <form action={rotateExternalTriggerToken}>
-                    <input type="hidden" name="targetId" value={target.id} />
-                    <button
-                      type="submit"
-                      className={buttonClassName({
-                        variant: "secondary",
-                        size: "sm"
-                      })}
-                    >
-                      <RotateCw className="h-4 w-4" aria-hidden="true" />
-                      Regenerate key
-                    </button>
-                  </form>
-                </>
+                <button
+                  type="button"
+                  onClick={() => setIsKeyVisible(false)}
+                  className={buttonClassName({ variant: "ghost", size: "sm" })}
+                >
+                  <EyeOff className="h-4 w-4" aria-hidden="true" />
+                  Hide
+                </button>
               ) : (
                 <button
                   type="button"
@@ -230,9 +204,37 @@ function StreamerCard({
           </div>
 
           {isKeyVisible ? (
-            <code className="mt-3 block break-all rounded border border-line bg-black/30 p-3 text-xs text-zinc-300">
-              {triggerUrl}
-            </code>
+            <div className="mt-3 space-y-3">
+              <code className="block break-all rounded border border-line bg-black/30 p-3 text-xs text-zinc-300">
+                {triggerUrl}
+              </code>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={copyTriggerUrl}
+                  className={buttonClassName({
+                    variant: "secondary",
+                    size: "sm"
+                  })}
+                >
+                  <Copy className="h-4 w-4" aria-hidden="true" />
+                  {copied ? "Copied" : "Copy"}
+                </button>
+                <form action={rotateExternalTriggerToken}>
+                  <input type="hidden" name="targetId" value={target.id} />
+                  <button
+                    type="submit"
+                    className={buttonClassName({
+                      variant: "secondary",
+                      size: "sm"
+                    })}
+                  >
+                    <RotateCw className="h-4 w-4" aria-hidden="true" />
+                    Regenerate key
+                  </button>
+                </form>
+              </div>
+            </div>
           ) : null}
         </div>
       ) : null}

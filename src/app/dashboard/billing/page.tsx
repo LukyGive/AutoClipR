@@ -21,11 +21,11 @@ export default async function BillingPage() {
         currentPeriodEnd={user.subscription?.currentPeriodEnd}
       />
 
-      <section className="mt-8 grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
-        <UsagePanel
-          clipsUsed={usage.clipsUsed}
-          clipsLimit={usage.clipsLimit}
-        />
+      <section className="mt-8 max-w-3xl">
+        <UsagePanel clipsUsed={usage.clipsUsed} clipsLimit={usage.clipsLimit} />
+      </section>
+
+      <section className="mt-8">
         <PlansPanel
           currentPlan={user.plan}
           hasStripeCustomer={Boolean(user.subscription?.stripeCustomerId)}
