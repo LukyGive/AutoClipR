@@ -1,15 +1,23 @@
 "use server";
 
 import { Plan } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import type { Route } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 import { auth } from "@/lib/auth";
 import { isDemoMode } from "@/lib/env";
 import { prisma } from "@/lib/prisma";
 import { billingPlans } from "@/features/billing/plans";
 import { getStripe } from "@/features/billing/stripe";
+import { getI18n } from "@/i18n/server";
+
+export type PromoCodeActionState = {
+  error?: string;
+  success?: string;
+};
 
 export async function createCheckoutSession(formData: FormData) {
   const session = await auth();
@@ -107,4 +115,119 @@ export async function createBillingPortalSession() {
   });
 
   redirect(portalSession.url as Route);
+}
+
+export async function redeemPromoCode(
+  _state: PromoCodeActionState,
+  formData: FormData
+): Promise<PromoCodeActionState> {
+  const session = await auth();
+  const { t } = await getI18n();
+
+  if (!session?.user) {
+    redirect("/login");
+  }
+
+  const code = String(formData.get("code") ?? "")
+    .trim()
+    .toUpperCase();
+
+  if (!code) {
+    return { error: t("promo.invalidCode") };
+  }
+
+  const now = new Date();
+  const promoCode = await prisma.promoCode.findUnique({
+    where: { code },
+    select: {
+      id: true,
+      durationHours: true,
+      maxUses: true,
+      usedCount: true,
+      expiresAt: true
+    }
+  });
+
+  if (!promoCode) {
+    return { error: t("promo.invalidCode") };
+  }
+
+  if (promoCode.expiresAt && promoCode.expiresAt <= now) {
+    return { error: t("promo.codeExpired") };
+  }
+
+  const existingRedemption = await prisma.promoRedemption.findUnique({
+    where: {
+      userId_promoCodeId: {
+        userId: session.user.id,
+        promoCodeId: promoCode.id
+      }
+    },
+    select: { id: true }
+  });
+
+  if (existingRedemption) {
+    return { error: t("promo.codeAlreadyUsed") };
+  }
+
+  const accessEndsAt = new Date(
+    now.getTime() + promoCode.durationHours * 60 * 60 * 1000
+  );
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      const updated = await tx.promoCode.updateMany({
+        where: {
+          id: promoCode.id,
+          usedCount: {
+            lt: promoCode.maxUses
+          }
+        },
+        data: {
+          usedCount: {
+            increment: 1
+          }
+        }
+      });
+
+      if (updated.count === 0) {
+        throw new PromoCodeUsageLimitError();
+      }
+
+      await tx.promoRedemption.create({
+        data: {
+          userId: session.user.id,
+          promoCodeId: promoCode.id,
+          accessEndsAt
+        }
+      });
+    });
+  } catch (error) {
+    if (error instanceof PromoCodeUsageLimitError) {
+      return { error: t("promo.usageLimitReached") };
+    }
+
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return { error: t("promo.codeAlreadyUsed") };
+    }
+
+    throw error;
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/billing");
+
+  return {
+    success: t("promo.proUnlocked", { hours: promoCode.durationHours })
+  };
+}
+
+class PromoCodeUsageLimitError extends Error {
+  constructor() {
+    super("Promo code usage limit reached.");
+    this.name = "PromoCodeUsageLimitError";
+  }
 }

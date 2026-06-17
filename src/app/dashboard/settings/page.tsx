@@ -7,7 +7,7 @@ import { getDashboardPageData } from "@/features/dashboard/dashboard-page-data";
 import { getI18n } from "@/i18n/server";
 
 export default async function SettingsPage() {
-  const { user } = await getDashboardPageData();
+  const { user, effectivePlan } = await getDashboardPageData();
   const { locale, t } = await getI18n();
 
   return (
@@ -51,7 +51,7 @@ export default async function SettingsPage() {
         <Card className="p-6">
           <CardTitle>{t("settings.workspace")}</CardTitle>
           <div className="mt-5 grid gap-4">
-            <ProfileItem label={t("settings.plan")} value={user.plan} />
+            <ProfileItem label={t("settings.plan")} value={effectivePlan} />
             <ProfileItem
               label={t("settings.created")}
               value={user.createdAt.toLocaleDateString(

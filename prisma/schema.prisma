@@ -76,6 +76,7 @@ model User {
   clipRules     ClipRule[]
   speechEvents  SpeechTranscriptEvent[]
   subscription  Subscription?
+  promoRedemptions PromoRedemption[]
 
   @@index([plan])
   @@index([twitchLogin])
@@ -208,7 +209,7 @@ model ClipRule {
   clipDurationSeconds Int               @default(30)
   cooldownSeconds    Int                @default(60)
   lastTriggeredAt    DateTime?
-  permission         ClipRulePermission @default(MODERATORS)
+  permission         ClipRulePermission @default(EVERYONE)
   keywords           String[]           @default([])
   speechInstruction  String?            @db.Text
   notifyOnCreate     Boolean            @default(true)
@@ -232,6 +233,35 @@ model Subscription {
   updatedAt            DateTime           @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PromoCode {
+  id            String   @id @default(cuid())
+  code          String   @unique
+  durationHours Int
+  maxUses       Int
+  usedCount     Int      @default(0)
+  expiresAt     DateTime?
+  createdAt     DateTime @default(now())
+
+  redemptions PromoRedemption[]
+
+  @@index([expiresAt])
+}
+
+model PromoRedemption {
+  id           String   @id @default(cuid())
+  userId       String
+  promoCodeId  String
+  redeemedAt   DateTime @default(now())
+  accessEndsAt DateTime
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  promoCode PromoCode @relation(fields: [promoCodeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, promoCodeId])
+  @@index([userId, accessEndsAt])
+  @@index([promoCodeId])
 }
 
 model StripeWebhookEvent {

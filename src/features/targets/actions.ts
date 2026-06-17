@@ -9,6 +9,7 @@ import { isDemoMode } from "@/lib/env";
 import { prisma } from "@/lib/prisma";
 import { createSecretToken } from "@/lib/tokens";
 import { getPlanLimits } from "@/features/billing/plan-limits";
+import { getEffectivePlan } from "@/features/billing/access";
 import { getTwitchUserByLogin } from "@/features/twitch/helix";
 import { getValidTwitchAccessToken } from "@/features/twitch/oauth";
 import { getI18n } from "@/i18n/server";
@@ -197,7 +198,8 @@ async function getStreamerLimitError(userId: string) {
     return "User not found.";
   }
 
-  const limit = getPlanLimits(user.plan).maxStreamers;
+  const effectiveAccess = await getEffectivePlan(userId, user.plan);
+  const limit = getPlanLimits(effectiveAccess.plan).maxStreamers;
 
   if (limit !== null && user._count.clipTargets >= limit) {
     return t("actions.upgradeForMoreStreamers");

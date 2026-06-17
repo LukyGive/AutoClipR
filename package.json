@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "worker:chat": "tsx src/workers/twitch-chat-worker.ts",
+    "promo:create": "tsx scripts/create-promo-code.ts",
     "check:env": "node scripts/check-env.mjs",
     "demo:seed": "prisma db seed",
     "demo:setup": "cp .env.demo .env && npm install && npm run db:up && npm run prisma:generate && npm run prisma:migrate && npm run demo:seed",

@@ -332,6 +332,18 @@ export const fr = {
     streamersLimit: "{count} streamers",
     upgradeTo: "Passer à {plan}"
   },
+  promo: {
+    activeUntil: "Accès Pro promo actif jusqu’au {date}.",
+    codeAlreadyUsed: "Code déjà utilisé",
+    codeExpired: "Code expiré",
+    description: "Débloquez un accès Pro temporaire sans abonnement.",
+    invalidCode: "Code invalide",
+    placeholder: "Entrer un code promo",
+    proUnlocked: "Pro débloqué pour {hours} heures",
+    redeem: "Utiliser",
+    title: "Code promo",
+    usageLimitReached: "Limite d’utilisation du code atteinte"
+  },
   trial: {
     badge: "Essai 7 jours",
     endsIn: "L’essai Pro se termine dans {days} {unit}",

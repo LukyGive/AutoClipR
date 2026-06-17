@@ -1,3 +1,5 @@
+import { ClipRulePermission } from "@prisma/client";
+
 import { prisma } from "@/lib/prisma";
 
 export async function ensureUserReady(userId: string) {
@@ -25,7 +27,8 @@ export async function ensureUserReady(userId: string) {
         id: `default-${userId}`,
         userId,
         command: "!clip",
-        cooldownSeconds: 60
+        cooldownSeconds: 60,
+        permission: ClipRulePermission.EVERYONE
       },
       update: {}
     }),

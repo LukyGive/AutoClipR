@@ -24,8 +24,15 @@ import { TargetSettings } from "@/features/targets/target-settings";
 import { getI18n } from "@/i18n/server";
 
 export default async function DashboardPage() {
-  const { user, analytics, usage, onboarding, baseUrl, hasClipDownloadScope } =
-    await getDashboardPageData();
+  const {
+    user,
+    analytics,
+    usage,
+    onboarding,
+    effectivePlan,
+    baseUrl,
+    hasClipDownloadScope
+  } = await getDashboardPageData();
   const { t } = await getI18n();
   const connectedLabel = user.twitchLogin
     ? `@${user.twitchLogin}`
@@ -116,7 +123,7 @@ export default async function DashboardPage() {
         <TargetSettings
           targets={user.clipTargets}
           baseUrl={baseUrl}
-          currentPlan={user.plan}
+          currentPlan={effectivePlan}
         />
         <CreateClipForm disabled={!user.twitchUserId} />
       </section>

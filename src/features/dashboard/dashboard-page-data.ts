@@ -4,6 +4,7 @@ import { ClipTriggerType } from "@prisma/client";
 
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getEffectivePlan } from "@/features/billing/access";
 import { getDashboardAnalytics } from "@/features/analytics/queries";
 import { getUsageSummary } from "@/features/usage/usage-service";
 import { ensureUserReady } from "@/features/users/ensure-user-ready";
@@ -31,12 +32,13 @@ export async function getDashboardPageData() {
     redirect("/login");
   }
 
-  const [usage, requestHeaders, cookieStore, onboarding] = await Promise.all([
-    getUsageSummary(user.id, user.plan),
+  const [effectiveAccess, requestHeaders, cookieStore, onboarding] = await Promise.all([
+    getEffectivePlan(user.id, user.plan),
     headers(),
     cookies(),
     getOnboardingSummary(user.id)
   ]);
+  const usage = await getUsageSummary(user.id, effectiveAccess.plan);
   const baseUrl =
     requestHeaders.get("origin") ??
     `${requestHeaders.get("x-forwarded-proto") ?? "http"}://${requestHeaders.get("host") ?? "localhost:3000"}`;
@@ -45,6 +47,8 @@ export async function getDashboardPageData() {
     user,
     analytics,
     usage,
+    effectivePlan: effectiveAccess.plan,
+    promoAccessEndsAt: effectiveAccess.promoAccessEndsAt,
     onboarding: {
       ...onboarding,
       hasDownloadedClip:

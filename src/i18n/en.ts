@@ -324,6 +324,18 @@ export const en = {
     streamersLimit: "{count} streamers",
     upgradeTo: "Upgrade to {plan}"
   },
+  promo: {
+    activeUntil: "Promo Pro access active until {date}.",
+    codeAlreadyUsed: "Code already used",
+    codeExpired: "Code expired",
+    description: "Unlock temporary Pro access without a subscription.",
+    invalidCode: "Invalid code",
+    placeholder: "Enter promo code",
+    proUnlocked: "Pro unlocked for {hours} hours",
+    redeem: "Redeem",
+    title: "Promo Code",
+    usageLimitReached: "Code usage limit reached"
+  },
   trial: {
     badge: "7-day trial",
     endsIn: "Pro trial ends in {days} {unit}",

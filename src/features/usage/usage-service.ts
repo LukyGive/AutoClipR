@@ -1,6 +1,7 @@
 import type { Plan } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
+import { getEffectivePlan } from "@/features/billing/access";
 import { getCurrentBillingPeriodStart, getPlan } from "@/features/billing/plans";
 
 export async function getUsageSummary(userId: string, plan: Plan) {
@@ -35,7 +36,8 @@ export async function getUsageSummary(userId: string, plan: Plan) {
 }
 
 export async function canCreateClip(userId: string, plan: Plan) {
-  const usage = await getUsageSummary(userId, plan);
+  const effectiveAccess = await getEffectivePlan(userId, plan);
+  const usage = await getUsageSummary(userId, effectiveAccess.plan);
 
   return {
     allowed: usage.clipsUsed < usage.clipsLimit,

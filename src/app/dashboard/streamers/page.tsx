@@ -8,7 +8,7 @@ import { TargetSettings } from "@/features/targets/target-settings";
 import { getI18n } from "@/i18n/server";
 
 export default async function StreamersPage() {
-  const { user, baseUrl } = await getDashboardPageData();
+  const { user, baseUrl, effectivePlan } = await getDashboardPageData();
   const { t } = await getI18n();
 
   return (
@@ -23,7 +23,7 @@ export default async function StreamersPage() {
         <TargetSettings
           targets={user.clipTargets}
           baseUrl={baseUrl}
-          currentPlan={user.plan}
+          currentPlan={effectivePlan}
         />
         <Card className="p-6">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">

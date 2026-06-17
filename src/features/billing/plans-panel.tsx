@@ -11,13 +11,15 @@ import {
 import { getI18n } from "@/i18n/server";
 
 export async function PlansPanel({
-  currentPlan,
+  effectivePlan,
+  promoAccessEndsAt,
   hasStripeCustomer
 }: {
-  currentPlan: Plan;
+  effectivePlan: Plan;
+  promoAccessEndsAt: Date | null;
   hasStripeCustomer: boolean;
 }) {
-  const { t } = await getI18n();
+  const { locale, t } = await getI18n();
 
   return (
     <Card className="p-6">
@@ -46,7 +48,7 @@ export async function PlansPanel({
             description={getPlanDescription(plan.id, t)}
             highlighted={plan.id === Plan.PRO}
             badge={
-              currentPlan === plan.id
+              effectivePlan === plan.id
                 ? t("billing.current")
                 : plan.id === Plan.PRO
                   ? t("pricing.popular")
@@ -64,7 +66,7 @@ export async function PlansPanel({
             ]}
             action={
               plan.id !== Plan.FREE &&
-              currentPlan !== plan.id &&
+              effectivePlan !== plan.id &&
               !hasStripeCustomer ? (
                 <form action={createCheckoutSession}>
                   <input type="hidden" name="plan" value={plan.id} />
@@ -81,6 +83,15 @@ export async function PlansPanel({
           />
         ))}
       </div>
+      {promoAccessEndsAt ? (
+        <p className="mt-4 rounded-lg border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-violet-100">
+          {t("promo.activeUntil", {
+            date: promoAccessEndsAt.toLocaleString(
+              locale === "fr" ? "fr-FR" : "en-US"
+            )
+          })}
+        </p>
+      ) : null}
     </Card>
   );
 }
