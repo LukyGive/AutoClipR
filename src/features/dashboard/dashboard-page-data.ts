@@ -1,7 +1,9 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { ClipTriggerType } from "@prisma/client";
 
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { getDashboardAnalytics } from "@/features/analytics/queries";
 import { getUsageSummary } from "@/features/usage/usage-service";
 import { ensureUserReady } from "@/features/users/ensure-user-ready";
@@ -28,9 +30,10 @@ export async function getDashboardPageData() {
     redirect("/login");
   }
 
-  const [usage, requestHeaders] = await Promise.all([
+  const [usage, requestHeaders, onboarding] = await Promise.all([
     getUsageSummary(user.id, user.plan),
-    headers()
+    headers(),
+    getOnboardingSummary(user.id)
   ]);
   const baseUrl =
     requestHeaders.get("origin") ??
@@ -40,7 +43,35 @@ export async function getDashboardPageData() {
     user,
     analytics,
     usage,
+    onboarding,
     baseUrl,
     hasClipDownloadScope: hasAnyScope(twitchScopes, TWITCH_CLIP_DOWNLOAD_SCOPES)
+  };
+}
+
+async function getOnboardingSummary(userId: string) {
+  const [totalClips, chatCommandClips, apiTriggerClips] = await Promise.all([
+    prisma.clip.count({ where: { userId } }),
+    prisma.clip.count({
+      where: {
+        userId,
+        triggerType: ClipTriggerType.CHAT_COMMAND
+      }
+    }),
+    prisma.clip.count({
+      where: {
+        userId,
+        triggerType: ClipTriggerType.MANUAL,
+        triggerValue: {
+          startsWith: "external:"
+        }
+      }
+    })
+  ]);
+
+  return {
+    totalClips,
+    chatCommandClips,
+    apiTriggerClips
   };
 }

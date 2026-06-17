@@ -8,6 +8,7 @@ import {
   Clapperboard,
   CreditCard,
   LayoutDashboard,
+  LifeBuoy,
   RadioTower,
   Settings,
   Video
@@ -23,6 +24,7 @@ const navItems = [
   { href: "/dashboard/streamers", labelKey: "nav.streamers", icon: RadioTower },
   { href: "/dashboard/ai-triggers", labelKey: "nav.aiTriggers", icon: Brain },
   { href: "/dashboard/billing", labelKey: "nav.billing", icon: CreditCard },
+  { href: "/dashboard/support", labelKey: "nav.support", icon: LifeBuoy },
   { href: "/dashboard/settings", labelKey: "nav.settings", icon: Settings }
 ] as const;
 

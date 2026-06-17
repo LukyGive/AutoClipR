@@ -35,6 +35,7 @@ export const en = {
     pricing: "Pricing",
     rules: "Rules",
     settings: "Settings",
+    support: "Support",
     streamers: "Streamers"
   },
   appShell: {
@@ -150,6 +151,31 @@ export const en = {
     totalClips: "Total clips",
     channelsMonitored: "Channels monitored by the chat worker.",
     workerListens: "Worker listens when deployed and rule is active."
+  },
+  onboarding: {
+    addStreamer: "Add your first streamer",
+    addStreamerDescription:
+      "Choose the Twitch channel the chat worker should monitor first.",
+    completed: "Completed",
+    completeMessage: "AutoClipR is fully configured.",
+    configureCommand: "Configure command",
+    connectTwitch: "Connect Twitch",
+    connectTwitchDescription:
+      "Authorize AutoClipR with Twitch so clips can be created securely.",
+    createFirstClip: "Create your first clip",
+    createFirstClipDescription:
+      "Run a manual clip to confirm Twitch clip creation works end to end.",
+    description:
+      "Finish these steps to validate your clip workflow before relying on it live.",
+    openApiTrigger: "Open API trigger",
+    progress: "{completed}/{total} completed",
+    testApiTrigger: "Test an API trigger",
+    testApiTriggerDescription:
+      "Use an external trigger key from a streamer card to create a clip.",
+    testChatCommand: "Test a chat command",
+    testChatCommandDescription:
+      "Send your configured command in chat and confirm AutoClipR saves the clip.",
+    title: "Getting Started"
   },
   analytics: {
     analytics: "Analytics",
@@ -296,6 +322,24 @@ export const en = {
     twitchAccountHint: "OAuth profile used for clips and chat.",
     twitchUserId: "Twitch user ID",
     workspace: "Workspace"
+  },
+  support: {
+    askQuestion: "Ask a question",
+    askQuestionDescription:
+      "For product questions, setup help or partnership discussions, send us a message.",
+    description:
+      "Get help with setup, Twitch permissions, clip creation or billing questions.",
+    emailQuestions: "Email questions",
+    emailSupport: "Email support",
+    needHelp: "Need help?",
+    needHelpDescription:
+      "Open a support ticket or join Discord for faster guidance from the AutoClipR team.",
+    openDiscord: "Open Discord",
+    openTicket: "Open a support ticket",
+    title: "Support",
+    trustDescription:
+      "Do not share Twitch tokens, API trigger keys or private billing data in public channels.",
+    trustTitle: "Safe support"
   },
   actions: {
     enterValidTwitchLogin: "Enter a valid Twitch login.",
