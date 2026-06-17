@@ -1,13 +1,16 @@
 import Link from "next/link";
 import {
   ArrowRight,
+  Brain,
+  BriefcaseBusiness,
   Check,
   Clapperboard,
   Command,
   Download,
   KeyRound,
   Sparkles,
-  TimerReset
+  Scissors,
+  Smartphone
 } from "lucide-react";
 
 import { auth } from "@/lib/auth";
@@ -36,9 +39,32 @@ const features = [
     descriptionKey: "landing.featureDownloadsBody"
   },
   {
-    icon: TimerReset,
-    titleKey: "landing.featureTrialTitle",
-    descriptionKey: "landing.featureTrialBody"
+    icon: Brain,
+    titleKey: "landing.featureAiTitle",
+    descriptionKey: "landing.featureAiBody"
+  }
+];
+
+const audiences = [
+  {
+    icon: Clapperboard,
+    titleKey: "landing.audienceStreamersTitle",
+    descriptionKey: "landing.audienceStreamersBody"
+  },
+  {
+    icon: Scissors,
+    titleKey: "landing.audienceEditorsTitle",
+    descriptionKey: "landing.audienceEditorsBody"
+  },
+  {
+    icon: Smartphone,
+    titleKey: "landing.audienceTiktokTitle",
+    descriptionKey: "landing.audienceTiktokBody"
+  },
+  {
+    icon: BriefcaseBusiness,
+    titleKey: "landing.audienceAgenciesTitle",
+    descriptionKey: "landing.audienceAgenciesBody"
   }
 ];
 
@@ -119,9 +145,11 @@ export default async function HomePage() {
           </div>
           <div className="mt-8 grid gap-3 text-sm text-zinc-300 sm:grid-cols-3">
             {[
-              t("landing.officialTwitchApi"),
-              t("landing.chatWorkerReady"),
-              t("landing.builtForScale")
+              t("landing.bulletChatCommands"),
+              t("landing.bulletApiTriggers"),
+              t("landing.bulletFastDownloads"),
+              t("landing.bulletFreeTrial"),
+              t("landing.bulletAiComingSoon")
             ].map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <Check className="h-4 w-4 text-success" aria-hidden="true" />
@@ -137,7 +165,7 @@ export default async function HomePage() {
       <section className="border-y border-line bg-black/20">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
           <Badge>{t("landing.howItWorks")}</Badge>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
+          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {[
               [
                 "01",
@@ -153,6 +181,11 @@ export default async function HomePage() {
                 "03",
                 t("landing.step3Title"),
                 t("landing.step3Body")
+              ],
+              [
+                "04",
+                t("landing.step4Title"),
+                t("landing.step4Body")
               ]
             ].map(([step, title, body]) => (
               <Card key={step} className="p-5">
@@ -164,6 +197,34 @@ export default async function HomePage() {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
+        <div className="max-w-2xl">
+          <Badge>{t("landing.builtFor")}</Badge>
+          <h2 className="mt-4 text-3xl font-semibold tracking-normal text-ink md:text-4xl">
+            {t("landing.builtForTitle")}
+          </h2>
+        </div>
+        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {audiences.map((audience) => {
+            const Icon = audience.icon;
+
+            return (
+              <Card key={audience.titleKey} className="p-5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <h3 className="mt-5 text-base font-semibold text-ink">
+                  {t(audience.titleKey)}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-muted">
+                  {t(audience.descriptionKey)}
+                </p>
+              </Card>
+            );
+          })}
         </div>
       </section>
 

@@ -19,7 +19,7 @@ export const billingPlans: BillingPlan[] = [
   {
     id: Plan.FREE,
     name: "Free",
-    description: "Pour valider le workflow AutoClipR.",
+    description: "For testing AutoClipR.",
     monthlyClipLimit: getPlanLimits(Plan.FREE).maxClips,
     monthlySpeechEventLimit: 100,
     maxStreamers: getPlanLimits(Plan.FREE).maxStreamers,
@@ -29,7 +29,7 @@ export const billingPlans: BillingPlan[] = [
   {
     id: Plan.PRO,
     name: "Pro",
-    description: "Pour streamers actifs et petites communautés.",
+    description: "For streamers, editors and content creators.",
     monthlyClipLimit: getPlanLimits(Plan.PRO).maxClips,
     monthlySpeechEventLimit: 10000,
     maxStreamers: getPlanLimits(Plan.PRO).maxStreamers,
@@ -42,7 +42,7 @@ export const billingPlans: BillingPlan[] = [
   {
     id: Plan.BUSINESS,
     name: "Business",
-    description: "Pour équipes, agences et chaînes à fort volume.",
+    description: "For agencies, esports teams and multi-channel operations.",
     monthlyClipLimit: getPlanLimits(Plan.BUSINESS).maxClips,
     monthlySpeechEventLimit: 100000,
     maxStreamers: getPlanLimits(Plan.BUSINESS).maxStreamers,

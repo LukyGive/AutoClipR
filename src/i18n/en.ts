@@ -41,60 +41,83 @@ export const en = {
   },
   appShell: {
     botStatus: "Bot status",
-    createMonitorAutomate: "Create, monitor and automate Twitch clips.",
+    createMonitorAutomate: "Capture Twitch moments and turn them into content.",
     readyForChatCommands: "Ready for chat commands",
     railwayWorkerHint:
       "Keep the Railway worker online to listen for Twitch chat triggers.",
     welcomeBack: "Welcome back"
   },
   landing: {
-    badge: "Twitch automation for serious streamers",
-    builtForScale: "Built for scale",
-    chatWorkerReady: "Chat worker ready",
-    ctaPrimary: "Start free trial",
-    ctaSecondary: "View demo",
+    audienceAgenciesBody:
+      "Manage multiple creators and centralize clip creation.",
+    audienceAgenciesTitle: "Agencies & Managers",
+    audienceEditorsBody:
+      "Capture highlights without reviewing hours of VODs.",
+    audienceEditorsTitle: "Video Editors",
+    audienceStreamersBody: "Create clips instantly from your Twitch chat.",
+    audienceStreamersTitle: "Streamers",
+    audienceTiktokBody:
+      "Turn livestream moments into a steady content pipeline.",
+    audienceTiktokTitle: "TikTok Creators",
+    badge: "Content capture platform for Twitch workflows",
+    builtFor: "Built for",
+    builtForTitle: "Capture moments once. Repurpose them everywhere.",
+    bulletAiComingSoon: "AI Voice Detection (Coming Soon)",
+    bulletApiTriggers: "API Triggers",
+    bulletChatCommands: "Chat Commands",
+    bulletFastDownloads: "Fast Clip Downloads",
+    bulletFreeTrial: "7-Day Free Trial",
+    ctaPrimary: "Start Free Trial",
+    ctaSecondary: "Watch Demo",
     dashboardPreview: "Dashboard preview",
     dashboardPreviewBotOnline: "Bot online",
     dashboardPreviewManualClip: "Manual clip",
     dashboardPreviewWelcome: "Welcome back",
     dashboardPreviewBody:
-      "Monitor clips, streamers, bot status and usage from a quiet command center.",
-    dashboardPreviewTitle: "Everything a streamer needs, nothing noisy.",
+      "Monitor captured clips, creators, bot status and usage from a quiet command center.",
+    dashboardPreviewTitle: "Everything your content workflow needs, nothing noisy.",
+    featureAiBody:
+      "Automatic voice and keyword clipping is coming soon.",
+    featureAiTitle: "Future AI Detection",
     featureApiBody:
-      "Trigger clips from external buttons, tools or overlays with secure URLs.",
+      "Trigger clips from external tools and automations.",
     featureApiTitle: "API triggers",
     featureChatBody:
-      "Let moderators or viewers create clips with a clean command like !clip.",
+      "Create clips directly from Twitch chat.",
     featureChatTitle: "Chat commands",
-    featureDownloadsBody: "Open, edit and download ready clips from your dashboard.",
-    featureDownloadsTitle: "Clip downloads",
+    featureDownloadsBody:
+      "Download clips instantly for editing workflows.",
+    featureDownloadsTitle: "Fast Downloads",
     featureTrialBody:
       "Start with Pro features and validate your workflow before paying.",
     featureTrialTitle: "7-day Pro trial",
-    featuresTitle: "Built around real streamer workflows.",
-    footer: "AutoClipR. Built for Twitch creators.",
+    featuresTitle: "A content capture workflow for every channel.",
+    footer: "AutoClipR. Content capture for Twitch moments.",
     heroSubtitle:
-      "AutoClipR turns chat commands and API triggers into Twitch clips instantly. AI voice detection is coming soon.",
-    heroTitle: "Create Twitch clips automatically.",
+      "AutoClipR automatically captures Twitch highlights using chat commands, API triggers and future AI detection so creators can publish more content in less time.",
+    heroTitle: "Turn Twitch moments into TikToks, Shorts and Reels automatically.",
     howItWorks: "How it works",
     officialTwitchApi: "Official Twitch API",
-    pricingTitle: "Start free. Upgrade when clips become part of your workflow.",
+    pricingTitle: "Start free. Upgrade when clips become part of your content workflow.",
     step1Body: "Secure OAuth connects your creator account.",
     step1Title: "Connect Twitch",
-    step2Body: "Choose the Twitch channels AutoClipR should monitor.",
-    step2Title: "Add your streamers",
+    step2Body: "Choose the creators and channels AutoClipR should monitor.",
+    step2Title: "Add Streamers",
     step3Body: "Chat commands and API triggers create clips and save them.",
-    step3Title: "Create clips automatically"
+    step3Title: "Create Clips Automatically",
+    step4Body: "Download highlights and repurpose them for TikTok, Shorts and Reels.",
+    step4Title: "Download and Repurpose for TikTok, Shorts and Reels"
   },
   pricing: {
-    businessDescription: "For teams and agencies.",
-    freeDescription: "For testing the workflow.",
+    businessDescription:
+      "For agencies, esports teams and multi-channel operations.",
+    freeDescription: "For testing AutoClipR.",
     manualClips: "Manual clips",
     multiChannelSupport: "Multi-channel support",
     oneStreamerTarget: "One streamer target",
     popular: "Popular",
     priorityCapacity: "Priority capacity",
-    proDescription: "For active streamers."
+    proDescription: "For streamers, editors and content creators."
   },
   faq: {
     answer1:
@@ -116,7 +139,7 @@ export const en = {
     enterDemo: "Enter demo",
     heroBody:
       "Connect Twitch, configure your streamers and let the chat worker turn commands into official Twitch clips.",
-    heroTitle: "Create clips from the moments your chat already sees.",
+    heroTitle: "Capture Twitch moments and turn them into short-form content.",
     oauth: "Official OAuth",
     scope: "clips:edit scope",
     secureSignIn: "Secure sign in",
@@ -139,7 +162,7 @@ export const en = {
     currentBillingUsage: "Current billing period usage.",
     currentMonthlyRatio: "Current monthly ready/failed ratio.",
     description:
-      "Monitor your Twitch clip automation, active streamers and Bot Rules from one command center.",
+      "Capture Twitch moments and turn them into content.",
     estimatedTwoMinutes: "Estimated at 2 minutes saved per clip.",
     hoursSaved: "Hours Saved",
     clipsThisMonth: "Clips this month",
@@ -150,7 +173,7 @@ export const en = {
     streamerTargets: "Streamer targets",
     title: "Welcome back",
     totalClips: "Total clips",
-    channelsMonitored: "Channels monitored by the chat worker.",
+    channelsMonitored: "Creators currently monitored by AutoClipR.",
     workerListens: "Worker listens when deployed and rule is active."
   },
   onboarding: {

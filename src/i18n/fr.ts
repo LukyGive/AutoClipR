@@ -41,16 +41,35 @@ export const fr = {
   },
   appShell: {
     botStatus: "Statut du bot",
-    createMonitorAutomate: "Crée, surveille et automatise tes clips Twitch.",
+    createMonitorAutomate:
+      "Capture des moments Twitch et transforme-les en contenu.",
     readyForChatCommands: "Prêt pour les commandes chat",
     railwayWorkerHint:
       "Garde le worker Railway en ligne pour écouter les déclencheurs du chat Twitch.",
     welcomeBack: "Bon retour"
   },
   landing: {
-    badge: "Automatisation Twitch pour streamers sérieux",
-    builtForScale: "Pensé pour scaler",
-    chatWorkerReady: "Worker chat prêt",
+    audienceAgenciesBody:
+      "Gérez plusieurs créateurs et centralisez la création de clips.",
+    audienceAgenciesTitle: "Agences & Managers",
+    audienceEditorsBody:
+      "Capturez les meilleurs moments sans revoir des heures de VOD.",
+    audienceEditorsTitle: "Monteurs vidéo",
+    audienceStreamersBody:
+      "Créez des clips instantanément depuis votre chat Twitch.",
+    audienceStreamersTitle: "Streamers",
+    audienceTiktokBody:
+      "Transformez les moments de live en pipeline de contenu régulier.",
+    audienceTiktokTitle: "Créateurs TikTok",
+    badge: "Plateforme de capture de contenu pour workflows Twitch",
+    builtFor: "Pensé pour",
+    builtForTitle:
+      "Capturez les moments une fois. Réutilisez-les partout.",
+    bulletAiComingSoon: "Détection vocale IA (Bientôt)",
+    bulletApiTriggers: "Déclencheurs API",
+    bulletChatCommands: "Commandes chat",
+    bulletFastDownloads: "Téléchargements rapides",
+    bulletFreeTrial: "Essai gratuit 7 jours",
     ctaPrimary: "Démarrer l’essai gratuit",
     ctaSecondary: "Voir la démo",
     dashboardPreview: "Aperçu du dashboard",
@@ -58,44 +77,54 @@ export const fr = {
     dashboardPreviewManualClip: "Clip manuel",
     dashboardPreviewWelcome: "Bon retour",
     dashboardPreviewBody:
-      "Surveille tes clips, streamers, statut du bot et usage depuis un centre de commande clair.",
-    dashboardPreviewTitle: "Tout ce qu’un streamer doit voir, sans bruit.",
+      "Surveillez les clips capturés, créateurs, statut du bot et usage depuis un centre de commande clair.",
+    dashboardPreviewTitle:
+      "Tout ce qu’un workflow contenu doit voir, sans bruit.",
+    featureAiBody:
+      "La découpe automatique par voix et mots-clés arrive bientôt.",
+    featureAiTitle: "Future détection IA",
     featureApiBody:
-      "Déclenche des clips depuis des boutons externes, outils ou overlays avec des URLs sécurisées.",
+      "Déclenchez des clips depuis des outils externes et automatisations.",
     featureApiTitle: "Déclencheurs API",
     featureChatBody:
-      "Permets aux modérateurs ou viewers de créer des clips avec une commande simple comme !clip.",
+      "Créez des clips directement depuis le chat Twitch.",
     featureChatTitle: "Commandes chat",
     featureDownloadsBody:
-      "Ouvre, modifie et télécharge tes clips prêts depuis le dashboard.",
-    featureDownloadsTitle: "Téléchargement de clips",
+      "Téléchargez les clips instantanément pour les workflows de montage.",
+    featureDownloadsTitle: "Téléchargements rapides",
     featureTrialBody:
       "Commence avec les fonctionnalités Pro et valide ton workflow avant de payer.",
     featureTrialTitle: "Essai Pro de 7 jours",
-    featuresTitle: "Construit pour les vrais workflows de streamers.",
-    footer: "AutoClipR. Conçu pour les créateurs Twitch.",
+    featuresTitle: "Un workflow de capture de contenu pour chaque canal.",
+    footer: "AutoClipR. Capture de contenu pour moments Twitch.",
     heroSubtitle:
-      "AutoClipR transforme les commandes chat et déclencheurs API en clips Twitch instantanément. La détection vocale IA arrive bientôt.",
-    heroTitle: "Crée des clips Twitch automatiquement.",
+      "AutoClipR capture automatiquement les highlights Twitch avec les commandes chat, déclencheurs API et future détection IA pour permettre aux créateurs de publier plus de contenu en moins de temps.",
+    heroTitle:
+      "Transformez les moments Twitch en TikToks, Shorts et Reels automatiquement.",
     howItWorks: "Comment ça marche",
     officialTwitchApi: "API Twitch officielle",
-    pricingTitle: "Commence gratuitement. Passe au plan supérieur quand les clips deviennent essentiels.",
+    pricingTitle:
+      "Commencez gratuitement. Passez au plan supérieur quand les clips deviennent essentiels au workflow contenu.",
     step1Body: "OAuth sécurisé connecte ton compte créateur.",
     step1Title: "Connecte Twitch",
-    step2Body: "Choisis les chaînes Twitch qu’AutoClipR doit surveiller.",
-    step2Title: "Ajoute tes streamers",
+    step2Body: "Choisissez les créateurs et chaînes qu’AutoClipR doit surveiller.",
+    step2Title: "Ajouter des streamers",
     step3Body: "Les commandes chat et déclencheurs API créent et sauvegardent les clips.",
-    step3Title: "Crée des clips automatiquement"
+    step3Title: "Créer des clips automatiquement",
+    step4Body:
+      "Téléchargez les highlights et réutilisez-les pour TikTok, Shorts et Reels.",
+    step4Title: "Télécharger et réutiliser pour TikTok, Shorts et Reels"
   },
   pricing: {
-    businessDescription: "Pour les équipes et agences.",
-    freeDescription: "Pour tester le workflow.",
+    businessDescription:
+      "Pour les agences, équipes esport et opérations multi-chaînes.",
+    freeDescription: "Pour tester AutoClipR.",
     manualClips: "Clips manuels",
     multiChannelSupport: "Support multi-chaînes",
     oneStreamerTarget: "Un streamer cible",
     popular: "Populaire",
     priorityCapacity: "Capacité prioritaire",
-    proDescription: "Pour les streamers actifs."
+    proDescription: "Pour les streamers, monteurs et créateurs de contenu."
   },
   faq: {
     answer1:
@@ -117,7 +146,8 @@ export const fr = {
     enterDemo: "Entrer dans la démo",
     heroBody:
       "Connecte Twitch, configure tes streamers et laisse le worker chat transformer les commandes en clips Twitch officiels.",
-    heroTitle: "Crée des clips depuis les moments que ton chat voit déjà.",
+    heroTitle:
+      "Capturez les moments Twitch et transformez-les en contenu court.",
     oauth: "OAuth officiel",
     scope: "Scope clips:edit",
     secureSignIn: "Connexion sécurisée",
@@ -140,7 +170,7 @@ export const fr = {
     currentBillingUsage: "Usage de la période de facturation actuelle.",
     currentMonthlyRatio: "Ratio prêts/échoués sur le mois en cours.",
     description:
-      "Surveille l’automatisation de tes clips Twitch, les streamers actifs et les règles du bot depuis un centre de commande.",
+      "Capturez des moments Twitch et transformez-les en contenu.",
     estimatedTwoMinutes: "Estimé à 2 minutes gagnées par clip.",
     hoursSaved: "Heures gagnées",
     clipsThisMonth: "Clips ce mois-ci",
@@ -151,7 +181,7 @@ export const fr = {
     streamerTargets: "Streamers ciblés",
     title: "Bon retour",
     totalClips: "Clips totaux",
-    channelsMonitored: "Chaînes surveillées par le worker chat.",
+    channelsMonitored: "Créateurs actuellement surveillés par AutoClipR.",
     workerListens: "Le worker écoute quand il est déployé et que la règle est active."
   },
   onboarding: {

@@ -11,7 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "AutoClipR",
   description:
-    "Create Twitch clips automatically from chat commands and AI triggers."
+    "Turn Twitch moments into TikToks, Shorts and Reels automatically."
 };
 
 export default function RootLayout({
@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="en">
       <body className={inter.className}>{children}</body>
     </html>
   );
