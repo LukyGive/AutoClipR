@@ -1,6 +1,7 @@
 import type { SubscriptionStatus } from "@prisma/client";
 import { Sparkles } from "lucide-react";
 
+import { LocalDate } from "@/components/ui/local-date";
 import { getI18n } from "@/i18n/server";
 
 export async function TrialBanner({
@@ -14,7 +15,7 @@ export async function TrialBanner({
     return null;
   }
 
-  const { locale, t } = await getI18n();
+  const { t } = await getI18n();
   const now = new Date();
   const daysRemaining = Math.max(
     0,
@@ -37,10 +38,9 @@ export async function TrialBanner({
             </p>
             <p className="mt-1 text-sm text-muted">
               {t("trial.endsOn", {
-                date: currentPeriodEnd.toLocaleDateString(
-                  locale === "fr" ? "fr-FR" : "en-US"
-                )
+                date: ""
               })}
+              <LocalDate date={currentPeriodEnd} variant="trialEnd" />
             </p>
           </div>
         </div>

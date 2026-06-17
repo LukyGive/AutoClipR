@@ -4,6 +4,7 @@ import type { Clip } from "@prisma/client";
 import { buttonClassName } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
+import { LocalDate } from "@/components/ui/local-date";
 import { StatusPill } from "@/components/ui/status-pill";
 import { DownloadClipButton } from "@/features/clips/download-clip-button";
 import { getI18n } from "@/i18n/server";
@@ -29,7 +30,7 @@ export async function RecentClips({
   >[];
   hasDownloadScope: boolean;
 }) {
-  const { locale, t } = await getI18n();
+  const { t } = await getI18n();
 
   return (
     <Card className="p-6">
@@ -55,7 +56,6 @@ export async function RecentClips({
               key={clip.id}
               clip={clip}
               hasDownloadScope={hasDownloadScope}
-              locale={locale}
               t={t}
             />
           ))
@@ -68,7 +68,6 @@ export async function RecentClips({
 function ClipCard({
   clip,
   hasDownloadScope,
-  locale,
   t
 }: {
   clip: Pick<
@@ -86,7 +85,6 @@ function ClipCard({
     | "createdAt"
   >;
   hasDownloadScope: boolean;
-  locale: "en" | "fr";
   t: Awaited<ReturnType<typeof getI18n>>["t"];
 }) {
   const canDownload = clip.status === "READY" && Boolean(clip.twitchClipId);
@@ -102,7 +100,7 @@ function ClipCard({
             {clip.broadcasterName ??
               clip.broadcasterLogin ??
               t("common.unknownChannel")}{" "}
-            - {clip.createdAt.toLocaleString(locale === "fr" ? "fr-FR" : "en-US")}
+            - <LocalDate date={clip.createdAt} variant="dateTime" />
           </p>
         </div>
         <StatusPill status={clip.status} />

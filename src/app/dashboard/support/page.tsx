@@ -4,7 +4,7 @@ import { AppShell } from "@/components/app/app-shell";
 import { buttonClassName } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
-import { getDashboardPageData } from "@/features/dashboard/dashboard-page-data";
+import { getSupportPageData } from "@/features/dashboard/dashboard-page-data";
 import { getI18n } from "@/i18n/server";
 
 const discordUrl = "https://discord.gg/QBQC6K68sT";
@@ -12,7 +12,7 @@ const supportEmail = "support@autoclipr.app";
 const questionsEmail = "contact@autoclipr.app";
 
 export default async function SupportPage() {
-  const { user } = await getDashboardPageData();
+  const { user } = await getSupportPageData();
   const { t } = await getI18n();
 
   return (

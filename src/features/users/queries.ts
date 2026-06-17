@@ -46,6 +46,20 @@ export async function getUserDashboard(userId: string) {
           currentPeriodEnd: true,
           stripeCustomerId: true
         }
+      },
+      promoRedemptions: {
+        where: {
+          accessEndsAt: {
+            gt: new Date()
+          }
+        },
+        orderBy: {
+          accessEndsAt: "desc"
+        },
+        take: 1,
+        select: {
+          accessEndsAt: true
+        }
       }
     }
   });

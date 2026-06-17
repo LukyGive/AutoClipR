@@ -1,14 +1,16 @@
+import type { ReactNode } from "react";
 import { ShieldCheck } from "lucide-react";
 
 import { AppShell } from "@/components/app/app-shell";
 import { Card, CardTitle } from "@/components/ui/card";
+import { LocalDate } from "@/components/ui/local-date";
 import { PageHeader } from "@/components/ui/page-header";
-import { getDashboardPageData } from "@/features/dashboard/dashboard-page-data";
+import { getSettingsPageData } from "@/features/dashboard/dashboard-page-data";
 import { getI18n } from "@/i18n/server";
 
 export default async function SettingsPage() {
-  const { user, effectivePlan } = await getDashboardPageData();
-  const { locale, t } = await getI18n();
+  const { user, effectivePlan } = await getSettingsPageData();
+  const { t } = await getI18n();
 
   return (
     <AppShell user={user}>
@@ -54,9 +56,7 @@ export default async function SettingsPage() {
             <ProfileItem label={t("settings.plan")} value={effectivePlan} />
             <ProfileItem
               label={t("settings.created")}
-              value={user.createdAt.toLocaleDateString(
-                locale === "fr" ? "fr-FR" : "en-US"
-              )}
+              value={<LocalDate date={user.createdAt} />}
             />
             <ProfileItem
               label={t("settings.email")}
@@ -69,7 +69,13 @@ export default async function SettingsPage() {
   );
 }
 
-function ProfileItem({ label, value }: { label: string; value: string }) {
+function ProfileItem({
+  label,
+  value
+}: {
+  label: string;
+  value: ReactNode;
+}) {
   return (
     <div className="rounded-lg border border-line bg-black/20 p-4">
       <dt className="text-xs font-semibold uppercase tracking-wide text-muted">

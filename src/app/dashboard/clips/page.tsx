@@ -5,11 +5,11 @@ import { buttonClassName } from "@/components/ui/button";
 import { PageHeader } from "@/components/ui/page-header";
 import { CreateClipForm } from "@/features/clips/create-clip-form";
 import { RecentClips } from "@/features/clips/recent-clips";
-import { getDashboardPageData } from "@/features/dashboard/dashboard-page-data";
+import { getClipsPageData } from "@/features/dashboard/dashboard-page-data";
 import { getI18n } from "@/i18n/server";
 
 export default async function ClipsPage() {
-  const { user, hasClipDownloadScope } = await getDashboardPageData();
+  const { user, hasClipDownloadScope } = await getClipsPageData();
   const { t } = await getI18n();
 
   return (

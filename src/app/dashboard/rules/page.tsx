@@ -3,12 +3,12 @@ import { Bot } from "lucide-react";
 import { AppShell } from "@/components/app/app-shell";
 import { Card, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
-import { getDashboardPageData } from "@/features/dashboard/dashboard-page-data";
+import { getRulesPageData } from "@/features/dashboard/dashboard-page-data";
 import { RuleSettingsForm } from "@/features/rules/rule-settings-form";
 import { getI18n } from "@/i18n/server";
 
 export default async function RulesPage() {
-  const { user } = await getDashboardPageData();
+  const { user } = await getRulesPageData();
   const { t } = await getI18n();
   const primaryRule = user.clipRules[0];
 

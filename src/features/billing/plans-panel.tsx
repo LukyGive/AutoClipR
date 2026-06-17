@@ -2,6 +2,7 @@ import { Plan } from "@prisma/client";
 
 import { buttonClassName } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
+import { LocalDate } from "@/components/ui/local-date";
 import { PricingCard } from "@/components/ui/pricing-card";
 import { billingPlans } from "@/features/billing/plans";
 import {
@@ -19,7 +20,7 @@ export async function PlansPanel({
   promoAccessEndsAt: Date | null;
   hasStripeCustomer: boolean;
 }) {
-  const { locale, t } = await getI18n();
+  const { t } = await getI18n();
 
   return (
     <Card className="p-6">
@@ -86,10 +87,9 @@ export async function PlansPanel({
       {promoAccessEndsAt ? (
         <p className="mt-4 rounded-lg border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-violet-100">
           {t("promo.activeUntil", {
-            date: promoAccessEndsAt.toLocaleString(
-              locale === "fr" ? "fr-FR" : "en-US"
-            )
+            date: ""
           })}
+          <LocalDate date={promoAccessEndsAt} variant="dateTime" />
         </p>
       ) : null}
     </Card>

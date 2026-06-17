@@ -3,12 +3,12 @@ import { RadioTower } from "lucide-react";
 import { AppShell } from "@/components/app/app-shell";
 import { Card, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
-import { getDashboardPageData } from "@/features/dashboard/dashboard-page-data";
+import { getStreamersPageData } from "@/features/dashboard/dashboard-page-data";
 import { TargetSettings } from "@/features/targets/target-settings";
 import { getI18n } from "@/i18n/server";
 
 export default async function StreamersPage() {
-  const { user, baseUrl, effectivePlan } = await getDashboardPageData();
+  const { user, baseUrl, effectivePlan } = await getStreamersPageData();
   const { t } = await getI18n();
 
   return (
