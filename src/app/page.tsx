@@ -1,13 +1,19 @@
 import Link from "next/link";
 import {
   ArrowRight,
+  ArrowDown,
   Brain,
   BriefcaseBusiness,
   Check,
   Clapperboard,
   Command,
+  CreditCard,
+  Database,
   Download,
   KeyRound,
+  LockKeyhole,
+  Send,
+  ShieldCheck,
   Sparkles,
   Scissors,
   Smartphone
@@ -45,6 +51,8 @@ const features = [
   }
 ];
 
+const demoVideoSrc = "";
+
 const audiences = [
   {
     icon: Clapperboard,
@@ -65,6 +73,29 @@ const audiences = [
     icon: BriefcaseBusiness,
     titleKey: "landing.audienceAgenciesTitle",
     descriptionKey: "landing.audienceAgenciesBody"
+  }
+];
+
+const trustItems = [
+  {
+    icon: ShieldCheck,
+    titleKey: "landing.trustTwitchTitle",
+    descriptionKey: "landing.trustTwitchBody"
+  },
+  {
+    icon: LockKeyhole,
+    titleKey: "landing.trustOauthTitle",
+    descriptionKey: "landing.trustOauthBody"
+  },
+  {
+    icon: Database,
+    titleKey: "landing.trustStorageTitle",
+    descriptionKey: "landing.trustStorageBody"
+  },
+  {
+    icon: CreditCard,
+    titleKey: "landing.trustStripeTitle",
+    descriptionKey: "landing.trustStripeBody"
   }
 ];
 
@@ -106,9 +137,9 @@ export default async function HomePage() {
           <a href="#pricing" className="transition hover:text-ink">
             {t("nav.pricing")}
           </a>
-          <a href="#faq" className="transition hover:text-ink">
+          <Link href="/getting-started" className="transition hover:text-ink">
             {t("nav.docs")}
-          </a>
+          </Link>
         </div>
 
         <div className="flex items-center gap-2">
@@ -139,7 +170,7 @@ export default async function HomePage() {
               {t("landing.ctaPrimary")}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </ButtonLink>
-            <ButtonLink href="/login" variant="secondary" size="lg">
+            <ButtonLink href="#demo" variant="secondary" size="lg">
               {t("landing.ctaSecondary")}
             </ButtonLink>
           </div>
@@ -160,6 +191,27 @@ export default async function HomePage() {
         </div>
 
         <DashboardPreview t={t} />
+      </section>
+
+      <section id="demo" className="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
+        <div className="grid items-center gap-8 rounded-lg border border-line bg-black/20 p-6 md:grid-cols-[0.95fr_1.05fr] md:p-8">
+          <div>
+            <Badge>{t("landing.demoBadge")}</Badge>
+            <h2 className="mt-4 text-3xl font-semibold tracking-normal text-ink md:text-4xl">
+              {t("landing.demoTitle")}
+            </h2>
+            <p className="mt-4 text-sm leading-7 text-muted">
+              {t("landing.demoBody")}
+            </p>
+            <div className="mt-6">
+              <ButtonLink href={primaryHref}>
+                {t("landing.ctaPrimary")}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </ButtonLink>
+            </div>
+          </div>
+          <DemoWorkflow t={t} />
+        </div>
       </section>
 
       <section className="border-y border-line bg-black/20">
@@ -267,6 +319,34 @@ export default async function HomePage() {
             </p>
           </div>
           <DashboardPreview compact t={t} />
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
+        <div className="max-w-2xl">
+          <Badge>{t("landing.trustBadge")}</Badge>
+          <h2 className="mt-4 text-3xl font-semibold tracking-normal text-ink md:text-4xl">
+            {t("landing.trustTitle")}
+          </h2>
+        </div>
+        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {trustItems.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <Card key={item.titleKey} className="p-5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-success/30 bg-success/10 text-success">
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <h3 className="mt-5 text-base font-semibold text-ink">
+                  {t(item.titleKey)}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-muted">
+                  {t(item.descriptionKey)}
+                </p>
+              </Card>
+            );
+          })}
         </div>
       </section>
 
@@ -397,6 +477,85 @@ function DashboardPreview({
             </div>
           ))}
       </div>
+    </div>
+  );
+}
+
+function DemoWorkflow({
+  t
+}: {
+  t: Awaited<ReturnType<typeof getI18n>>["t"];
+}) {
+  const workflow = [
+    {
+      icon: Command,
+      label: t("landing.demoStepChat")
+    },
+    {
+      icon: Clapperboard,
+      label: t("landing.demoStepClip")
+    },
+    {
+      icon: Download,
+      label: t("landing.demoStepDownload")
+    },
+    {
+      icon: Send,
+      label: t("landing.demoStepRepurpose")
+    }
+  ];
+
+  if (demoVideoSrc) {
+    return (
+      <video
+        className="aspect-video w-full rounded-lg border border-line bg-black/40 object-cover shadow-glow"
+        controls
+        preload="metadata"
+        src={demoVideoSrc}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-lg border border-line bg-[#0D0D10] p-4 shadow-glow">
+      <div className="rounded-lg border border-line bg-black/30 p-4">
+        <div className="flex items-center justify-between border-b border-line pb-3">
+          <div>
+            <p className="text-xs text-muted">{t("landing.demoMockupLabel")}</p>
+            <p className="mt-1 text-sm font-semibold text-ink">
+              {t("landing.demoMockupTitle")}
+            </p>
+          </div>
+          <span className="rounded-full border border-success/30 bg-success/10 px-2.5 py-1 text-xs font-semibold text-green-300">
+            {t("common.ready")}
+          </span>
+        </div>
+
+        <div className="mt-4 grid gap-3">
+          {workflow.map((step, index) => {
+            const Icon = step.icon;
+
+            return (
+              <div key={step.label}>
+                <div className="flex items-center gap-3 rounded-lg border border-line bg-surface/80 p-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                  </div>
+                  <p className="text-sm font-semibold text-ink">{step.label}</p>
+                </div>
+                {index < workflow.length - 1 ? (
+                  <div className="flex h-7 items-center pl-4 text-primary">
+                    <ArrowDown className="h-4 w-4" aria-hidden="true" />
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <p className="mt-3 text-xs leading-5 text-muted">
+        {t("landing.demoFutureVideo")}
+      </p>
     </div>
   );
 }

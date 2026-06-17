@@ -80,6 +80,18 @@ export const fr = {
       "Surveillez les clips capturés, créateurs, statut du bot et usage depuis un centre de commande clair.",
     dashboardPreviewTitle:
       "Tout ce qu’un workflow contenu doit voir, sans bruit.",
+    demoBadge: "Démo produit",
+    demoBody:
+      "Un workflow simple : le chat déclenche le moment, AutoClipR crée le clip, puis votre monteur le télécharge pour publier en format court.",
+    demoFutureVideo:
+      "Cette section est prête pour une future démo MP4. Pour l’instant, le mockup montre le workflow exact d’AutoClipR.",
+    demoMockupLabel: "Workflow live",
+    demoMockupTitle: "Du moment Twitch au contenu court",
+    demoStepChat: "Commande chat",
+    demoStepClip: "Clip créé",
+    demoStepDownload: "Télécharger le clip",
+    demoStepRepurpose: "TikTok / Shorts / Reels",
+    demoTitle: "Voir AutoClipR en action",
     featureAiBody:
       "La découpe automatique par voix et mots-clés arrive bientôt.",
     featureAiTitle: "Future détection IA",
@@ -113,7 +125,17 @@ export const fr = {
     step3Title: "Créer des clips automatiquement",
     step4Body:
       "Téléchargez les highlights et réutilisez-les pour TikTok, Shorts et Reels.",
-    step4Title: "Télécharger et réutiliser pour TikTok, Shorts et Reels"
+    step4Title: "Télécharger et réutiliser pour TikTok, Shorts et Reels",
+    trustBadge: "Confiance & sécurité",
+    trustOauthBody: "Aucun mot de passe stocké.",
+    trustOauthTitle: "Connexion OAuth sécurisée",
+    trustStorageBody: "Les clips ne sont pas stockés durablement par AutoClipR.",
+    trustStorageTitle: "Pas de stockage MP4 permanent",
+    trustStripeBody: "Les paiements sont gérés de façon sécurisée par Stripe.",
+    trustStripeTitle: "Paiement Stripe sécurisé",
+    trustTitle: "Construit avec les services déjà utilisés par les créateurs.",
+    trustTwitchBody: "Construit avec les API officielles Twitch.",
+    trustTwitchTitle: "API Twitch officielle"
   },
   pricing: {
     businessDescription:
@@ -203,6 +225,7 @@ export const fr = {
     downloadClip: "Télécharger un clip",
     downloadClipDescription:
       "Télécharge un de tes clips pour vérifier le workflow complet.",
+    openGuide: "Ouvrir le guide de démarrage",
     readyMessage: "AutoClipR est prêt",
     setupCompleted: "Configuration terminée",
     testChatCommand: "Tester une commande de chat",
@@ -376,15 +399,42 @@ export const fr = {
       "Obtiens de l’aide pour la configuration, les permissions Twitch, la création de clips ou la facturation.",
     emailQuestions: "Email questions",
     emailSupport: "Email support",
+    gettingStartedDescription:
+      "Suis le guide en quatre étapes pour connecter Twitch, ajouter un streamer, créer un clip et le télécharger.",
+    gettingStartedTitle: "Guide de démarrage",
     needHelp: "Besoin d’aide ?",
     needHelpDescription:
       "Ouvre un ticket support ou rejoins Discord pour obtenir une aide plus rapide de l’équipe AutoClipR.",
     openDiscord: "Ouvrir Discord",
+    openGuide: "Ouvrir le guide",
     openTicket: "Ouvrir un ticket",
     title: "Support",
     trustDescription:
       "Ne partage pas de tokens Twitch, clés API trigger ou données de facturation privées dans les salons publics.",
     trustTitle: "Support sécurisé"
+  },
+  gettingStarted: {
+    backToHome: "Retour à l’accueil",
+    badge: "Démarrage",
+    description:
+      "Utilise ce guide pour valider AutoClipR de bout en bout avant de t’en servir pendant un live.",
+    screenshotHint:
+      "Une capture produit pourra être ajoutée ici quand l’image finale sera prête.",
+    screenshotPlaceholder: "Emplacement capture d’écran",
+    step1Body:
+      "Connecte-toi avec Twitch pour qu’AutoClipR identifie ton compte et demande les permissions nécessaires à la création de clips officiels Twitch.",
+    step1Title: "Connecter Twitch",
+    step2Body:
+      "Ajoute le créateur ou la chaîne Twitch qu’AutoClipR doit surveiller pour les commandes chat et déclencheurs API.",
+    step2Title: "Ajouter un streamer",
+    step3Body:
+      "Utilise le formulaire de clip manuel ou ta commande chat configurée pour créer le premier vrai clip Twitch.",
+    step3Title: "Créer votre premier clip",
+    step4Body:
+      "Ouvre la page Clips, télécharge un clip prêt et envoie-le dans ton workflow TikTok, Shorts ou Reels.",
+    step4Title: "Télécharger votre clip",
+    stepLabel: "Étape {number}",
+    title: "Configurer AutoClipR en quatre étapes"
   },
   actions: {
     enterValidTwitchLogin: "Entre un login Twitch valide.",

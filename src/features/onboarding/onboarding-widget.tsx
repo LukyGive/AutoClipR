@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CheckCircle2, ChevronDown, X } from "lucide-react";
 
@@ -170,9 +171,17 @@ export function OnboardingWidget({
                   {t("onboarding.readyMessage")}
                 </div>
               ) : (
-                <p className="text-xs leading-5 text-muted">
-                  {t("onboarding.downloadClipDescription")}
-                </p>
+                <div className="rounded-lg border border-line bg-black/20 p-3">
+                  <p className="text-xs leading-5 text-muted">
+                    {t("onboarding.downloadClipDescription")}
+                  </p>
+                  <Link
+                    href="/getting-started"
+                    className="mt-3 inline-flex text-xs font-semibold text-primary transition hover:text-primary-hover"
+                  >
+                    {t("onboarding.openGuide")}
+                  </Link>
+                </div>
               )}
             </div>
           </div>

@@ -1,4 +1,10 @@
-import { ArrowRight, LifeBuoy, Mail, MessageCircle } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  LifeBuoy,
+  Mail,
+  MessageCircle
+} from "lucide-react";
 
 import { AppShell } from "@/components/app/app-shell";
 import { buttonClassName } from "@/components/ui/button";
@@ -24,6 +30,32 @@ export default async function SupportPage() {
       />
 
       <section className="mt-8 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+        <Card className="p-6 lg:col-span-2">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+            <div className="flex items-start gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
+                <BookOpen className="h-5 w-5" aria-hidden="true" />
+              </div>
+              <div>
+                <CardTitle>{t("support.gettingStartedTitle")}</CardTitle>
+                <p className="mt-2 text-sm leading-6 text-muted">
+                  {t("support.gettingStartedDescription")}
+                </p>
+              </div>
+            </div>
+            <a
+              href="/getting-started"
+              className={buttonClassName({
+                variant: "secondary",
+                className: "w-full sm:w-auto"
+              })}
+            >
+              {t("support.openGuide")}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </a>
+          </div>
+        </Card>
+
         <Card className="p-6">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
             <LifeBuoy className="h-5 w-5" aria-hidden="true" />
