@@ -1,4 +1,4 @@
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ClipTriggerType } from "@prisma/client";
 
@@ -10,6 +10,7 @@ import { ensureUserReady } from "@/features/users/ensure-user-ready";
 import { getUserDashboard } from "@/features/users/queries";
 import { getTwitchAccountScopes } from "@/features/twitch/oauth";
 import { hasAnyScope, TWITCH_CLIP_DOWNLOAD_SCOPES } from "@/features/twitch/scopes";
+import { onboardingDownloadCookieName } from "@/features/onboarding/download-tracking";
 
 export async function getDashboardPageData() {
   const session = await auth();
@@ -30,9 +31,10 @@ export async function getDashboardPageData() {
     redirect("/login");
   }
 
-  const [usage, requestHeaders, onboarding] = await Promise.all([
+  const [usage, requestHeaders, cookieStore, onboarding] = await Promise.all([
     getUsageSummary(user.id, user.plan),
     headers(),
+    cookies(),
     getOnboardingSummary(user.id)
   ]);
   const baseUrl =
@@ -43,35 +45,29 @@ export async function getDashboardPageData() {
     user,
     analytics,
     usage,
-    onboarding,
+    onboarding: {
+      ...onboarding,
+      hasDownloadedClip:
+        cookieStore.get(onboardingDownloadCookieName)?.value === user.id
+    },
     baseUrl,
     hasClipDownloadScope: hasAnyScope(twitchScopes, TWITCH_CLIP_DOWNLOAD_SCOPES)
   };
 }
 
 async function getOnboardingSummary(userId: string) {
-  const [totalClips, chatCommandClips, apiTriggerClips] = await Promise.all([
+  const [totalClips, chatCommandClips] = await Promise.all([
     prisma.clip.count({ where: { userId } }),
     prisma.clip.count({
       where: {
         userId,
         triggerType: ClipTriggerType.CHAT_COMMAND
       }
-    }),
-    prisma.clip.count({
-      where: {
-        userId,
-        triggerType: ClipTriggerType.MANUAL,
-        triggerValue: {
-          startsWith: "external:"
-        }
-      }
     })
   ]);
 
   return {
     totalClips,
-    chatCommandClips,
-    apiTriggerClips
+    chatCommandClips
   };
 }

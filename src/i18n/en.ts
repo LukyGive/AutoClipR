@@ -4,6 +4,7 @@ export const en = {
     add: "Add",
     apiTriggerKey: "API trigger key",
     comingSoon: "Coming Soon",
+    close: "Close",
     copy: "Copy",
     copied: "Copied",
     createClip: "Create clip",
@@ -167,11 +168,12 @@ export const en = {
       "Run a manual clip to confirm Twitch clip creation works end to end.",
     description:
       "Finish these steps to validate your clip workflow before relying on it live.",
-    openApiTrigger: "Open API trigger",
     progress: "{completed}/{total} completed",
-    testApiTrigger: "Test an API trigger",
-    testApiTriggerDescription:
-      "Use an external trigger key from a streamer card to create a clip.",
+    downloadClip: "Download a clip",
+    downloadClipDescription:
+      "Download one of your clips to verify the full workflow.",
+    readyMessage: "AutoClipR is ready",
+    setupCompleted: "Setup completed",
     testChatCommand: "Test a chat command",
     testChatCommandDescription:
       "Send your configured command in chat and confirm AutoClipR saves the clip.",

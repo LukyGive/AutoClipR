@@ -4,6 +4,7 @@ export const fr = {
     add: "Ajouter",
     apiTriggerKey: "Clé de déclenchement API",
     comingSoon: "Bientôt",
+    close: "Fermer",
     copy: "Copier",
     copied: "Copié",
     createClip: "Créer un clip",
@@ -154,7 +155,7 @@ export const fr = {
     workerListens: "Le worker écoute quand il est déployé et que la règle est active."
   },
   onboarding: {
-    addStreamer: "Ajouter ton premier streamer",
+    addStreamer: "Ajouter votre premier streamer",
     addStreamerDescription:
       "Choisis la première chaîne Twitch que le worker chat doit surveiller.",
     completed: "Terminé",
@@ -163,17 +164,18 @@ export const fr = {
     connectTwitch: "Connecter Twitch",
     connectTwitchDescription:
       "Autorise AutoClipR avec Twitch pour créer des clips de façon sécurisée.",
-    createFirstClip: "Créer ton premier clip",
+    createFirstClip: "Créer votre premier clip",
     createFirstClipDescription:
       "Lance un clip manuel pour confirmer que la création Twitch fonctionne de bout en bout.",
     description:
       "Termine ces étapes pour valider ton workflow de clips avant de l’utiliser en live.",
-    openApiTrigger: "Ouvrir le trigger API",
     progress: "{completed}/{total} terminé(s)",
-    testApiTrigger: "Tester un déclencheur API",
-    testApiTriggerDescription:
-      "Utilise une clé de déclenchement externe depuis une card streamer pour créer un clip.",
-    testChatCommand: "Tester une commande chat",
+    downloadClip: "Télécharger un clip",
+    downloadClipDescription:
+      "Télécharge un de tes clips pour vérifier le workflow complet.",
+    readyMessage: "AutoClipR est prêt",
+    setupCompleted: "Configuration terminée",
+    testChatCommand: "Tester une commande de chat",
     testChatCommandDescription:
       "Envoie ta commande configurée dans le chat et vérifie qu’AutoClipR sauvegarde le clip.",
     title: "Démarrage"

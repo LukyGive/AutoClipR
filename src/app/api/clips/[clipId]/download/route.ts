@@ -15,6 +15,7 @@ import {
 import { getValidTwitchAccessTokenWithAnyScope } from "@/features/twitch/oauth";
 import { TWITCH_CLIP_DOWNLOAD_SCOPES } from "@/features/twitch/scopes";
 import { TwitchIntegrationError } from "@/features/twitch/errors";
+import { withOnboardingDownloadCookie } from "@/features/onboarding/download-tracking";
 
 const DOWNLOAD_UNAVAILABLE = "Download unavailable";
 const RECONNECT_TWITCH = "Reconnect Twitch to enable downloads";
@@ -99,12 +100,16 @@ export async function GET(
       twitchClipId: clip.twitchClipId
     });
 
-    return NextResponse.redirect(downloadUrls.landscapeDownloadUrl, 302);
+    return withOnboardingDownloadCookie(
+      NextResponse.redirect(downloadUrls.landscapeDownloadUrl, 302),
+      session.user.id
+    );
   } catch (error) {
     if (isOfficialDownloadForbidden(error)) {
       return attemptPublicFallback({
         accessToken,
         clipRecordId: clip.id,
+        userId: session.user.id,
         twitchClipId: clip.twitchClipId,
         twitchUrl: clip.url
       });
@@ -117,11 +122,13 @@ export async function GET(
 async function attemptPublicFallback({
   accessToken,
   clipRecordId,
+  userId,
   twitchClipId,
   twitchUrl
 }: {
   accessToken: string;
   clipRecordId: string;
+  userId: string;
   twitchClipId: string;
   twitchUrl: string | null;
 }) {
@@ -151,7 +158,12 @@ async function attemptPublicFallback({
         reason: "missing_thumbnail_or_unrecognized_format"
       });
 
-      return attemptCliprFallback({ clipRecordId, twitchClipId, twitchUrl });
+      return attemptCliprFallback({
+        clipRecordId,
+        userId,
+        twitchClipId,
+        twitchUrl
+      });
     }
 
     const fallbackUrl = await findFirstAvailableUrl(fallbackUrls);
@@ -164,7 +176,12 @@ async function attemptPublicFallback({
         fallbackUrls
       });
 
-      return attemptCliprFallback({ clipRecordId, twitchClipId, twitchUrl });
+      return attemptCliprFallback({
+        clipRecordId,
+        userId,
+        twitchClipId,
+        twitchUrl
+      });
     }
 
     console.info("fallback_download_success", {
@@ -173,7 +190,10 @@ async function attemptPublicFallback({
       fallbackUrl
     });
 
-    return NextResponse.redirect(fallbackUrl, 302);
+    return withOnboardingDownloadCookie(
+      NextResponse.redirect(fallbackUrl, 302),
+      userId
+    );
   } catch (error) {
     console.warn("fallback_download_failed", {
       clipId: clipRecordId,
@@ -181,16 +201,23 @@ async function attemptPublicFallback({
       reason: error instanceof Error ? error.message : String(error)
     });
 
-    return attemptCliprFallback({ clipRecordId, twitchClipId, twitchUrl });
+    return attemptCliprFallback({
+      clipRecordId,
+      userId,
+      twitchClipId,
+      twitchUrl
+    });
   }
 }
 
 async function attemptCliprFallback({
   clipRecordId,
+  userId,
   twitchClipId,
   twitchUrl
 }: {
   clipRecordId: string;
+  userId: string;
   twitchClipId: string;
   twitchUrl: string | null;
 }) {
@@ -229,7 +256,10 @@ async function attemptCliprFallback({
       twitchClipId
     });
 
-    return NextResponse.redirect(availableUrl, 302);
+    return withOnboardingDownloadCookie(
+      NextResponse.redirect(availableUrl, 302),
+      userId
+    );
   } catch (error) {
     console.warn("clipr_download_failed", {
       clipId: clipRecordId,

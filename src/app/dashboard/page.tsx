@@ -18,7 +18,7 @@ import { CreateClipForm } from "@/features/clips/create-clip-form";
 import { RecentClips } from "@/features/clips/recent-clips";
 import { getDashboardPageData } from "@/features/dashboard/dashboard-page-data";
 import { StatCard } from "@/features/dashboard/stat-card";
-import { OnboardingChecklist } from "@/features/onboarding/onboarding-checklist";
+import { OnboardingWidget } from "@/features/onboarding/onboarding-widget";
 import { RuleSettingsForm } from "@/features/rules/rule-settings-form";
 import { TargetSettings } from "@/features/targets/target-settings";
 import { getI18n } from "@/i18n/server";
@@ -50,16 +50,6 @@ export default async function DashboardPage() {
         status={user.subscription?.status}
         currentPeriodEnd={user.subscription?.currentPeriodEnd}
       />
-
-      <section className="mt-8">
-        <OnboardingChecklist
-          hasTwitch={Boolean(user.twitchUserId)}
-          streamerCount={user.clipTargets.length}
-          totalClips={user._count.clips}
-          chatCommandClips={onboarding.chatCommandClips}
-          apiTriggerClips={onboarding.apiTriggerClips}
-        />
-      </section>
 
       <section className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <StatCard
@@ -151,6 +141,13 @@ export default async function DashboardPage() {
           </Card>
         )}
       </section>
+      <OnboardingWidget
+        hasTwitch={Boolean(user.twitchUserId)}
+        streamerCount={user.clipTargets.length}
+        totalClips={user._count.clips}
+        chatCommandClips={onboarding.chatCommandClips}
+        hasDownloadedClip={onboarding.hasDownloadedClip}
+      />
     </AppShell>
   );
 }
