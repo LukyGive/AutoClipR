@@ -171,7 +171,7 @@ function StreamerCard({
       </div>
 
       {triggerUrl ? (
-        <div className="mt-4 rounded-lg border border-line bg-surface/70 p-3">
+        <div className="mt-4 rounded-lg border border-line bg-surface/70 px-3 py-2.5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2 text-xs font-semibold uppercase text-muted">
               <KeyRound className="h-3.5 w-3.5" aria-hidden="true" />
@@ -199,6 +199,19 @@ function StreamerCard({
                     <EyeOff className="h-4 w-4" aria-hidden="true" />
                     Hide
                   </button>
+                  <form action={rotateExternalTriggerToken}>
+                    <input type="hidden" name="targetId" value={target.id} />
+                    <button
+                      type="submit"
+                      className={buttonClassName({
+                        variant: "secondary",
+                        size: "sm"
+                      })}
+                    >
+                      <RotateCw className="h-4 w-4" aria-hidden="true" />
+                      Regenerate key
+                    </button>
+                  </form>
                 </>
               ) : (
                 <button
@@ -210,7 +223,7 @@ function StreamerCard({
                   })}
                 >
                   <Eye className="h-4 w-4" aria-hidden="true" />
-                  Show key
+                  Show
                 </button>
               )}
             </div>
@@ -220,26 +233,7 @@ function StreamerCard({
             <code className="mt-3 block break-all rounded border border-line bg-black/30 p-3 text-xs text-zinc-300">
               {triggerUrl}
             </code>
-          ) : (
-            <p className="mt-3 rounded border border-line bg-black/30 p-3 text-xs text-muted">
-              API trigger key hidden
-            </p>
-          )}
-
-          <form action={rotateExternalTriggerToken} className="mt-3">
-            <input type="hidden" name="targetId" value={target.id} />
-            <button
-              type="submit"
-              className={buttonClassName({
-                variant: "secondary",
-                size: "sm",
-                className: "w-full sm:w-auto"
-              })}
-            >
-              <RotateCw className="h-4 w-4" aria-hidden="true" />
-              Regenerate key
-            </button>
-          </form>
+          ) : null}
         </div>
       ) : null}
     </div>

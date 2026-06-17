@@ -3,6 +3,7 @@ import {
   BarChart3,
   Bot,
   Clapperboard,
+  Clock3,
   RadioTower
 } from "lucide-react";
 
@@ -32,6 +33,7 @@ export default async function DashboardPage() {
     totalAnalyzed > 0
       ? Math.round((analytics.readyClips / totalAnalyzed) * 100)
       : 0;
+  const estimatedHoursSaved = formatEstimatedHoursSaved(user._count.clips);
 
   return (
     <AppShell user={user}>
@@ -46,12 +48,24 @@ export default async function DashboardPage() {
         currentPeriodEnd={user.subscription?.currentPeriodEnd}
       />
 
-      <section className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <section className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <StatCard
           icon={Clapperboard}
           label="Total clips"
           value={String(user._count.clips)}
           detail="All saved clip requests."
+        />
+        <StatCard
+          icon={Activity}
+          label="Clips this month"
+          value={String(usage.clipsUsed)}
+          detail="Current billing period usage."
+        />
+        <StatCard
+          icon={Clock3}
+          label="Hours Saved"
+          value={estimatedHoursSaved}
+          detail="Estimated at 2 minutes saved per clip."
         />
         <StatCard
           icon={RadioTower}
@@ -117,6 +131,20 @@ export default async function DashboardPage() {
       </section>
     </AppShell>
   );
+}
+
+function formatEstimatedHoursSaved(totalClips: number) {
+  const hours = (totalClips * 2) / 60;
+
+  if (hours === 0) {
+    return "0h";
+  }
+
+  if (hours < 10) {
+    return `${hours.toFixed(1)}h`;
+  }
+
+  return `${Math.round(hours)}h`;
 }
 
 function ActivityFeed({

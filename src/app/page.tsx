@@ -106,7 +106,8 @@ export default async function HomePage() {
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-muted md:text-lg">
             AutoClipR listens to your stream chat and turns your best moments
-            into Twitch clips instantly.
+            into Twitch clips instantly. Automatically create Twitch clips from
+            chat commands, API triggers and soon AI voice detection.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href={primaryHref} size="lg">
@@ -225,7 +226,7 @@ export default async function HomePage() {
           />
           <PricingCard
             name="Pro"
-            price="19 € / mo"
+            price="9.99 €/month"
             description="For active streamers."
             features={[
               "1,000 clips per month",
@@ -237,7 +238,7 @@ export default async function HomePage() {
           />
           <PricingCard
             name="Business"
-            price="99 € / mo"
+            price="24.99 €/month"
             description="For teams and agencies."
             features={[
               "10,000 clips per month",

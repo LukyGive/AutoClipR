@@ -34,7 +34,7 @@ export const billingPlans: BillingPlan[] = [
     monthlySpeechEventLimit: 10000,
     maxStreamers: getPlanLimits(Plan.PRO).maxStreamers,
     maxAiTriggers: getPlanLimits(Plan.PRO).maxAiTriggers,
-    priceLabel: "19 € / mois",
+    priceLabel: "9.99 €/month",
     stripePriceId:
       env.STRIPE_PRO_PRICE_ID ||
       (env.DEMO_MODE === "true" ? "price_demo_pro" : undefined)
@@ -47,7 +47,7 @@ export const billingPlans: BillingPlan[] = [
     monthlySpeechEventLimit: 100000,
     maxStreamers: getPlanLimits(Plan.BUSINESS).maxStreamers,
     maxAiTriggers: getPlanLimits(Plan.BUSINESS).maxAiTriggers,
-    priceLabel: "99 € / mois",
+    priceLabel: "24.99 €/month",
     stripePriceId:
       env.STRIPE_BUSINESS_PRICE_ID ||
       (env.DEMO_MODE === "true" ? "price_demo_business" : undefined)
