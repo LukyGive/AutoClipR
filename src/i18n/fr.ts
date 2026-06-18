@@ -50,17 +50,28 @@ export const fr = {
   },
   landing: {
     audienceAgenciesBody:
-      "Gérez plusieurs créateurs et centralisez la création de clips.",
-    audienceAgenciesTitle: "Agences & Managers",
+      "Gérez plusieurs créateurs depuis un seul dashboard.",
+    audienceAgenciesSecondary:
+      "Centralisez la création de clips et les workflows de contenu.",
+    audienceAgenciesTitle: "Agences & managers",
     audienceEditorsBody:
       "Capturez les meilleurs moments sans revoir des heures de VOD.",
+    audienceEditorsSecondary: "Créez des best-ofs plus rapidement.",
     audienceEditorsTitle: "Monteurs vidéo",
+    audienceBadge: "Qui utilise AutoClipR ?",
     audienceStreamersBody:
-      "Créez des clips instantanément depuis votre chat Twitch.",
+      "Créez des clips instantanément depuis les commandes du chat Twitch.",
+    audienceStreamersSecondary:
+      "Parfait pour les créateurs qui veulent capturer les moments mémorables en live.",
     audienceStreamersTitle: "Streamers",
     audienceTiktokBody:
-      "Transformez les moments de live en pipeline de contenu régulier.",
-    audienceTiktokTitle: "Créateurs TikTok",
+      "Transformez les moments Twitch en pipeline de contenu régulier.",
+    audienceTiktokSecondary:
+      "Créez des clips prêts pour TikTok, Shorts et Reels.",
+    audienceTiktokTitle: "Créateurs TikTok & Shorts",
+    audienceSubtitle:
+      "Que vous streamiez, montiez des vidéos, gériez des créateurs ou publiiez du contenu sur les réseaux sociaux, AutoClipR vous aide à capturer les moments Twitch plus vite.",
+    audienceTitle: "Qui utilise AutoClipR ?",
     badge: "Plateforme de capture de contenu pour workflows Twitch",
     builtFor: "Pensé pour",
     builtForTitle:
@@ -111,10 +122,14 @@ export const fr = {
     footer: "AutoClipR. Capture de contenu pour moments Twitch.",
     heroSubtitle:
       "AutoClipR capture automatiquement les highlights Twitch avec les commandes chat, déclencheurs API et future détection IA pour permettre aux créateurs de publier plus de contenu en moins de temps.",
+    heroAudienceLine:
+      "Parfait pour les streamers, monteurs vidéo, créateurs TikTok et toute personne réalisant des best-ofs, highlights ou contenus issus de streams Twitch.",
     heroTitle:
       "Transformez les moments Twitch en TikToks, Shorts et Reels automatiquement.",
     howItWorks: "Comment ça marche",
     officialTwitchApi: "API Twitch officielle",
+    pricingAudienceLine:
+      "Pensé pour les streamers, monteurs, créateurs de contenu et agences.",
     pricingTitle:
       "Commencez gratuitement. Passez au plan supérieur quand les clips deviennent essentiels au workflow contenu.",
     step1Body: "OAuth sécurisé connecte ton compte créateur.",
@@ -139,8 +154,8 @@ export const fr = {
   },
   pricing: {
     businessDescription:
-      "Pour les agences, équipes esport et opérations multi-chaînes.",
-    freeDescription: "Pour tester AutoClipR.",
+      "Pour les agences, équipes et workflows multi-créateurs.",
+    freeDescription: "Pour tester AutoClipR et un usage personnel.",
     manualClips: "Clips manuels",
     multiChannelSupport: "Support multi-chaînes",
     oneStreamerTarget: "Un streamer cible",

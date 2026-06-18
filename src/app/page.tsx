@@ -57,22 +57,26 @@ const audiences = [
   {
     icon: Clapperboard,
     titleKey: "landing.audienceStreamersTitle",
-    descriptionKey: "landing.audienceStreamersBody"
+    descriptionKey: "landing.audienceStreamersBody",
+    secondaryKey: "landing.audienceStreamersSecondary"
   },
   {
     icon: Scissors,
     titleKey: "landing.audienceEditorsTitle",
-    descriptionKey: "landing.audienceEditorsBody"
+    descriptionKey: "landing.audienceEditorsBody",
+    secondaryKey: "landing.audienceEditorsSecondary"
   },
   {
     icon: Smartphone,
     titleKey: "landing.audienceTiktokTitle",
-    descriptionKey: "landing.audienceTiktokBody"
+    descriptionKey: "landing.audienceTiktokBody",
+    secondaryKey: "landing.audienceTiktokSecondary"
   },
   {
     icon: BriefcaseBusiness,
     titleKey: "landing.audienceAgenciesTitle",
-    descriptionKey: "landing.audienceAgenciesBody"
+    descriptionKey: "landing.audienceAgenciesBody",
+    secondaryKey: "landing.audienceAgenciesSecondary"
   }
 ];
 
@@ -165,6 +169,9 @@ export default async function HomePage() {
           <p className="mt-6 max-w-2xl text-base leading-8 text-muted md:text-lg">
             {t("landing.heroSubtitle")}
           </p>
+          <p className="mt-4 max-w-2xl rounded-lg border border-primary/30 bg-primary/10 px-4 py-3 text-sm leading-6 text-violet-100">
+            {t("landing.heroAudienceLine")}
+          </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href={primaryHref} size="lg">
               {t("landing.ctaPrimary")}
@@ -192,6 +199,8 @@ export default async function HomePage() {
 
         <DashboardPreview t={t} />
       </section>
+
+      <AudienceSection t={t} />
 
       <section id="demo" className="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
         <div className="grid items-center gap-8 rounded-lg border border-line bg-black/20 p-6 md:grid-cols-[0.95fr_1.05fr] md:p-8">
@@ -249,34 +258,6 @@ export default async function HomePage() {
               </Card>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
-        <div className="max-w-2xl">
-          <Badge>{t("landing.builtFor")}</Badge>
-          <h2 className="mt-4 text-3xl font-semibold tracking-normal text-ink md:text-4xl">
-            {t("landing.builtForTitle")}
-          </h2>
-        </div>
-        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {audiences.map((audience) => {
-            const Icon = audience.icon;
-
-            return (
-              <Card key={audience.titleKey} className="p-5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
-                  <Icon className="h-5 w-5" aria-hidden="true" />
-                </div>
-                <h3 className="mt-5 text-base font-semibold text-ink">
-                  {t(audience.titleKey)}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-muted">
-                  {t(audience.descriptionKey)}
-                </p>
-              </Card>
-            );
-          })}
         </div>
       </section>
 
@@ -353,6 +334,9 @@ export default async function HomePage() {
       <section id="pricing" className="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
         <div className="max-w-2xl">
           <Badge>{t("nav.pricing")}</Badge>
+          <p className="mt-4 text-sm font-semibold text-violet-200">
+            {t("landing.pricingAudienceLine")}
+          </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-normal text-ink">
             {t("landing.pricingTitle")}
           </h2>
@@ -478,6 +462,48 @@ function DashboardPreview({
           ))}
       </div>
     </div>
+  );
+}
+
+function AudienceSection({
+  t
+}: {
+  t: Awaited<ReturnType<typeof getI18n>>["t"];
+}) {
+  return (
+    <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
+      <div className="max-w-3xl">
+        <Badge>{t("landing.audienceBadge")}</Badge>
+        <h2 className="mt-4 text-3xl font-semibold tracking-normal text-ink md:text-4xl">
+          {t("landing.audienceTitle")}
+        </h2>
+        <p className="mt-4 text-sm leading-7 text-muted md:text-base">
+          {t("landing.audienceSubtitle")}
+        </p>
+      </div>
+      <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {audiences.map((audience) => {
+          const Icon = audience.icon;
+
+          return (
+            <Card key={audience.titleKey} className="p-5">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
+                <Icon className="h-5 w-5" aria-hidden="true" />
+              </div>
+              <h3 className="mt-5 text-base font-semibold text-ink">
+                {t(audience.titleKey)}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-muted">
+                {t(audience.descriptionKey)}
+              </p>
+              <p className="mt-3 text-sm leading-6 text-zinc-300">
+                {t(audience.secondaryKey)}
+              </p>
+            </Card>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 

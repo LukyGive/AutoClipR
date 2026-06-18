@@ -49,16 +49,27 @@ export const en = {
   },
   landing: {
     audienceAgenciesBody:
-      "Manage multiple creators and centralize clip creation.",
+      "Manage multiple creators from a single dashboard.",
+    audienceAgenciesSecondary:
+      "Centralize clip creation and content workflows.",
     audienceAgenciesTitle: "Agencies & Managers",
     audienceEditorsBody:
       "Capture highlights without reviewing hours of VODs.",
+    audienceEditorsSecondary: "Build best-of videos faster.",
     audienceEditorsTitle: "Video Editors",
-    audienceStreamersBody: "Create clips instantly from your Twitch chat.",
+    audienceBadge: "Who uses AutoClipR?",
+    audienceStreamersBody: "Create clips instantly from Twitch chat commands.",
+    audienceStreamersSecondary:
+      "Perfect for creators who want to capture memorable moments live.",
     audienceStreamersTitle: "Streamers",
     audienceTiktokBody:
-      "Turn livestream moments into a steady content pipeline.",
-    audienceTiktokTitle: "TikTok Creators",
+      "Turn Twitch moments into a consistent content pipeline.",
+    audienceTiktokSecondary:
+      "Create clips ready for TikTok, Shorts and Reels.",
+    audienceTiktokTitle: "TikTok & Shorts Creators",
+    audienceSubtitle:
+      "Whether you stream, edit videos, manage creators or publish content on social media, AutoClipR helps you capture Twitch moments faster.",
+    audienceTitle: "Who uses AutoClipR?",
     badge: "Content capture platform for Twitch workflows",
     builtFor: "Built for",
     builtForTitle: "Capture moments once. Repurpose them everywhere.",
@@ -107,9 +118,13 @@ export const en = {
     footer: "AutoClipR. Content capture for Twitch moments.",
     heroSubtitle:
       "AutoClipR automatically captures Twitch highlights using chat commands, API triggers and future AI detection so creators can publish more content in less time.",
+    heroAudienceLine:
+      "Perfect for streamers, video editors, TikTok creators and anyone creating highlights, best-ofs or social content from Twitch streams.",
     heroTitle: "Turn Twitch moments into TikToks, Shorts and Reels automatically.",
     howItWorks: "How it works",
     officialTwitchApi: "Official Twitch API",
+    pricingAudienceLine:
+      "Built for streamers, editors, content creators and agencies.",
     pricingTitle: "Start free. Upgrade when clips become part of your content workflow.",
     step1Body: "Secure OAuth connects your creator account.",
     step1Title: "Connect Twitch",
@@ -132,8 +147,8 @@ export const en = {
   },
   pricing: {
     businessDescription:
-      "For agencies, esports teams and multi-channel operations.",
-    freeDescription: "For testing AutoClipR.",
+      "For agencies, teams and multi-creator workflows.",
+    freeDescription: "For testing AutoClipR and personal use.",
     manualClips: "Manual clips",
     multiChannelSupport: "Multi-channel support",
     oneStreamerTarget: "One streamer target",
