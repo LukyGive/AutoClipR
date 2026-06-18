@@ -420,6 +420,117 @@ export const en = {
       "Do not share Twitch tokens, API trigger keys or private billing data in public channels.",
     trustTitle: "Safe support"
   },
+  admin: {
+    description:
+      "Track SaaS growth, revenue, users, promo codes and system health from one internal dashboard.",
+    eyebrow: "Admin",
+    none: "None",
+    notTracked: "Not tracked",
+    title: "AutoClipR admin",
+    unknown: "Unknown",
+    filters: {
+      all: "All",
+      business: "Business",
+      free: "Free",
+      pro: "Pro",
+      promo: "Promo Access",
+      trial: "Trial"
+    },
+    kpis: {
+      activePaidUsers: "Active Paid Users",
+      activeTrials: "Active Trials",
+      clipsCreated: "Total Clips Created",
+      conversionRate: "Trial → Paid",
+      downloads: "Total Downloads",
+      mrr: "MRR",
+      promoActivations: "Total Promo Activations",
+      streamersAdded: "Total Streamers Added",
+      totalUsers: "Total Users",
+      twitchConnected: "Twitch Accounts Connected"
+    },
+    kpiDetails: {
+      activePaidUsers: "Current active Stripe subscriptions.",
+      activeTrials: "Users currently trialing.",
+      clipsCreated: "All clip records created.",
+      conversionRate: "Current paid users divided by paid plus trial users.",
+      downloads: "Download events are not persisted yet.",
+      mrr: "Estimated from active Pro and Business subscriptions.",
+      promoActivations: "Total promo code redemptions.",
+      streamersAdded: "All configured Twitch creators.",
+      totalUsers: "All registered accounts.",
+      twitchConnected: "Users with a linked Twitch profile."
+    },
+    sections: {
+      growth: "Growth",
+      promoCodes: "Promo Codes",
+      quickActions: "Quick Actions",
+      revenue: "Revenue",
+      system: "System",
+      users: "Users"
+    },
+    users: {
+      clips: "Clips",
+      createdAt: "Created At",
+      description: "Latest users, filtered by plan, trial, promo access or search.",
+      email: "Email",
+      lastLogin: "Last Login",
+      plan: "Plan",
+      search: "Search",
+      searchPlaceholder: "Search email or Twitch username",
+      status: "Status",
+      streamers: "Streamers",
+      twitch: "Twitch username"
+    },
+    revenue: {
+      activeSubscriptions: "Active subscriptions",
+      byPlan: "Revenue by plan",
+      monthlyRevenue: "Monthly revenue",
+      planFormula: "{users} users × {price} €",
+      promoUsers: "Promo users",
+      stripeCustomers: "Stripe customers",
+      trialSubscriptions: "Trial subscriptions"
+    },
+    promo: {
+      code: "Code",
+      create: "Create Promo Code",
+      createdAt: "Created At",
+      description: "Create and review temporary Pro access codes.",
+      duration: "Duration",
+      maxUses: "Max Uses",
+      uses: "Uses",
+      state: {
+        created: "Promo code created.",
+        exists: "A promo code with this code already exists.",
+        invalid: "Enter a valid code, duration and max uses."
+      }
+    },
+    growth: {
+      clips7: "Clips created last 7 days",
+      clips30: "Clips created last 30 days",
+      clipsGrowth: "Clips Growth",
+      noData: "No data",
+      users7: "Users registered last 7 days",
+      users30: "Users registered last 30 days",
+      usersGrowth: "Users Growth"
+    },
+    system: {
+      databaseStatus: "Database status",
+      lastClip: "Last clip created",
+      lastDownload: "Last download",
+      lastSignup: "Last user signup",
+      stripeStatus: "Stripe status",
+      workerHeuristic:
+        "Worker status is inferred from configured streamers and enabled rules. Add a heartbeat later for a real runtime status.",
+      workerStatus: "Worker status"
+    },
+    quickActions: {
+      discord: "Open Discord",
+      neon: "Open Neon",
+      railway: "Open Railway",
+      stripe: "Open Stripe Dashboard",
+      vercel: "Open Vercel"
+    }
+  },
   gettingStarted: {
     backToHome: "Back to home",
     badge: "Getting started",

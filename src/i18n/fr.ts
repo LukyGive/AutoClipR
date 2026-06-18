@@ -428,6 +428,117 @@ export const fr = {
       "Ne partage pas de tokens Twitch, clés API trigger ou données de facturation privées dans les salons publics.",
     trustTitle: "Support sécurisé"
   },
+  admin: {
+    description:
+      "Suivez la croissance du SaaS, les revenus, les utilisateurs, les codes promo et l’état système depuis un dashboard interne.",
+    eyebrow: "Admin",
+    none: "Aucun",
+    notTracked: "Non suivi",
+    title: "Admin AutoClipR",
+    unknown: "Inconnu",
+    filters: {
+      all: "Tous",
+      business: "Business",
+      free: "Free",
+      pro: "Pro",
+      promo: "Accès promo",
+      trial: "Essai"
+    },
+    kpis: {
+      activePaidUsers: "Utilisateurs payants actifs",
+      activeTrials: "Essais actifs",
+      clipsCreated: "Clips créés",
+      conversionRate: "Essai → Payant",
+      downloads: "Téléchargements",
+      mrr: "MRR",
+      promoActivations: "Activations promo",
+      streamersAdded: "Streamers ajoutés",
+      totalUsers: "Utilisateurs",
+      twitchConnected: "Comptes Twitch connectés"
+    },
+    kpiDetails: {
+      activePaidUsers: "Abonnements Stripe actifs actuellement.",
+      activeTrials: "Utilisateurs actuellement en essai.",
+      clipsCreated: "Tous les clips enregistrés.",
+      conversionRate: "Payants actuels divisés par payants plus essais.",
+      downloads: "Les événements de téléchargement ne sont pas encore persistés.",
+      mrr: "Estimé depuis les abonnements Pro et Business actifs.",
+      promoActivations: "Total des utilisations de codes promo.",
+      streamersAdded: "Tous les créateurs Twitch configurés.",
+      totalUsers: "Tous les comptes enregistrés.",
+      twitchConnected: "Utilisateurs avec un profil Twitch lié."
+    },
+    sections: {
+      growth: "Croissance",
+      promoCodes: "Codes promo",
+      quickActions: "Actions rapides",
+      revenue: "Revenus",
+      system: "Système",
+      users: "Utilisateurs"
+    },
+    users: {
+      clips: "Clips",
+      createdAt: "Créé le",
+      description: "Derniers utilisateurs, filtrés par plan, essai, promo ou recherche.",
+      email: "Email",
+      lastLogin: "Dernière connexion",
+      plan: "Plan",
+      search: "Rechercher",
+      searchPlaceholder: "Chercher email ou pseudo Twitch",
+      status: "Statut",
+      streamers: "Streamers",
+      twitch: "Pseudo Twitch"
+    },
+    revenue: {
+      activeSubscriptions: "Abonnements actifs",
+      byPlan: "Revenus par plan",
+      monthlyRevenue: "Revenus mensuels",
+      planFormula: "{users} utilisateurs × {price} €",
+      promoUsers: "Utilisateurs promo",
+      stripeCustomers: "Clients Stripe",
+      trialSubscriptions: "Abonnements en essai"
+    },
+    promo: {
+      code: "Code",
+      create: "Créer un code promo",
+      createdAt: "Créé le",
+      description: "Créez et consultez les codes d’accès Pro temporaires.",
+      duration: "Durée",
+      maxUses: "Usages max",
+      uses: "Usages",
+      state: {
+        created: "Code promo créé.",
+        exists: "Un code promo avec ce code existe déjà.",
+        invalid: "Entre un code, une durée et un nombre d’usages valides."
+      }
+    },
+    growth: {
+      clips7: "Clips créés sur 7 jours",
+      clips30: "Clips créés sur 30 jours",
+      clipsGrowth: "Croissance clips",
+      noData: "Aucune donnée",
+      users7: "Utilisateurs inscrits sur 7 jours",
+      users30: "Utilisateurs inscrits sur 30 jours",
+      usersGrowth: "Croissance utilisateurs"
+    },
+    system: {
+      databaseStatus: "Statut base de données",
+      lastClip: "Dernier clip créé",
+      lastDownload: "Dernier téléchargement",
+      lastSignup: "Dernière inscription",
+      stripeStatus: "Statut Stripe",
+      workerHeuristic:
+        "Le statut worker est inféré depuis les streamers configurés et les règles actives. Ajoutez un heartbeat plus tard pour un vrai statut runtime.",
+      workerStatus: "Statut worker"
+    },
+    quickActions: {
+      discord: "Ouvrir Discord",
+      neon: "Ouvrir Neon",
+      railway: "Ouvrir Railway",
+      stripe: "Ouvrir Stripe Dashboard",
+      vercel: "Ouvrir Vercel"
+    }
+  },
   gettingStarted: {
     backToHome: "Retour à l’accueil",
     badge: "Démarrage",
